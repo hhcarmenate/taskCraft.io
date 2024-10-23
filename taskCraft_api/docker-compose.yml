@@ -1,0 +1,115 @@
+services:
+    taskCraft_proxy:
+        image: jwilder/nginx-proxy:alpine
+        container_name: taskCraft_nginx_proxy
+        ports:
+            - "81:80" # Keep port 80 as default for incoming requests
+        volumes:
+            - /var/run/docker.sock:/tmp/docker.sock:ro
+            - ./docker/8.2/custom.conf:/etc/nginx/conf.d/custom.conf:ro
+        networks:
+            - task-craft
+
+        environment:
+            DEFAULT_HOST: dev.app.taskCraft.com  # Optional base domain
+
+    taskCraft_api:
+        build:
+            context: ./docker/8.2
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: 1000
+        image: sail-8.2/app
+        container_name: taskCraft_api
+        hostname: taskCraft_api
+        expose:
+            - 80
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+            IGNITION_LOCAL_SITES_PATH: '${PWD}'
+            TZ: 'America/New_York'
+            VIRTUAL_HOST: dev.api.taskCraft.com
+            VIRTUAL_PORT: 80
+            DB_CONNECTION: 'mysql'
+            DB_HOST: 'taskCraft_mysql'
+            DB_PORT: '3306'
+            DB_DATABASE: 'taskcraft'
+            DB_USERNAME: 'root'
+            DB_PASSWORD: 'password'
+            REDIS_HOST: 'taskCraft_redis'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - task-craft
+
+    taskCraft_app:
+        image: node:latest
+        environment:
+            VIRTUAL_HOST: dev.app.taskCraft.com
+            VIRTUAL_PORT: 8080
+        container_name: taskCraft_app
+        hostname: taskCraft_app
+        expose:
+            - 8080
+        volumes:
+            - ../taskCraft_app:/app
+        working_dir: /app
+        command: bash -c "npm install && npm run dev"
+        networks:
+            task-craft:
+                aliases:
+                    - "dev.app.taskCraft.com"
+        depends_on:
+            - taskCraft_api
+
+    taskCraft_mysql:
+        image: "mysql/mysql-server:8.0"
+        ports:
+            - "3307:3306"
+        container_name: taskCraft_mysql
+        hostname: taskCraft_mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: "password"
+            MYSQL_DATABASE: "taskcraft"
+            MYSQL_USER: "root"
+            MYSQL_PASSWORD: "password"
+        volumes:
+            - "task-craft-mysql:/var/lib/mysql"
+            - ./docker/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh
+        networks:
+            - task-craft
+
+    taskCraft_redis:
+        image: "redis:alpine"
+        container_name: taskCraft_redis
+        ports:
+            - "6380:6379"
+        volumes:
+            - "task-craft-redis:/data"
+        networks:
+            - task-craft
+
+    taskCraft_mailpit:
+        image: "axllent/mailpit:latest"
+        environment:
+            VIRTUAL_HOST: dev.mailpit.taskCraft.com
+            VIRTUAL_PORT: 8025
+        container_name: taskCraft_mailpit
+        ports:
+            - "1026:1025"
+            - "8026:8025"
+        networks:
+            - task-craft
+
+networks:
+    task-craft:
+        driver: bridge
+
+volumes:
+    task-craft-mysql:
+        driver: local
+    task-craft-redis:
+        driver: local
