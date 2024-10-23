@@ -1,0 +1,63 @@
+# Ignore Laravel specific files and directories
+/taskCraft_api/vendor
+/taskCraft_api/node_modules
+
+# Laravel environment files
+/taskCraft_api/.env
+/taskCraft_api/.env.*.backup
+/taskCraft_api/.env.local.php
+
+# Laravel cache and compiled files
+/taskCraft_api/bootstrap/cache/*
+!taskCraft_api/bootstrap/cache/.gitignore
+
+# Laravel generated files
+/taskCraft_api/storage/*
+!taskCraft_api/storage/.gitignore
+/taskCraft_api/storage/app/public/*
+/taskCraft_api/storage/framework/cache/*
+/taskCraft_api/storage/framework/sessions/*
+/taskCraft_api/storage/framework/views/*
+/taskCraft_api/storage/logs/*
+!taskCraft_api/storage/logs/.gitignore
+
+# Laravel IDE Helper
+/taskCraft_api/.phpstorm.meta.php
+/taskCraft_api/_ide_helper.php
+/taskCraft_api/_ide_helper_models.php
+
+# Ignore IDE and OS generated files
+/.idea
+/.vscode
+.DS_Store
+Thumbs.db
+
+# Ignore Node modules and build output in the Vue.js app
+/taskCraft_app/node_modules
+/taskCraft_app/dist
+
+# Ignore log files
+*.log
+
+# Ignore NPM/Yarn lock file if you want to commit only one type of lock file
+# Comment the one you are using (either npm or yarn)
+/taskCraft_app/package-lock.json
+/taskCraft_app/yarn.lock
+
+# Ignore TypeScript specific files
+/taskCraft_app/tsconfig.tsbuildinfo
+
+# Ignore test coverage files
+/coverage
+
+# Ignore local development settings
+.npmrc
+/.env.local
+
+# Ignore dependency directories and compiled files in the Vue.js app
+/taskCraft_app/.nuxt
+/taskCraft_app/.output
+/taskCraft_app/.vite
+
+# Ignore other system files
+/taskCraft_api/.phpunit.result.cache

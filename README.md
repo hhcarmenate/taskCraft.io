@@ -1,4 +1,4 @@
-# TaskCraft
+# TaskCraft.io
 
 Welcome to **TaskCraft**, a powerful free tool to organize and manage your tasks efficiently.
 

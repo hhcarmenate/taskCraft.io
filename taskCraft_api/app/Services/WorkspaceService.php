@@ -6,11 +6,17 @@ use App\Models\User;
 use App\Models\Workspace;
 use App\Models\WorkspaceUserRole;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class WorkspaceService
 {
-    public function getMyWorkSpaces(User $user)
+    /**
+     * Getting all my workspaces
+     * @param User $user
+     * @return Collection
+     */
+    public function getMyWorkSpaces(User $user): Collection
     {
         return $user->workspaces;
     }
@@ -44,6 +50,47 @@ class WorkspaceService
         }
 
         $request->user()->workspace()->attach($request->user()->id, ['workspace_user_role_id_id' => $role->id]);
+
+        return $workspace;
+    }
+
+    /**
+     * Updates the properties of a workspace based on the information provided in the request.
+     *
+     * @param mixed $request The request object containing the updated workspace information.
+     * @param mixed $workspace The workspace object to be updated.
+     *
+     * @return mixed The updated workspace object.
+     */
+    public function updateWorkspace(Request $request, Workspace $workspace): mixed
+    {
+        if ($request->input('name')) {
+            $workspace->name = $request->input('name');
+        }
+
+        if ($request->input('type')) {
+            $workspace->type = $request->input('type');
+        }
+
+        if ($request->input('description')) {
+            $workspace->description = $request->input('description');
+        }
+
+        $workspace->save();
+        $workspace->refresh();
+
+        return $workspace;
+    }
+
+    /**
+     * Destroy the given workspace by deleting it.
+     *
+     * @param Workspace $workspace The workspace to be destroyed.
+     * @return Workspace The destroyed workspace object.
+     */
+    public function destroyWorkspace(Workspace $workspace): Workspace
+    {
+        $workspace->delete();
 
         return $workspace;
     }
