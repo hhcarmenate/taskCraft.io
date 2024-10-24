@@ -1,25 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import LoginView from "@/views/LoginView.vue";
-import RegisterView from "@/views/RegisterView.vue";
+import NonAuthenticatedLayout from "@/views/layouts/NonAuthenticatedLayout.vue";
+import {nonAuthenticatedRoutes} from "@/router/nonAuthRoutes.js";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      redirect: '/login'
+      path: '',
+      name: 'non authenticated layout',
+      component: NonAuthenticatedLayout,
+      children: [
+        ...nonAuthenticatedRoutes
+      ]
     },
-    {
-      path: '/login',
-      name: 'login',
-      component: LoginView
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: RegisterView
-    }
   ]
 })
 

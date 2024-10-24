@@ -11,20 +11,23 @@ export default function useNotification() {
     }
 
     if (type === 'error') {
-      toast.error(text, {
-        position: toast.POSITION.BOTTOM_LEFT
+      toast.dark(text, {
+        position: toast.POSITION.BOTTOM_LEFT,
+        type: 'error'
       })
     }
 
     if (type === 'warn') {
-      toast.warn(text, {
-        position: toast.POSITION.BOTTOM_LEFT
+      toast.dark(text, {
+        position: toast.POSITION.BOTTOM_LEFT,
+        type: 'warn'
       })
     }
 
     if (type === 'info') {
-      toast.info(text, {
-        position: toast.POSITION.BOTTOM_LEFT
+      toast.dark(text, {
+        position: toast.POSITION.BOTTOM_LEFT,
+        type: 'info'
       })
     }
 
