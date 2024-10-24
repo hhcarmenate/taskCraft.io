@@ -57,11 +57,11 @@ const onInvalidSubmit = (errors) => {
 </script>
 
 <template>
-  <div v-if="localState.registered" class="container">
+  <div v-if="!localState.registered" class="container">
     <h1 class="text-3xl font-bold justify-center">Sign Up</h1>
     <h3 class="text-2xl font-thin">Please complete the following information.</h3>
 
-    <div v-if="localState.registered" class="section__body flex justify-center">
+    <div class="section__body flex justify-center">
       <Form
         class="form__alt w-full flex justify-center"
         :validation-schema="loginValidationSchema"
