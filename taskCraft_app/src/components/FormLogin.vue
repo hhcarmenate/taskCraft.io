@@ -5,14 +5,19 @@ import { toTypedSchema } from '@vee-validate/zod'
 import TextInput from "@/components/fields/TextInput.vue";
 import * as zod from 'zod'
 import TCButton from "@/components/fields/TCButton.vue";
+import {useUserStore} from "@/stores/useUserStore.js";
 
+// Data
+const user = useUserStore()
 const localState = reactive({
   form: {
     email: null,
     password: null
-  }
+  },
+  sending: false
 })
 
+// Computed Property
 const loginValidationSchema = computed(() => {
   return toTypedSchema(
     zod.object({
@@ -21,6 +26,30 @@ const loginValidationSchema = computed(() => {
     })
   )
 })
+
+
+// Methods
+const onSubmit = async () => {
+  try {
+    localState.sending = true
+
+    const response = await user.login(localState.form)
+
+    if (response.status === 200) {
+      // todo: create the new dashboard routes to be redirected after login
+    } else {
+      // bug: show login error
+    }
+  } catch (error) {
+    console.log(error)
+  } finally {
+    localState.sending = false
+  }
+}
+
+const onInvalidSubmit = (error) => {
+  console.log(error)
+}
 
 </script>
 
@@ -33,6 +62,8 @@ const loginValidationSchema = computed(() => {
       <Form
         class="form__alt w-full flex justify-center"
         :validation-schema="loginValidationSchema"
+        @submit="onSubmit"
+        @invalid-submit="onInvalidSubmit"
       >
         <div class="form__section flex flex-col">
           <div class="form__row">
@@ -63,9 +94,10 @@ const loginValidationSchema = computed(() => {
 
           <div class="form__row">
             <TCButton
+              :loading="localState.sending"
               id="submitButton"
-              button-type="success"
-              type="submit"
+              button-type="submit"
+              type="success"
               button-text="Login"
               class="w-full"
             />

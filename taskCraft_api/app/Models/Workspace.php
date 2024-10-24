@@ -7,7 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
+ * 
+ *
  * @mixin IdeHelperWorkspace
+ * @property int $id
+ * @property string $name
+ * @property string $type
+ * @property string $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\WorkspaceUserRole> $roles
+ * @property-read int|null $roles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read int|null $users_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Workspace newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Workspace newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Workspace query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Workspace whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Workspace whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Workspace whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Workspace whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Workspace whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Workspace whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Workspace extends Model
 {
