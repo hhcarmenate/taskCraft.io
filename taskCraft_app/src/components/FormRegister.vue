@@ -1,13 +1,15 @@
 <script setup>
 import { Form } from 'vee-validate'
-import {computed, reactive} from "vue";
+import {computed, onMounted, reactive} from "vue";
 import { toTypedSchema } from '@vee-validate/zod'
 import TextInput from "@/components/fields/TextInput.vue";
 import * as zod from 'zod'
 import TCButton from "@/components/fields/TCButton.vue";
 import {useUserStore} from "@/stores/useUserStore.js";
+import useNotification from "@/composables/useNotification.js";
 
 // Data
+const { notify } = useNotification()
 const user = useUserStore()
 const localState = reactive({
   form: {
@@ -30,6 +32,9 @@ const loginValidationSchema = computed(() => {
   )
 })
 
+onMounted(() => {
+  notify('success', 'Application sign up loaded!')
+})
 
 // Methods
 const onSubmit = async () => {
@@ -37,10 +42,12 @@ const onSubmit = async () => {
     localState.sending = true
     const response = await user.register(localState.form)
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       localState.registered = true
+
+      notify('success', 'Registration successful, please confirm your email!')
     } else {
-      console.log('Oops something fail', response)
+       notify('error', 'Oops! something went wrong.')
     }
 
   } catch (e) {

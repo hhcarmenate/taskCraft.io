@@ -12,11 +12,13 @@ export const useUserStore = defineStore('user', {
     async login({ email, password }) {
       const response = await UserService.login({ email, password })
 
-      const { data } = response.data
-      if (data) {
-        this.name = data.name
-        this.email = data.email
-        this.isAuthenticated = true
+      if (response.status === 200) {
+        const { data } = response.data
+        if (data) {
+          this.name = data.name
+          this.email = data.email
+          this.isAuthenticated = true
+        }
       }
 
       return response

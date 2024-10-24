@@ -6,9 +6,13 @@ import TextInput from "@/components/fields/TextInput.vue";
 import * as zod from 'zod'
 import TCButton from "@/components/fields/TCButton.vue";
 import {useUserStore} from "@/stores/useUserStore.js";
+import {useRouter} from "vue-router";
+import useNotification from "@/composables/useNotification.js";
 
 // Data
 const user = useUserStore()
+const router = useRouter()
+const { notify } = useNotification()
 const localState = reactive({
   form: {
     email: null,
@@ -36,10 +40,11 @@ const onSubmit = async () => {
     const response = await user.login(localState.form)
 
     if (response.status === 200) {
-      // todo: create the new dashboard routes to be redirected after login
-    } else {
-      // bug: show login error
+      notify('success', 'User signed in successfully')
+      return await router.push('/dashboard')
     }
+
+    notify('error', 'Oops! something went wrong')
   } catch (error) {
     console.log(error)
   } finally {
