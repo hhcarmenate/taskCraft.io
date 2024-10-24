@@ -42,7 +42,7 @@ const loginValidationSchema = computed(() => {
               <TextInput
                 name="name"
                 type="text"
-                label="Name"
+                label="F Name"
                 placeholder="John Doe"
                 v-model="localState.form.name"
                 show-error
