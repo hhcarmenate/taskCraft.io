@@ -5,15 +5,21 @@ import { toTypedSchema } from '@vee-validate/zod'
 import TextInput from "@/components/fields/TextInput.vue";
 import * as zod from 'zod'
 import TCButton from "@/components/fields/TCButton.vue";
+import {useUserStore} from "@/stores/useUserStore.js";
 
+// Data
+const user = useUserStore()
 const localState = reactive({
   form: {
     name: null,
     email: null,
     password: null
-  }
+  },
+  sending: false,
+  registered: false
 })
 
+// Computed Properties
 const loginValidationSchema = computed(() => {
   return toTypedSchema(
     zod.object({
@@ -24,17 +30,43 @@ const loginValidationSchema = computed(() => {
   )
 })
 
+
+// Methods
+const onSubmit = async () => {
+  try {
+    localState.sending = true
+    const response = await user.register(localState.form)
+
+    if (response.status === 200) {
+      localState.registered = true
+    } else {
+      console.log('Oops something fail', response)
+    }
+
+  } catch (e) {
+    console.log('catching errors', e);
+  } finally {
+    localState.sending = false
+  }
+}
+
+const onInvalidSubmit = (errors) => {
+  console.log(errors)
+}
+
 </script>
 
 <template>
-  <div class="container">
+  <div v-if="localState.registered" class="container">
     <h1 class="text-3xl font-bold justify-center">Sign Up</h1>
     <h3 class="text-2xl font-thin">Please complete the following information.</h3>
 
-    <div class="section__body flex justify-center">
+    <div v-if="localState.registered" class="section__body flex justify-center">
       <Form
         class="form__alt w-full flex justify-center"
         :validation-schema="loginValidationSchema"
+        @submit="onSubmit"
+        @invalid-submit="onInvalidSubmit"
       >
         <div class="form__section flex flex-col">
           <div class="form__row">
@@ -78,9 +110,10 @@ const loginValidationSchema = computed(() => {
 
           <div class="form__row">
             <TCButton
+              :loading="localState.sending"
               id="submitButton"
-              button-type="success"
-              type="submit"
+              button-type="submit"
+              type="success"
               button-text="Register"
               class="w-full"
             />
@@ -88,6 +121,10 @@ const loginValidationSchema = computed(() => {
         </div>
       </Form>
     </div>
+  </div>
+  <div v-else class="container">
+    <h1 class="text-3xl font-bold justify-center">Thank You!</h1>
+    <h3 class="text-2xl font-thin">Please check your inbox to verify your email address.</h3>
   </div>
 </template>
 

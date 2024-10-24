@@ -6,7 +6,7 @@ import HelloWorld from './components/HelloWorld.vue'
 <template>
   <header>
     <div class="wrapper">
-      <HelloWorld msg="Welcome to Task Craft.io!" />
+      <HelloWorld msg="Welcome to TaskCraft.io!" />
 
       <nav>
         <RouterLink :to="'/login'">Sign In</RouterLink>
