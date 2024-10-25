@@ -126,7 +126,7 @@ const onInvalidSubmit = (error) => {
       padding: 1.6rem;
 
       .form__row {
-        width: 75%;
+        width: 100%;
         padding: 1rem;
       }
     }

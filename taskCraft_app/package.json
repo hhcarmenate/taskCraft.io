@@ -17,6 +17,7 @@
     "@iconify/vue": "^4.1.2",
     "@vee-validate/zod": "^4.14.4",
     "axios": "^1.7.7",
+    "flowbite": "^2.5.2",
     "pinia": "^2.2.4",
     "pinia-plugin-persistedstate": "^4.1.1",
     "vee-validate": "^4.14.4",

@@ -69,7 +69,7 @@ const noReverseStatus = () => {
                     text-black rounded-md`
     default:
       return `inline-flex items-center justify-center gap-2.5 py-2 px-10 text-center
-                    font-medium hover:bg-opacity-90 lg:px-8 xl:px-10 bg-success-500
+                    font-medium hover:bg-opacity-90 lg:px-8 xl:px-10 bg-green-500
                     text-white rounded-md`
   }
 }
