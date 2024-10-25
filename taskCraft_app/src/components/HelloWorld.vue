@@ -9,7 +9,7 @@ defineProps({
 
 <template>
   <div class="greetings">
-    <h1 class="green">{{ msg }}</h1>
+    <h1 class="text-green-500">{{ msg }}</h1>
     <h3>
       Empowering Your Workflow with Organized and Collaborative Task Management
     </h3>
