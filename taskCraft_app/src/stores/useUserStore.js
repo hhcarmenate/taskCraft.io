@@ -6,6 +6,7 @@ export const useUserStore = defineStore('user', {
     isAuthenticated: false,
     name: '',
     email: '',
+    userId: ''
   }),
   persist: true,
   actions: {
@@ -17,6 +18,7 @@ export const useUserStore = defineStore('user', {
         if (data) {
           this.name = data.name
           this.email = data.email
+          this.userId = data.userId
           this.isAuthenticated = true
         }
       }
