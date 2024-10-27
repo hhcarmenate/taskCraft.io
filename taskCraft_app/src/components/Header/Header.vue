@@ -1,10 +1,15 @@
 <script setup>
 import { ref } from "vue"
 import {useRouter} from "vue-router";
+import TCModal from "@/components/modals/TCModal.vue";
+import CreateWorkpaceModal from "@/components/modals/CreateWorkpaceModal.vue";
 
+// Data
 const dropdownOpen = ref(false)
 const router = useRouter()
+const showModal = ref(false)
 
+// Methods
 const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value;
 }
@@ -17,10 +22,18 @@ const logoutUser = async () => {
   return await router.push('logout')
 }
 
+const handleUpdateShow = (show) => {
+  showModal.value = show
+}
+
+const showWorkspaceModal = () => {
+  showModal.value = true
+}
+
 </script>
 
 <template>
-  <nav class="fixed z-50 w-full bg-white border border-b border-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:border-gray-700">
+  <nav class="fixed z-40 w-full bg-white border border-b border-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:border-gray-700">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-2">
       <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
         <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-green-500">TaskCraft.io</span>
@@ -55,7 +68,8 @@ const logoutUser = async () => {
         >
           <li>
             <a
-              href="#"
+
+              @click="showWorkspaceModal"
               class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:p-1 dark:bg-blue-600 md:dark:bg-transparent dark:hover:bg-gray-700 dark:hover:text-green-500"
               aria-current="page"
             >
@@ -178,6 +192,7 @@ const logoutUser = async () => {
       </div>
     </div>
   </nav>
+  <CreateWorkpaceModal :show="showModal" @update:show="handleUpdateShow"/>
 </template>
 
 <style scoped>

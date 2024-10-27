@@ -1,10 +1,16 @@
 <script setup>
 import Header from '@/components/Header/Header.vue'
 import Sidebar from "@/components/Sidebar/Sidebar.vue";
+import ModalOverlay from "@/components/modals/ModalOverlay.vue";
+
+
+
 </script>
 
 <template>
-  <div class="antialiased bg-gray-50 dark:bg-gray-900">
+  <div
+    class="antialiased bg-gray-50 dark:bg-gray-900"
+  >
     <Header />
 
     <Sidebar />
@@ -13,6 +19,8 @@ import Sidebar from "@/components/Sidebar/Sidebar.vue";
       <router-view />
     </main>
   </div>
+  <ModalOverlay />
+
 </template>
 
 <style scoped>

@@ -49,7 +49,7 @@ class WorkspaceService
             throw new Exception('Workspace creation fail, please try again later!');
         }
 
-        $request->user()->workspace()->attach($request->user()->id, ['workspace_user_role_id_id' => $role->id]);
+        $request->user()->workspaces()->attach($request->user()->id, ['workspace_user_role_id' => $role->id]);
 
         return $workspace;
     }

@@ -1,8 +1,12 @@
 <script setup>
+import TCModal from "@/components/modals/TCModal.vue";
+import {ref} from "vue";
+
+
 </script>
 
 <template>
   <main>
-    This is the dashboard vue
+    Testing component
   </main>
 </template>
