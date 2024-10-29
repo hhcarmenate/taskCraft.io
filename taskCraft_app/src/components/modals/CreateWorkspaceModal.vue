@@ -96,17 +96,35 @@ const invitationLink = async () => {
     }
 
     const invitationLink = response?.data?.invitation ?? ""
-    console.log(invitationLink)
-    if (invitationLink) {
-      navigator.clipboard.writeText(invitationLink)
-        .then(() => {
-          notify('success', 'Link! copied successfully!')
-        })
-        .catch(() => {
-          notify('error', 'Ops! something went wrong')
-        })
+    if (navigator.clipboard) {
+      // Use the Clipboard API to copy text
+      navigator.clipboard.writeText(invitationLink).then(() => {
+        notify('success', 'Invitation link copied successfully');
+      }).catch(err => {
+        console.error('Could not copy text: ', err);
+      });
     } else {
-      notify('error', 'Ops! something went wrong')
+      // Fallback for older browsers or environments without Clipboard API
+      const textArea = document.createElement('textarea');
+      textArea.value = invitationLink;
+
+      // Avoid scrolling to bottom
+      textArea.style.position = 'fixed';
+      textArea.style.top = 0;
+      textArea.style.left = 0;
+
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        document.execCommand('copy');
+        notify('success', 'Invitation link copied successfully');
+      } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+      }
+
+      document.body.removeChild(textArea);
     }
 
   } catch (e) {
