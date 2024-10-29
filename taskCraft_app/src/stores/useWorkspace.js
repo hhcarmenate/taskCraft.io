@@ -17,6 +17,10 @@ export const useWorkspace = defineStore('workspace', {
 
     async getOrCreateInvitationLink(){
       return await WorkspaceService.getOrCreateInvitationLink(this.workspaceSelected.id)
+    },
+
+    async sendInvitation({ invitationList, invitationText }) {
+      return await WorkspaceService.sendInvitation(this.workspaceSelected.id, invitationList, invitationText)
     }
   }
 })

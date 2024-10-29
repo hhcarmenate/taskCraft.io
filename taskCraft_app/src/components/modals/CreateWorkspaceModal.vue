@@ -9,6 +9,7 @@ import SelectInput from "@/components/fields/SelectInput.vue";
 import TextareaInput from "@/components/fields/TextareaInput.vue";
 import {useWorkspace} from "@/stores/useWorkspace.js";
 import useNotification from "@/composables/useNotification.js";
+import InviteMembers from "@/components/modals/Workspace/InviteMembers.vue";
 
 const currentItems = [
   { value: 'education', text: 'Education' },
@@ -24,7 +25,7 @@ defineProps({
   }
 })
 const step = ref(1)
-const stepEmail = ref(null)
+
 const workspace = useWorkspace()
 const { notify } = useNotification()
 
@@ -84,56 +85,20 @@ const onSubmit = async () => {
   }
 }
 
-const invitationLink = async () => {
-  try {
-    localState.gettingLink = true
-
-    const response = await workspace.getOrCreateInvitationLink()
-
-    if (response.status !== 200) {
-      notify('error', 'Ops! something went wrong')
-      return
-    }
-
-    const invitationLink = response?.data?.invitation ?? ""
-    if (navigator.clipboard) {
-      // Use the Clipboard API to copy text
-      navigator.clipboard.writeText(invitationLink).then(() => {
-        notify('success', 'Invitation link copied successfully');
-      }).catch(err => {
-        console.error('Could not copy text: ', err);
-      });
-    } else {
-      // Fallback for older browsers or environments without Clipboard API
-      const textArea = document.createElement('textarea');
-      textArea.value = invitationLink;
-
-      // Avoid scrolling to bottom
-      textArea.style.position = 'fixed';
-      textArea.style.top = 0;
-      textArea.style.left = 0;
-
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-
-      try {
-        document.execCommand('copy');
-        notify('success', 'Invitation link copied successfully');
-      } catch (err) {
-        console.error('Fallback: Oops, unable to copy', err);
-      }
-
-      document.body.removeChild(textArea);
-    }
-
-  } catch (e) {
-    console.error('error getting link', e)
-
-    notify('error', 'Oops! something went wrong')
-  } finally {
-    localState.gettingLink = false
+const resetValues = () => {
+  step.value = 1
+  localState.form = {
+    name: null,
+    type: null,
+    description: null,
   }
+  localState.sending = false
+  localState.gettingLink = false
+}
+
+const handleCloseModal = () => {
+  resetValues()
+  handleUpdateShow(false)
 }
 
 const onInvalidSubmit = (e) => {
@@ -206,35 +171,9 @@ const onInvalidSubmit = (e) => {
         </div>
       </Form>
       <div v-else>
-
-
-        <div class="form__section flex flex-col">
-          <div class="form__row">
-            <div class="form__controls">
-              <TextInput
-                name="guestEmail"
-                type="email"
-                placeholder="Email address"
-                v-model="stepEmail"
-                show-error
-              />
-            </div>
-          </div>
-          <div class="use__invitation-link mt-4">
-            <p>Or use invitation link</p>
-            <button
-              @click="invitationLink()"
-              type="button"
-              class="py-1 px-2 ms-3 text-sm font-medium text-xs text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-            >
-              Use Link
-            </button>
-          </div>
-
-          <div class="form__controls mt-4">
-            <p class="underline hand" @click="handleUpdateShow(false)">You can skip this step and add members later</p>
-          </div>
-        </div>
+        <InviteMembers
+          @close-modal="handleCloseModal"
+        />
       </div>
     </template>
     <template #footer>
@@ -250,12 +189,6 @@ const onInvalidSubmit = (e) => {
 </template>
 
 <style scoped>
-.use__invitation-link {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .hand {
   cursor: pointer;
 }

@@ -7,11 +7,13 @@ use App\Http\Requests\UpdateWorkspaceRequest;
 use App\Http\Resources\WorkspaceResource;
 use App\Http\Traits\FailResponseTrait;
 use App\Models\Workspace;
+use App\Notifications\WorkspaceInvitationNotification;
 use App\Services\WorkspaceService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Notification;
 
 class WorkspaceController extends Controller
 {
@@ -123,6 +125,43 @@ class WorkspaceController extends Controller
             return response()->json([
                 'invitation' => $this->workspaceService->useInvitationLink($workspace)
             ]);
+        } catch (Exception $e) {
+            return $this->genericFailResponse($e);
+        }
+    }
+
+    /**
+     * Sends an invitation to the specified recipients for the given workspace.
+     *
+     * @param Request $request The request containing the invitation details.
+     *                        Requires 'invitationList' as required array and 'invitationText' as nullable string.
+     * @param Workspace $workspace The workspace for which the invitation is being sent.
+     * @return JsonResponse A JSON response indicating the success status of sending the invitation.
+     *                     Includes a message indicating if the workspace invitation was sent successfully.
+     */
+    public function sendInvitation(Request $request, Workspace $workspace): JsonResponse
+    {
+        try {
+            $request->validate([
+                'invitationList' => 'required|array',
+                'invitationTex' => 'string|nullable'
+            ]);
+
+            $subject = "New Workspace Invitation";
+
+            foreach ($request->input('invitationList') as $email) {
+                Notification::route('mail', trim($email))
+                    ->notify(new WorkspaceInvitationNotification(
+                        $subject,
+                        $request->input('invitationText'),
+                        $request->user()->name,
+                        $workspace->name,
+                        $this->workspaceService->useInvitationLink($workspace)
+                    ));
+            }
+
+
+            return response()->json(['message' => 'Workspace Invitation sent successfully']);
         } catch (Exception $e) {
             return $this->genericFailResponse($e);
         }
