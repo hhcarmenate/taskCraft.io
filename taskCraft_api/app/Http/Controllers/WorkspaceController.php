@@ -94,12 +94,43 @@ class WorkspaceController extends Controller
         }
     }
 
-    public function delete(): WorkspaceResource|JsonResponse
+    /**
+     * Deletes a workspace.
+     *
+     * @return WorkspaceResource|JsonResponse The deleted workspace resource if successful,
+     *                                      or a JSON response with error message if an exception occurs.
+     */
+    public function delete(Workspace $workspace): WorkspaceResource|JsonResponse
     {
         try {
             return WorkspaceResource::make($this->workspaceService->destroyWorkspace($workspace));
         } catch(Exception $e) {
             return $this->genericFailResponse($e);
         }
+    }
+
+    /**
+     * Generates an invitation link for the specified workspace.
+     *
+     * @param Workspace $workspace The workspace for which the invitation link is to be generated.
+     *
+     * @return JsonResponse A JSON response containing the generated invitation link if successful,
+     *                      or a JSON response with error message if an exception occurs.
+     */
+    public function invitationLink(Workspace $workspace): JsonResponse
+    {
+        try {
+            return response()->json([
+                'invitation' => $this->workspaceService->useInvitationLink($workspace)
+            ]);
+        } catch (Exception $e) {
+            return $this->genericFailResponse($e);
+        }
+    }
+
+
+    public function getInvitationInfo()
+    {
+
     }
 }

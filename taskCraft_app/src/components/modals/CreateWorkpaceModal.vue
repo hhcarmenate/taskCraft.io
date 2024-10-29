@@ -17,7 +17,7 @@ const currentItems = [
 ]
 
 const emit = defineEmits(['update:show'])
-const props = defineProps({
+defineProps({
   show: {
     type: Boolean,
     default: false
@@ -26,7 +26,7 @@ const props = defineProps({
 const step = ref(1)
 const stepEmail = ref(null)
 const workspace = useWorkspace()
-const notify = useNotification()
+const { notify } = useNotification()
 
 const localState = reactive({
   form: {
@@ -34,7 +34,8 @@ const localState = reactive({
     type: null,
     description: null
   },
-  sending: false
+  sending: false,
+  gettingLink: false
 })
 
 const workspaceTitle = computed(() =>
@@ -55,10 +56,6 @@ const handleUpdateShow = (show) => {
   emit('update:show', show)
 }
 
-const handleSubmit = () => {
-
-}
-
 const onSubmit = async () => {
   try {
     localState.sending = true
@@ -68,8 +65,15 @@ const onSubmit = async () => {
       description: localState.form.description
     })
 
-    notify('success', `Workspace ${localState.form.name} was create successfully`)
-    step.value = 2
+    if (response.status >= 200 && response.status < 300) {
+      notify('success', `Workspace ${localState.form.name} was create successfully`)
+      step.value = 2
+
+      workspace.workspaceSelected = response?.data?.data ?? {}
+    } else {
+      notify('error', 'Ops! something went wrong')
+    }
+
 
   } catch (e) {
     console.error(e)
@@ -77,6 +81,40 @@ const onSubmit = async () => {
     notify('error', 'Ops! something went wrong')
   } finally {
     localState.sending = false
+  }
+}
+
+const invitationLink = async () => {
+  try {
+    localState.gettingLink = true
+
+    const response = await workspace.getOrCreateInvitationLink()
+
+    if (response.status !== 200) {
+      notify('error', 'Ops! something went wrong')
+      return
+    }
+
+    const invitationLink = response?.data?.invitation ?? ""
+    console.log(invitationLink)
+    if (invitationLink) {
+      navigator.clipboard.writeText(invitationLink)
+        .then(() => {
+          notify('success', 'Link! copied successfully!')
+        })
+        .catch(() => {
+          notify('error', 'Ops! something went wrong')
+        })
+    } else {
+      notify('error', 'Ops! something went wrong')
+    }
+
+  } catch (e) {
+    console.error('error getting link', e)
+
+    notify('error', 'Oops! something went wrong')
+  } finally {
+    localState.gettingLink = false
   }
 }
 
@@ -98,7 +136,7 @@ const onInvalidSubmit = (e) => {
         :validation-schema="validationSchema"
         @submit="onSubmit"
         @invalid-submit="onInvalidSubmit"
-        v-if="step===2"
+        v-if="step===1"
       >
         <div class="form__section flex flex-col">
           <div class="form__row">
@@ -150,6 +188,8 @@ const onInvalidSubmit = (e) => {
         </div>
       </Form>
       <div v-else>
+
+
         <div class="form__section flex flex-col">
           <div class="form__row">
             <div class="form__controls">
@@ -161,6 +201,20 @@ const onInvalidSubmit = (e) => {
                 show-error
               />
             </div>
+          </div>
+          <div class="use__invitation-link mt-4">
+            <p>Or use invitation link</p>
+            <button
+              @click="invitationLink()"
+              type="button"
+              class="py-1 px-2 ms-3 text-sm font-medium text-xs text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            >
+              Use Link
+            </button>
+          </div>
+
+          <div class="form__controls mt-4">
+            <p class="underline hand" @click="handleUpdateShow(false)">You can skip this step and add members later</p>
           </div>
         </div>
       </div>
@@ -178,5 +232,13 @@ const onInvalidSubmit = (e) => {
 </template>
 
 <style scoped>
+.use__invitation-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
+.hand {
+  cursor: pointer;
+}
 </style>
