@@ -1,11 +1,17 @@
 import DashboardView from "@/views/DashboardView.vue";
 import {useUserStore} from "@/stores/useUserStore.js";
+import ProfileView from "@/views/ProfileView.vue";
 
 export const authenticatedRoutes = [
   {
     path: '/dashboard',
     name: 'dashboard',
     component: DashboardView
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfileView
   },
   {
     path: '/logout',
