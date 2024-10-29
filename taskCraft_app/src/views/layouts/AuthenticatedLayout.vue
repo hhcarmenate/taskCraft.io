@@ -2,8 +2,12 @@
 import Header from '@/components/Header/Header.vue'
 import Sidebar from "@/components/Sidebar/Sidebar.vue";
 import ModalOverlay from "@/components/modals/ModalOverlay.vue";
+import {onMounted} from "vue";
+import { initFlowbite } from 'flowbite'
 
-
+onMounted(() => {
+  initFlowbite()
+});
 
 </script>
 
