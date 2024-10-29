@@ -4,10 +4,12 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\Workspace;
+use App\Models\WorkspaceUser;
 use App\Models\WorkspaceUserRole;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 
 class WorkspaceService
 {
@@ -49,7 +51,11 @@ class WorkspaceService
             throw new Exception('Workspace creation fail, please try again later!');
         }
 
-        $request->user()->workspaces()->attach($request->user()->id, ['workspace_user_role_id' => $role->id]);
+        WorkspaceUser::query()->create([
+            'workspace_id' => $workspace->id,
+            'user_id' => $request->user()->id,
+            'workspace_user_role_id' => $role->id
+        ]);
 
         return $workspace;
     }
@@ -93,5 +99,23 @@ class WorkspaceService
         $workspace->delete();
 
         return $workspace;
+    }
+
+    /**
+     * Generate and return an invitation link for the given workspace.
+     *
+     * @param Workspace $workspace The workspace for which the invitation link is being generated.
+     *
+     * @return string The complete invitation link URL containing the temporary signed route with workspace ID.
+     */
+    public function useInvitationLink(Workspace $workspace): String
+    {
+        $backendUrl = URL::temporarySignedRoute(
+          'track-craft.get-invitation-info',
+            now()->addDays(2),
+            ['workspace' => $workspace->id]
+        );
+
+        return config('app.app_url').'invitation-link?url=' . $backendUrl;
     }
 }

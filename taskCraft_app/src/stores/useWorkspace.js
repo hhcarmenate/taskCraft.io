@@ -1,10 +1,10 @@
 import {defineStore} from "pinia";
-import {useUserStore} from "@/stores/useUserStore.js";
 import WorkspaceService from "@/services/WorkspaceService.js";
 
 export const useWorkspace = defineStore('workspace', {
   state: () => ({
-    workspaces: []
+    workspaces: [],
+    workspaceSelected: null
   }),
   actions: {
     async createWorkspace({ name, type, description }) {
@@ -13,6 +13,10 @@ export const useWorkspace = defineStore('workspace', {
         type,
         description
       })
+    },
+
+    async getOrCreateInvitationLink(){
+      return await WorkspaceService.getOrCreateInvitationLink(this.workspaceSelected.id)
     }
   }
 })

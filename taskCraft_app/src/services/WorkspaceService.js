@@ -13,6 +13,10 @@ class WorkspaceService {
     })
   }
 
+  async getOrCreateInvitationLink(workspaceId){
+    return await TASKCRAFT_API.get(`workspace/${workspaceId}/invitation`)
+  }
+
 }
 
 export default new WorkspaceService()
