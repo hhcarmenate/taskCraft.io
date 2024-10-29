@@ -3,6 +3,7 @@ import { ref } from "vue"
 import {useRouter} from "vue-router";
 import CreateWorkspaceModal from "@/components/modals/CreateWorkspaceModal.vue";
 import {useUserStore} from "@/stores/useUserStore.js";
+import HeaderWorkspace from "@/components/Header/HeaderComponents/HeaderWorkspace.vue";
 
 // Data
 const dropdownOpen = ref(false)
@@ -67,6 +68,9 @@ const showWorkspaceModal = () => {
         <ul
           class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-black-500 dark:border-gray-700"
         >
+          <li>
+            <HeaderWorkspace />
+          </li>
           <li>
             <a
 

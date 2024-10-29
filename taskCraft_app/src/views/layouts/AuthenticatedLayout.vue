@@ -4,9 +4,14 @@ import Sidebar from "@/components/Sidebar/Sidebar.vue";
 import ModalOverlay from "@/components/modals/ModalOverlay.vue";
 import {onMounted} from "vue";
 import { initFlowbite } from 'flowbite'
+import {useUserStore} from "@/stores/useUserStore.js";
 
-onMounted(() => {
+const user = useUserStore()
+
+onMounted(async () => {
   initFlowbite()
+
+  await user.loadAppData()
 });
 
 </script>

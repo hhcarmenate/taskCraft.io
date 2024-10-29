@@ -41,8 +41,8 @@ class UserService {
     })
   }
 
-  async getUserData(uuid) {
-    return await TASKCRAFT_API.get(`user/${uuid}/data`)
+  async getUserProfile(userId) {
+    return await TASKCRAFT_API.get(`user/${userId}/profile`)
   }
 
   async updateUserProfile(formData, uuid) {

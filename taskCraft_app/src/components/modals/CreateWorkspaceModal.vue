@@ -114,6 +114,12 @@ const onInvalidSubmit = (e) => {
     @update:show="handleUpdateShow"
   >
     <template #body>
+      <div class="flex flex-row w-1/2">
+        <div class="image-container w-[45%]">
+          <img src="/images/workspace.svg" alt="">
+        </div>
+      </div>
+
       <Form
         class="space-y-4"
         :validation-schema="validationSchema"
