@@ -114,8 +114,8 @@ const onInvalidSubmit = (e) => {
     @update:show="handleUpdateShow"
   >
     <template #body>
-      <div class="flex flex-row w-1/2">
-        <div class="image-container w-[45%]">
+      <div class="flex flex-row gap-3 justify-center">
+        <div class="image-container w-[50%]">
           <img src="/images/workspace.svg" alt="">
         </div>
       </div>
