@@ -1,5 +1,6 @@
 import { defineStore, getActivePinia } from 'pinia'
 import UserService from '@/services/UserService.js'
+import {useUserProfileStore} from "@/stores/useUserProfileStore.js";
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -46,15 +47,10 @@ export const useUserStore = defineStore('user', {
       return await UserService.resetPassword({ password, url })
     },
 
-    async loadUserData() {
-      const response = await UserService.getUserData(this.uuid)
+    async loadAppData() {
+      const userProfile = useUserProfileStore()
 
-      if (response.status === 200) {
-        const result = response.data
-
-      } else {
-        // show Error page...
-      }
+      await userProfile.fetchUserProfile(this.userId)
     },
   },
   getters: {
