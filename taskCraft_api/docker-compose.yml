@@ -44,6 +44,10 @@ services:
             - '.:/var/www/html'
         networks:
             - task-craft
+        depends_on:
+            - taskCraft_mysql
+            - taskCraft_redis
+            - taskCraft_mailpit
 
     taskCraft_app:
         image: node:latest
@@ -99,8 +103,8 @@ services:
             VIRTUAL_PORT: 8025
         container_name: taskCraft_mailpit
         ports:
-            - "1026:1025"
-            - "8026:8025"
+            - "1025:1025"
+            - "8025:8025"
         networks:
             - task-craft
 

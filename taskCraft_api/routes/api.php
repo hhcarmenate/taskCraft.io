@@ -12,6 +12,8 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
            ->name('workspace-invitation');
         Route::get('workspace/{workspace}/get-invitation-info', [WorkspaceController::class, 'getInvitationInfo'])
             ->name('get-invitation-info');
+        Route::post('workspace/{workspace}/send-invitation', [WorkspaceController::class, 'sendInvitation'])
+            ->name('send-invitation');
     });
 
     Route::post('login', [AuthController::class, 'login'])->name('login');
