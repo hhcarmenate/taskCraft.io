@@ -1,9 +1,9 @@
 import './assets/main.css'
 import './assets/tailwind.css'
-import 'flowbite';
 import 'flowbite/dist/flowbite.css';
 import clickOutside from './directives/click-outside';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import 'flowbite';
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
