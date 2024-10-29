@@ -1,4 +1,4 @@
-import { defineStore, getActivePinia } from 'pinia'
+import { defineStore } from 'pinia'
 import UserService from '@/services/UserService.js'
 
 export const useUserProfileStore = defineStore('userProfile', {
