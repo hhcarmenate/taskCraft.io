@@ -52,6 +52,24 @@ class UserService {
       return await TASKCRAFT_API.patch(`user/${uuid}/update-profile`, formData)
     })
   }
+
+  async updateMainUserProfile({ name, jobPosition, file, userId }){
+    return await TASKCRAFT_API.get('sanctum/csrf-cookie', {
+      baseURL: import.meta.env.VITE_APP_TASKCRAFT_API
+    }).then(async () => {
+      const formData = new FormData()
+
+      formData.append('profilePicture', file)
+      formData.append('name', name)
+      formData.append('jobPosition',jobPosition )
+
+      return await TASKCRAFT_API.post(`user/${userId}/update-main-profile`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+    })
+  }
 }
 
 export default new UserService()
