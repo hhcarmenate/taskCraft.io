@@ -17,7 +17,7 @@ const user = useUserStore()
 const userProfile = useUserProfileStore()
 
 const profileImage = computed(() => {
-  return userProfile.profilePicture || localImage.value
+  return localImage.value || userProfile.profilePicture
 })
 
 const nameInitials = computed(() => {
