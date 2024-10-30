@@ -15,13 +15,16 @@ onMounted(() => {
 })
 
 const jobPosition = computed(() => {
-  return JOB_POSITIONS.find((job) => job.value === userProfile.jobPosition)?.label
+  return JOB_POSITIONS.find((job) => job.value === userProfile.jobPosition)?.text
 })
 
 const openMainUserProfileModal = () => {
   showUserProfileModal.value = true
 }
 
+const handleUpdateShow = (value) => {
+  showUserProfileModal.value = value
+}
 </script>
 
 <template>
@@ -65,7 +68,7 @@ const openMainUserProfileModal = () => {
                 {{ jobPosition ?? '' }}
               </span>
             </div>
-            <MainUserProfileModal :show="showUserProfileModal" />
+            <MainUserProfileModal :show="showUserProfileModal" @update:show="handleUpdateShow" />
           </div>
 
           <div class="w-[100%] max-w-lg p-3 bg-white border border-gray-200 rounded-sm shadow dark:bg-gray-800 dark:border-gray-700">
