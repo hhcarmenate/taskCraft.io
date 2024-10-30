@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->dateTime('birth_date')->nullable();
             $table->string('timezone')->nullable();
+            $table->string('job_position')->nullable();
             $table->enum('language', ['ES', 'EN'])->default('EN');
             $table->enum('ui_mode', ['light', 'dark', 'system'])->default('dark');
             $table->json('notification_preference')->nullable();

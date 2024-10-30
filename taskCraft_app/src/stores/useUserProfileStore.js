@@ -12,7 +12,8 @@ export const useUserProfileStore = defineStore('userProfile', {
     uiMode: 'dark',
     bio: null,
     timezone: null,
-    notificationPreferences: null
+    notificationPreferences: null,
+    jobPosition: null
   }),
   persist: true,
   actions: {
@@ -30,6 +31,10 @@ export const useUserProfileStore = defineStore('userProfile', {
       } catch (error) {
         console.error('Failed to fetch user profile:', error)
       }
+    },
+
+    async updateMainUserProfile({ name, jobPosition, file }){
+      return await UserService.updateMainUserProfile({name, jobPosition, file, userId: this.userId})
     }
   },
   getters: {
