@@ -4,7 +4,7 @@ import {computed, ref} from "vue";
 import {useUserProfileStore} from "@/stores/useUserProfileStore.js";
 
 const emit = defineEmits(['updated:image'])
-const props = defineProps({
+defineProps({
   editable: {
     type: Boolean,
     default: true

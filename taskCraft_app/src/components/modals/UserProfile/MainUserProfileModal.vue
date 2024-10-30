@@ -16,7 +16,7 @@ const userProfile = useUserProfileStore()
 const user = useUserStore()
 const { notify } = useNotification()
 const emit = defineEmits(['update:show'])
-const props = defineProps({
+defineProps({
   show: {
     type: Boolean,
     default: false
