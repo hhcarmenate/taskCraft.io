@@ -18,6 +18,8 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
 
        Route::get('user/{user}/profile', [UserProfileController::class, 'getUserProfile'])
            ->name('get-user-profile');
+       Route::post('user/{user}/update-main-profile', [UserProfileController::class, 'updateMainProfile'])
+           ->name('update-main-profile');
     });
 
     Route::post('login', [AuthController::class, 'login'])->name('login');

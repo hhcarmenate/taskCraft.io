@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\UserProfileService;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class UserProfileController extends Controller
 {
@@ -42,4 +43,24 @@ class UserProfileController extends Controller
             return $this->genericFailResponse($e);
         }
     }
+
+    /**
+     * Updates the main profile of the user based on the provided request data.
+     *
+     * @param Request $request The request data containing the updated user profile information.
+     * @param User $user The user entity whose main profile needs to be updated.
+     *
+     * @return UserProfileResource|JsonResponse Returns a UserProfileResource if the main profile is successfully updated,
+     * or a JsonResponse with an error response if an exception occurs during the update process.
+     */
+    public function updateMainProfile(Request $request, User $user): UserProfileResource|JsonResponse
+    {
+        try {
+            return UserProfileResource::make($this->userProfileService->updateMainUserProfile($request, $user));
+        } catch (Exception $e) {
+            return $this->genericFailResponse($e);
+        }
+    }
+
+
 }

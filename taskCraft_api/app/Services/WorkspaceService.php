@@ -116,6 +116,6 @@ class WorkspaceService
             ['workspace' => $workspace->id]
         );
 
-        return config('app.app_url').'invitation-link?url=' . $backendUrl;
+        return config('app.ui_app_url').'invitation-link?url=' . $backendUrl;
     }
 }

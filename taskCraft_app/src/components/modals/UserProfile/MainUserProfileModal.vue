@@ -34,7 +34,7 @@ const localState = reactive({
 
 const jobPositions = ref(JOB_POSITIONS)
 const userProfileTitle = computed(() => {
-  return "Edit Main User Profile Info"
+  return "Edit Your Main User Profile Info"
 })
 
 onMounted(() => {
@@ -50,8 +50,7 @@ const validationSchema = computed(() => {
   return toTypedSchema(
     zod.object({
       name: zod.string().optional().nullable(),
-      jobDescription: zod.string(),
-      description: zod.string().optional().nullable()
+      jobDescription: zod.string().optional().nullable(),
     })
   )
 })
@@ -65,8 +64,8 @@ const onSubmit = async () => {
     localState.updating = true
     const response = await userProfile.updateMainUserProfile({
       name: localState.form.name,
-      jobPositions: localState.form.jobPositions,
-      file: localState.form.file
+      jobPosition: localState.form.jobPosition,
+      file: localState.form.profileImage
     })
 
     if (response.status === 200) {
@@ -125,10 +124,10 @@ const onInvalidSubmit = (error) => {
           <div class="form__row mt-8">
             <div class="form__controls">
               <SelectInput
-                name="type"
+                name="jobPosition"
                 :items="jobPositions"
                 label="Job Position"
-                v-model="localState.form.type"
+                v-model="localState.form.jobPosition"
                 show-error
               />
             </div>
