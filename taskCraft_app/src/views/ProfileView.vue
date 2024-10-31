@@ -17,17 +17,6 @@ onMounted(() => {
   initFlowbite()
 })
 
-const jobPosition = computed(() => {
-  return JOB_POSITIONS.find((job) => job.value === userProfile.jobPosition)?.text
-})
-
-const openMainUserProfileModal = () => {
-  showUserProfileModal.value = true
-}
-
-const handleUpdateShow = (value) => {
-  showUserProfileModal.value = value
-}
 </script>
 
 <template>
