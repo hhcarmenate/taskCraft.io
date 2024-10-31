@@ -5,6 +5,7 @@ import {useUserStore} from "@/stores/useUserStore.js";
 import {useUserProfileStore} from "@/stores/useUserProfileStore.js";
 import { JOB_POSITIONS } from "@/constants/index.js";
 import MainUserProfileModal from "@/components/modals/UserProfile/MainUserProfileModal.vue";
+import ProfileImage from "@/components/profile-images/ProfileImage.vue";
 
 const user = useUserStore()
 const userProfile = useUserProfileStore()
@@ -60,8 +61,10 @@ const handleUpdateShow = (value) => {
               </div>
             </div>
             <div class="flex flex-col items-center pb-10">
-              <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="Bonnie image"/>
-              <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+              <ProfileImage
+                :editable="false"
+              />
+              <h5 class="mb-1 mt-3 text-xl font-medium text-gray-900 dark:text-white">
                 {{ user.name }}
               </h5>
               <span class="text-sm text-gray-500 dark:text-gray-400">

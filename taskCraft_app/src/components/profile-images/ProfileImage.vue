@@ -4,10 +4,14 @@ import {computed, ref} from "vue";
 import {useUserProfileStore} from "@/stores/useUserProfileStore.js";
 
 const emit = defineEmits(['updated:image'])
-defineProps({
+const props = defineProps({
   editable: {
     type: Boolean,
     default: true
+  },
+  size: {
+    type: String,
+    default: '32'
   }
 })
 
@@ -18,6 +22,10 @@ const userProfile = useUserProfileStore()
 
 const profileImage = computed(() => {
   return localImage.value || userProfile.profilePicture
+})
+
+const imageSizes = computed(() => {
+  return `w-${props.size} h-${props.size}`
 })
 
 const nameInitials = computed(() => {
@@ -54,7 +62,8 @@ const handleFileUpload = (event) => {
     <div class="rounded__image">
       <div
         v-if="profileImage"
-        class="image-container w-32 h-32 rounded-full overflow-hidden"
+        class="image-container rounded-full overflow-hidden"
+        :class="imageSizes"
       >
         <img
           :src="profileImage"
@@ -64,7 +73,8 @@ const handleFileUpload = (event) => {
       </div>
       <div
         v-if="!profileImage"
-        class="image-container w-32 h-32 bg-blue-500 rounded-full flex items-center justify-center text-white text-2xl"
+        class="image-container bg-blue-500 rounded-full flex items-center justify-center text-white text-2xl"
+        :class="imageSizes"
       >
         <div class="initials">
           {{ nameInitials }}
