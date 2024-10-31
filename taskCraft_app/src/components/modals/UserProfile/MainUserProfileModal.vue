@@ -7,7 +7,7 @@ import {computed, onMounted, reactive, ref} from "vue";
 import {toTypedSchema} from "@vee-validate/zod";
 import { JOB_POSITIONS } from "@/constants/index.js";
 import * as zod from "zod";
-import ProfileImage from "@/components/profile-images/ProfileImage.vue";
+import ProfileImage from "@/components/Profile/profile-images/ProfileImage.vue";
 import {useUserProfileStore} from "@/stores/useUserProfileStore.js";
 import {useUserStore} from "@/stores/useUserStore.js";
 import useNotification from "@/composables/useNotification.js";

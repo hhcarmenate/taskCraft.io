@@ -5,7 +5,9 @@ import {useUserStore} from "@/stores/useUserStore.js";
 import {useUserProfileStore} from "@/stores/useUserProfileStore.js";
 import { JOB_POSITIONS } from "@/constants/index.js";
 import MainUserProfileModal from "@/components/modals/UserProfile/MainUserProfileModal.vue";
-import ProfileImage from "@/components/profile-images/ProfileImage.vue";
+import ProfileImage from "@/components/Profile/profile-images/ProfileImage.vue";
+import MainUserProfileComponent from "@/components/Profile/MainUserProfileComponent.vue";
+import GeneralInfoProfileComponent from "@/components/Profile/GeneralInfoProfileComponent.vue";
 
 const user = useUserStore()
 const userProfile = useUserProfileStore()
@@ -38,78 +40,9 @@ const handleUpdateShow = (value) => {
     <section class="main mt-4">
       <div class="container">
         <div class="top-profile flex flex-row gap-2 justify-center">
-          <div class="w-[40%] max-w-sm bg-white border border-gray-200 rounded-sm shadow dark:bg-gray-800 dark:border-gray-700">
-            <div class="flex justify-end px-4 pt-4">
-              <button id="dropdownButton" data-dropdown-toggle="dropdown" class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
-                <span class="sr-only">Open dropdown</span>
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-                  <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-                </svg>
-              </button>
-              <!-- Dropdown menu -->
-              <div id="dropdown" class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                <ul class="py-2" aria-labelledby="dropdownButton">
-                  <li>
-                    <a
-                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-green-500"
-                      @click="openMainUserProfileModal()"
-                    >
-                      Edit
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="flex flex-col items-center pb-10">
-              <ProfileImage
-                :editable="false"
-              />
-              <h5 class="mb-1 mt-3 text-xl font-medium text-gray-900 dark:text-white">
-                {{ user.name }}
-              </h5>
-              <span class="text-sm text-gray-500 dark:text-gray-400">
-                {{ jobPosition ?? '' }}
-              </span>
-            </div>
-            <MainUserProfileModal :show="showUserProfileModal" @update:show="handleUpdateShow" />
-          </div>
+          <MainUserProfileComponent />
 
-          <div class="w-[100%] max-w-lg p-3 bg-white border border-gray-200 rounded-sm shadow dark:bg-gray-800 dark:border-gray-700">
-            <div class="flex flex-row justify-between items-center">
-              <div class="w-1/2">
-                <h1 class="font-medium text-xl">General Info</h1>
-              </div>
-
-              <div class="flex justify-end w-1/2">
-                <button
-                  id="dropdownButton"
-                  data-dropdown-toggle="dropdown-gi"
-                  class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
-                  type="button"
-                >
-                  <span class="sr-only">Open dropdown</span>
-                  <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-                    <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-                  </svg>
-                </button>
-                <!-- Dropdown menu -->
-                <div
-                  id="dropdown-gi"
-                  class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-                >
-                  <ul class="py-2" aria-labelledby="dropdownButton">
-                    <li>
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
-                        Edit
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-
-          </div>
+          <GeneralInfoProfileComponent />
         </div>
 
 
