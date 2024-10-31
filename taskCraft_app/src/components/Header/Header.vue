@@ -4,7 +4,7 @@ import {useRouter} from "vue-router";
 import CreateWorkspaceModal from "@/components/modals/CreateWorkspaceModal.vue";
 import {useUserStore} from "@/stores/useUserStore.js";
 import HeaderWorkspace from "@/components/Header/HeaderComponents/HeaderWorkspace.vue";
-import ProfileImage from "@/components/profile-images/ProfileImage.vue";
+import ProfileImage from "@/components/Profile/profile-images/ProfileImage.vue";
 
 // Data
 const dropdownOpen = ref(false)
