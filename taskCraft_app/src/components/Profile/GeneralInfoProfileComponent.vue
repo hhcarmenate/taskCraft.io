@@ -1,8 +1,15 @@
 <script setup>
-
 import {useUserProfileStore} from "@/stores/useUserProfileStore.js";
+import GeneralInfoProfileModal from "@/components/modals/UserProfile/GeneralInfoProfileModal.vue";
+import {ref} from "vue";
 
+const showGeneralInfoModal = ref(false)
 const userProfile = useUserProfileStore()
+
+const handleShowGeneralInfoModal = (value) => {
+  showGeneralInfoModal.value = value
+}
+
 </script>
 
 <template>
@@ -32,7 +39,10 @@ const userProfile = useUserProfileStore()
           >
             <ul class="py-2" aria-labelledby="dropdownButton">
               <li>
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                <a
+                  @click="handleShowGeneralInfoModal(true)"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                >
                   Edit
                 </a>
               </li>
@@ -102,8 +112,11 @@ const userProfile = useUserProfileStore()
           </div>
         </dl>
       </div>
-
     </div>
+    <GeneralInfoProfileModal
+      :show="showGeneralInfoModal"
+      @update:show="handleShowGeneralInfoModal(false)"
+    />
   </div>
 </template>
 
