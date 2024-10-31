@@ -1,13 +1,13 @@
 <script setup>
 import {computed} from 'vue';
-import {useOverlay} from "@/stores/useOverlay.js";
+import {useOverlayStore} from "@/stores/useOverlayStore.js";
 
-const overlay = useOverlay()
+const overlay = useOverlayStore()
 const overlayVisible = computed(() => overlay.isVisible)
 </script>
 
 <template>
-  <div class="overlay" v-if="overlayVisible"></div>
+  <div class="overlay z-50" v-if="overlayVisible"></div>
 </template>
 
 <style scoped>
@@ -18,6 +18,5 @@ const overlayVisible = computed(() => overlay.isVisible)
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.8);
-  z-index: 49;
 }
 </style>

@@ -1,7 +1,8 @@
 import {defineStore} from "pinia";
 import WorkspaceService from "@/services/WorkspaceService.js";
+import UserService from "@/services/UserService.js";
 
-export const useWorkspace = defineStore('workspace', {
+export const useWorkspaceStore = defineStore('workspace', {
   state: () => ({
     workspaces: [],
     workspaceSelected: null
@@ -21,6 +22,23 @@ export const useWorkspace = defineStore('workspace', {
 
     async sendInvitation({ invitationList, invitationText }) {
       return await WorkspaceService.sendInvitation(this.workspaceSelected.id, invitationList, invitationText)
+    },
+
+    async fetchUserWorkspaces(userId) {
+      try {
+        const response = await WorkspaceService.getUserWorkspaces(userId)
+        if (response.data) {
+          const { data } = response.data
+
+          this.initWorkspaces(data)
+        }
+      } catch (error) {
+        console.error('Failed to fetch user profile:', error)
+      }
+    },
+
+    initWorkspaces(data) {
+      this.workspaces = data
     }
   }
 })

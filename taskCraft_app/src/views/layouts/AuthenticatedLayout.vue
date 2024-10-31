@@ -29,7 +29,6 @@ onMounted(async () => {
     </main>
   </div>
   <ModalOverlay />
-
 </template>
 
 <style scoped>

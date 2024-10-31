@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 
-export const useOverlay = defineStore('overlay', {
+export const useOverlayStore = defineStore('overlay', {
   state: () => ({
     isVisible: false
   }),

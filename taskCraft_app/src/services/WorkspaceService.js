@@ -28,6 +28,10 @@ class WorkspaceService {
     })
   }
 
+  async getUserWorkspaces(userId) {
+    return await TASKCRAFT_API.get(`user/${userId}/workspaces`)
+  }
+
 }
 
 export default new WorkspaceService()

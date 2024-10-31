@@ -6,6 +6,7 @@ use App\Http\Requests\StoreWorkspaceRequest;
 use App\Http\Requests\UpdateWorkspaceRequest;
 use App\Http\Resources\WorkspaceResource;
 use App\Http\Traits\FailResponseTrait;
+use App\Models\User;
 use App\Models\Workspace;
 use App\Notifications\WorkspaceInvitationNotification;
 use App\Services\WorkspaceService;
@@ -167,9 +168,26 @@ class WorkspaceController extends Controller
         }
     }
 
-
-    public function getInvitationInfo()
+    public function getInvitationInfo(User $user): AnonymousResourceCollection | JsonResponse
     {
 
+    }
+
+    /**
+     * Retrieve invitation information for the specified user.
+     *
+     * @param User $user The user for whom to fetch the invitation information.
+     *
+     * @return AnonymousResourceCollection|JsonResponse Returns a collection of workspace resources representing the
+     *                                         invitations for the specified user if successful,
+     *                                         or a JSON response with error message if an exception occurs.
+     */
+    public function getWorkspaces(User $user): AnonymousResourceCollection | JsonResponse
+    {
+        try {
+            return WorkspaceResource::collection($this->workspaceService->getMyWorkSpaces($user));
+        } catch(Exception $e) {
+            return $this->genericFailResponse($e);
+        }
     }
 }

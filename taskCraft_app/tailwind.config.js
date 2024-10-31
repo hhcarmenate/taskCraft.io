@@ -175,7 +175,19 @@ export default {
         'spin-slow': 'spin 3s linear infinite',
         zoom: 'zoom 1s ease-in-out infinite',
         tada: 'tada 1.5s ease-in-out infinite'
-      }
+      },
+      zIndex: {
+        10: 10,
+        20: 20,
+        30: 30,
+        40: 40,
+        50: 50,
+        60: 60,
+        70: 70,
+        80: 80,
+        90: 90,
+        100: 100,
+      },
     }
   },
   plugins: [
