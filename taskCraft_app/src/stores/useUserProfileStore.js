@@ -17,9 +17,11 @@ export const useUserProfileStore = defineStore('userProfile', {
   }),
   persist: true,
   actions: {
+
     initUserPreferences(data) {
       Object.assign(this, data.data)
     },
+
     async fetchUserProfile(userId) {
       try {
         const response = await UserService.getUserProfile(userId)
@@ -35,6 +37,16 @@ export const useUserProfileStore = defineStore('userProfile', {
 
     async updateMainUserProfile({ name, jobPosition, file }){
       return await UserService.updateMainUserProfile({name, jobPosition, file, userId: this.userId})
+    },
+
+    async updateGeneralInfoProfile({ bio, uiMode, language, timezone }){
+      return await UserService.updateGeneralInfoProfile({
+        bio,
+        uiMode,
+        language,
+        timezone,
+        userId: this.userId
+      })
     }
   },
   getters: {

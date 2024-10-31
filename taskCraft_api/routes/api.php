@@ -20,6 +20,9 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
            ->name('get-user-profile');
        Route::post('user/{user}/update-main-profile', [UserProfileController::class, 'updateMainProfile'])
            ->name('update-main-profile');
+        Route::post('user/{user}/update-general-info-profile', [UserProfileController::class, 'updateGeneralProfile'])
+            ->name('update-main-profile');
+
     });
 
     Route::post('login', [AuthController::class, 'login'])->name('login');

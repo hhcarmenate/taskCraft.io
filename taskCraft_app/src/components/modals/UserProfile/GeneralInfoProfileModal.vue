@@ -68,7 +68,7 @@ const validationSchema = computed(() => {
 const onSubmit = async () => {
   try {
     localState.updating = true
-    const response = await userProfile.updateMainUserProfile({
+    const response = await userProfile.updateGeneralInfoProfile({
       bio: localState.form.bio,
       uiMode: localState.form.uiMode,
       language: localState.form.language,

@@ -1,7 +1,8 @@
 <script setup>
 import {useUserProfileStore} from "@/stores/useUserProfileStore.js";
 import GeneralInfoProfileModal from "@/components/modals/UserProfile/GeneralInfoProfileModal.vue";
-import {ref} from "vue";
+import {computed, ref} from "vue";
+import {USA_TIMEZONES} from "@/constants/index.js";
 
 const showGeneralInfoModal = ref(false)
 const userProfile = useUserProfileStore()
@@ -9,6 +10,16 @@ const userProfile = useUserProfileStore()
 const handleShowGeneralInfoModal = (value) => {
   showGeneralInfoModal.value = value
 }
+
+const uiModeString = computed(() => {
+  if (!userProfile.uiMode) return 'N/A'
+  return userProfile.uiMode.charAt(0).toUpperCase() + userProfile.uiMode.slice(1)
+})
+
+const timezoneSelected = computed(() => {
+  if (!userProfile.timezone) return 'N/A'
+  return USA_TIMEZONES.find((timezone) => timezone.value === userProfile.timezone).text
+})
 
 </script>
 
@@ -22,32 +33,15 @@ const handleShowGeneralInfoModal = (value) => {
 
         <div class="flex justify-end w-1/2">
           <button
-            id="dropdownButton"
-            data-dropdown-toggle="dropdown-gi"
             class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
             type="button"
+            @click="handleShowGeneralInfoModal(true)"
           >
             <span class="sr-only">Open dropdown</span>
             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
               <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
             </svg>
           </button>
-          <!-- Dropdown menu -->
-          <div
-            id="dropdown-gi"
-            class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-          >
-            <ul class="py-2" aria-labelledby="dropdownButton">
-              <li>
-                <a
-                  @click="handleShowGeneralInfoModal(true)"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                >
-                  Edit
-                </a>
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
       <div class="flex flex-row justify-between items-center">
@@ -70,11 +64,11 @@ const handleShowGeneralInfoModal = (value) => {
       </div>
 
       <div
-        class="p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800"
+        class="p-2 bg-white rounded-lg md:p-2 dark:bg-gray-800"
         aria-labelledby="statistics-tab"
       >
         <dl
-          class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-6 dark:text-white sm:p-8"
+          class="grid max-w-screen-xl grid-cols-2 gap-4 p-2 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-6 dark:text-white"
         >
           <div
             class="flex flex-col"
@@ -85,7 +79,7 @@ const handleShowGeneralInfoModal = (value) => {
             <dd
               class="text-gray-500 dark:text-gray-400"
             >
-              {{ userProfile.bio ?? 'N/A' }}
+              {{ uiModeString }}
             </dd>
           </div>
           <div
@@ -107,7 +101,7 @@ const handleShowGeneralInfoModal = (value) => {
               Timezone
             </dt>
             <dd class="text-gray-500 dark:text-gray-400">
-              {{ userProfile.timezone ?? 'N/A' }}
+              {{ timezoneSelected }}
             </dd>
           </div>
         </dl>
