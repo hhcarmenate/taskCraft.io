@@ -1,7 +1,7 @@
 <script setup>
 import TextInput from "@/components/fields/TextInput.vue";
 import {computed, reactive, ref} from "vue";
-import {useWorkspace} from "@/stores/useWorkspace.js";
+import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 import useNotification from "@/composables/useNotification.js";
 import TCButton from "@/components/fields/TCButton.vue";
 import {Field, Form} from "vee-validate";
@@ -14,7 +14,7 @@ const emit = defineEmits(['closeModal'])
 
 // Data
 const guestEmail = ref(null)
-const workspace = useWorkspace()
+const workspace = useWorkspaceStore()
 const { notify } = useNotification()
 const localState = reactive({
   gettingLink: false,

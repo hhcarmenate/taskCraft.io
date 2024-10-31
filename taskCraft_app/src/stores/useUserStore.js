@@ -1,6 +1,7 @@
 import { defineStore, getActivePinia } from 'pinia'
 import UserService from '@/services/UserService.js'
 import {useUserProfileStore} from "@/stores/useUserProfileStore.js";
+import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -49,8 +50,10 @@ export const useUserStore = defineStore('user', {
 
     async loadAppData() {
       const userProfile = useUserProfileStore()
+      const workspace = useWorkspaceStore()
 
       await userProfile.fetchUserProfile(this.userId)
+      await workspace.fetchUserWorkspaces(this.userId)
     },
   },
   getters: {

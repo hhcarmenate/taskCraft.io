@@ -1,6 +1,6 @@
 <script setup>
 import { watch } from "vue";
-import {useOverlay} from "@/stores/useOverlay.js";
+import {useOverlayStore} from "@/stores/useOverlayStore.js";
 
 // Todo: Move this to a composable or store and make this modal generic
 const props = defineProps({
@@ -14,7 +14,7 @@ const props = defineProps({
   }
 });
 
-const overlay = useOverlay()
+const overlay = useOverlayStore()
 
 watch(() => props.show, (newValue) => {
   if (newValue) {
@@ -29,7 +29,7 @@ watch(() => props.show, (newValue) => {
   <div
     id="default-modal"
     tabindex="-1"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+    class="fixed inset-0 z-100 flex items-center justify-center bg-black bg-opacity-50"
     :class="{'hidden': !show}"
   >
     <div class="relative p-4 w-full max-w-2xl max-h-full">
