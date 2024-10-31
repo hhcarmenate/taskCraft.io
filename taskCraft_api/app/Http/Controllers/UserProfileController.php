@@ -62,5 +62,18 @@ class UserProfileController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param User $user
+     * @return UserProfileResource|JsonResponse
+     */
+    public function updateGeneralProfile(Request $request, User $user): UserProfileResource|JsonResponse
+    {
+        try {
+            return UserProfileResource::make($this->userProfileService->updateGeneralUserInfoProfile($request, $user));
+        } catch (Exception $e) {
+            return $this->genericFailResponse($e);
+        }
+    }
 
 }

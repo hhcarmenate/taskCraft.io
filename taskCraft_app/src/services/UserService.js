@@ -70,6 +70,19 @@ class UserService {
       })
     })
   }
+
+  async updateGeneralInfoProfile({ bio, uiMode, language, timezone, userId }){
+    return await TASKCRAFT_API.get('sanctum/csrf-cookie', {
+      baseURL: import.meta.env.VITE_APP_TASKCRAFT_API
+    }).then(async () => {
+      return await TASKCRAFT_API.post(`user/${userId}/update-general-info-profile`, {
+        bio,
+        uiMode,
+        language,
+        timezone
+      })
+    })
+  }
 }
 
 export default new UserService()

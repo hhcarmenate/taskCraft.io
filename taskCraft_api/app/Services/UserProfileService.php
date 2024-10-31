@@ -67,4 +67,40 @@ class UserProfileService
         $userProfile->refresh();
         return $userProfile;
     }
+
+    /**
+     * Updates the general user info profile based on the provided request data.
+     *
+     * @param Request $request The request object containing the user's updated information.
+     * @param User $user The user whose profile needs to be updated.
+     * @throws Exception
+     */
+    public function updateGeneralUserInfoProfile(Request $request, User $user): UserProfile
+    {
+        $profile = $user->profile;
+
+        if (!$profile) {
+            throw new Exception('Invalid user profile');
+        }
+
+        if ($request->input('bio')) {
+            $profile->bio = $request->input('bio');
+        }
+
+        if ($request->input('uiMode')) {
+            $profile->ui_mode = $request->input('uiMode');
+        }
+
+        if ($request->input('language')) {
+            $profile->language = $request->input('language');
+        }
+
+        if ($request->input('timezone')) {
+            $profile->timezone = $request->input('timezone');
+        }
+
+        $profile->save();
+        $profile->refresh();
+        return $profile;
+    }
 }
