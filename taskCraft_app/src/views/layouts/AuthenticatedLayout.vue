@@ -5,6 +5,7 @@ import ModalOverlay from "@/components/modals/ModalOverlay.vue";
 import {onMounted} from "vue";
 import { initFlowbite } from 'flowbite'
 import {useUserStore} from "@/stores/useUserStore.js";
+import LoadingPage from "@/components/LoadingPage/LoadingPage.vue";
 
 const user = useUserStore()
 
@@ -17,7 +18,9 @@ onMounted(async () => {
 </script>
 
 <template>
+  <LoadingPage v-if="user.loadingData"/>
   <div
+    v-else
     class="antialiased bg-gray-50 dark:bg-gray-900"
   >
     <Header />
