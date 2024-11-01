@@ -1,21 +1,24 @@
 <script setup>
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
-import {computed, ref} from "vue";
-import CreateWorkspaceModal from "@/components/modals/CreateWorkspaceModal.vue";
+import {computed} from "vue";
+import {useRouter} from "vue-router";
 
 const emit = defineEmits(['showModal', 'hideModal'])
 
-// data
+// Data
 const workspace = useWorkspaceStore()
 const hasWorkspace = computed(() => workspace.workspaces.length)
+const router = useRouter()
 
-
+// Methods
 const handleWorkspaceModal = () => {
   emit('showModal')
 }
 
-const handleUpdateShow = () => {
-  emit('hideModal')
+const handleChangeWorkSpace = async (work) => {
+  workspace.setCurrentWorkSpace(work)
+
+  return await router.push(`/workspace/${workspace.currentWorkspace?.name}`)
 }
 
 </script>
@@ -58,10 +61,21 @@ const handleUpdateShow = () => {
       class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
       id="dropdown-workspace"
     >
+      <div class="py-1" role="none" v-if="workspace.currentWorkspace">
+        <p
+          class="px-4 py-2 flex flex-col text-sm text-gray-700 dark:text-white"
+          role="none"
+        >
+          <small class="mb-3">Current Workspace</small>
+          {{ workspace.currentWorkspace.name ?? '' }}
+          <small>{{ workspace.currentWorkspace.description }}</small>
+        </p>
+      </div>
       <ul class="py-1" role="none">
         <li
           v-for="work in workspace.workspaces"
           :key="work.id"
+          @click="handleChangeWorkSpace(work)"
         >
           <a
             class="flex flex-col hand px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-green-500"

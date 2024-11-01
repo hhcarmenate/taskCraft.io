@@ -70,7 +70,7 @@ const onSubmit = async () => {
       notify('success', `Workspace ${localState.form.name} was create successfully`)
       step.value = 2
 
-      workspace.workspaceSelected = response?.data?.data ?? {}
+      workspace.currentWorkspace = response?.data?.data ?? {}
     } else {
       notify('error', 'Ops! something went wrong')
     }

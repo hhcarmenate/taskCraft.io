@@ -1,13 +1,17 @@
 import {defineStore} from "pinia";
 import WorkspaceService from "@/services/WorkspaceService.js";
-import UserService from "@/services/UserService.js";
 
 export const useWorkspaceStore = defineStore('workspace', {
   state: () => ({
     workspaces: [],
-    workspaceSelected: null
+    currentWorkspace: null
   }),
   actions: {
+
+    setCurrentWorkSpace(work) {
+      this.currentWorkspace = work
+    },
+
     async createWorkspace({ name, type, description }) {
       return await WorkspaceService.createWorkspace({
         name,
