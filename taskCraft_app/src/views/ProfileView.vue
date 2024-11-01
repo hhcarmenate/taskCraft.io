@@ -1,38 +1,22 @@
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import {initFlowbite} from "flowbite";
 import {useUserStore} from "@/stores/useUserStore.js";
 import {useUserProfileStore} from "@/stores/useUserProfileStore.js";
-import { JOB_POSITIONS } from "@/constants/index.js";
-import MainUserProfileModal from "@/components/modals/UserProfile/MainUserProfileModal.vue";
-import ProfileImage from "@/components/Profile/profile-images/ProfileImage.vue";
 import MainUserProfileComponent from "@/components/Profile/MainUserProfileComponent.vue";
 import GeneralInfoProfileComponent from "@/components/Profile/GeneralInfoProfileComponent.vue";
 
 const user = useUserStore()
 const userProfile = useUserProfileStore()
-const showUserProfileModal = ref(false)
 
 onMounted(() => {
   initFlowbite()
 })
 
-const jobPosition = computed(() => {
-  return JOB_POSITIONS.find((job) => job.value === userProfile.jobPosition)?.text
-})
-
-const openMainUserProfileModal = () => {
-  showUserProfileModal.value = true
-}
-
-const handleUpdateShow = (value) => {
-  showUserProfileModal.value = value
-}
 </script>
 
 <template>
   <main>
-
     <section class="title font-thin text-2xl ml-4">
       <h1>User Profile</h1>
     </section>

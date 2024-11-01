@@ -5,16 +5,25 @@ export const nonAuthenticatedRoutes = [
   {
     path: '/',
     name: 'home',
-    redirect: '/login'
+    redirect: '/login',
+    meta: {
+      title: 'Home'
+    }
   },
   {
     path: '/login',
     name: 'login',
-    component: LoginView
+    component: LoginView,
+    meta: {
+      title: 'Sign In'
+    }
   },
   {
     path: '/register',
     name: 'register',
-    component: RegisterView
+    component: RegisterView,
+    meta: {
+      title: 'Sign Up'
+    }
   }
 ];

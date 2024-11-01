@@ -26,4 +26,16 @@ const router = createRouter({
   ]
 })
 
+router.beforeEach((to, from, next ) => {
+  const title = to.meta?.title ?? ''
+
+  document.title = title ? `${title} | TaskCraft` : 'TaskCraft'
+
+  next()
+})
+
+router.afterEach(() => {
+  window.scrollTo(0,0)
+})
+
 export default router
