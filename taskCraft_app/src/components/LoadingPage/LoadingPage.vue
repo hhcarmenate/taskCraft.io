@@ -37,8 +37,8 @@
   align-items: center;
   background-image: radial-gradient(
     circle farthest-corner at 10% 20%,
-    rgba(14, 159, 110, 1) 0.1%,
-    rgba(31, 41, 55) 94.2%
+    rgb(2, 12, 55) 0.1%,
+    rgb(21, 47, 101) 94.2%
   );
   background-size: 100%;
   font-family: 'Montserrat', sans-serif;
@@ -56,7 +56,7 @@
   &:before {
     content: '';
     position: absolute;
-    width: 100%;
+    width: 120%;
     height: 3px;
     background-color: #fff;
     bottom: 0;
@@ -109,9 +109,9 @@
   }
 }
 
-@for $i from 1 through 7 {
+@for $i from 1 through 12 {
   .loading-text span:nth-child(#{$i}) {
-    animation-delay: $i * 0.1s;
+    animation-delay: $i * 0.2s;
   }
 }
 
