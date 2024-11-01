@@ -1,7 +1,8 @@
 <script setup>
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
-import {computed} from "vue";
+import {computed, onMounted} from "vue";
 import {useRouter} from "vue-router";
+import {initFlowbite} from "flowbite";
 
 const emit = defineEmits(['showModal', 'hideModal'])
 
@@ -9,6 +10,10 @@ const emit = defineEmits(['showModal', 'hideModal'])
 const workspace = useWorkspaceStore()
 const hasWorkspace = computed(() => workspace.workspaces.length)
 const router = useRouter()
+
+onMounted(() => {
+  initFlowbite()
+})
 
 // Methods
 const handleWorkspaceModal = () => {
