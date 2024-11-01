@@ -8,7 +8,8 @@ export const useUserStore = defineStore('user', {
     isAuthenticated: false,
     name: '',
     email: '',
-    userId: ''
+    userId: '',
+    loadingData: false
   }),
   persist: true,
   actions: {
@@ -49,11 +50,19 @@ export const useUserStore = defineStore('user', {
     },
 
     async loadAppData() {
-      const userProfile = useUserProfileStore()
-      const workspace = useWorkspaceStore()
+      try {
+        this.loadingData = true
+        const userProfile = useUserProfileStore()
+        const workspace = useWorkspaceStore()
 
-      await userProfile.fetchUserProfile(this.userId)
-      await workspace.fetchUserWorkspaces(this.userId)
+        await userProfile.fetchUserProfile(this.userId)
+        await workspace.fetchUserWorkspaces(this.userId)
+      } catch (e) {
+        console.error(e)
+      } finally {
+        this.loadingData = false
+      }
+
     },
   },
   getters: {

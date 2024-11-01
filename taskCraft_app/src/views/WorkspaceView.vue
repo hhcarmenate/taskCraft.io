@@ -2,11 +2,18 @@
 import {onMounted} from "vue";
 import {initFlowbite} from "flowbite";
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
+import {useRoute} from "vue-router";
 
 const workspace = useWorkspaceStore()
+const route = useRoute()
 
 onMounted(() => {
   initFlowbite()
+
+  console.log(route.params)
+  if (!workspace.currentWorkspace && route.params.name) {
+    workspace.initCurrentWorkspace(route.params.name)
+  }
 })
 
 </script>
