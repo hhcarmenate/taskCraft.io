@@ -21,11 +21,15 @@ export const useWorkspaceStore = defineStore('workspace', {
     },
 
     async getOrCreateInvitationLink(){
-      return await WorkspaceService.getOrCreateInvitationLink(this.workspaceSelected.id)
+      return await WorkspaceService.getOrCreateInvitationLink(this.currentWorkspace.id)
     },
 
     async sendInvitation({ invitationList, invitationText }) {
-      return await WorkspaceService.sendInvitation(this.workspaceSelected.id, invitationList, invitationText)
+      return await WorkspaceService.sendInvitation(this.currentWorkspace.id, invitationList, invitationText)
+    },
+
+    async updateWorkSpaceLogo({ file }) {
+      return await WorkspaceService.updateWorkspaceLogo(this.currentWorkspace.id, file)
     },
 
     async fetchUserWorkspaces(userId) {
@@ -48,7 +52,6 @@ export const useWorkspaceStore = defineStore('workspace', {
     initCurrentWorkspace(name) {
       console.log(name, this.workspaces)
       this.currentWorkspace = this.workspaces.find((workspace) => {
-        console.log('here test', workspace)
         return workspace.name === name
       })
     }
