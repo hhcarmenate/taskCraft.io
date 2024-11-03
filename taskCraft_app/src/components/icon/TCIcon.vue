@@ -10,6 +10,10 @@ const props = defineProps({
   class: {
     type: String,
     default: null
+  },
+  hand: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -17,10 +21,15 @@ const propClass = computed(() => props.class)
 </script>
 
 <template>
-  <span>
+  <span :class="{'hand': hand}">
     <Icon
       :class="propClass"
       :icon="icon"
     />
   </span>
 </template>
+<style scoped>
+.hand {
+  cursor: pointer;
+}
+</style>

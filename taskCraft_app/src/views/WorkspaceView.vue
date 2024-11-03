@@ -5,6 +5,7 @@ import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 import {useRoute} from "vue-router";
 import SelectInput from "@/components/fields/SelectInput.vue";
 import WorkspaceIntro from "@/components/Workspace/WorkspaceIntro.vue";
+import SuggestedTemplates from "@/components/Workspace/suggested-templates/SuggestedTemplates.vue";
 
 const workspace = useWorkspaceStore()
 const route = useRoute()
@@ -34,25 +35,7 @@ onMounted(() => {
             <div class="w-[85%] flex flex-row mt-4">
               <h1 class="text-2xl font-semibold">Boards</h1>
             </div>
-            <div class="w-[85%] flex flex-col mt-2">
-              <h1 class="text-lg font-extraligh">Suggested Templates</h1>
-              <div class="w-full flex flex-row gap-2 items-center">
-                <div>
-                  <p>Get going faster with a template </p>
-                </div>
-
-                <div class="w-1/4">
-                  <SelectInput
-                    name="type"
-                    :items="[{value: 'test1', text: 'Test 1'}, {value: 'test2', text: 'Test 2'}]"
-                    show-error
-                  />
-                </div>
-              </div>
-              <div class="mt-6">
-                <a href="#" class="underline text-green-700">Browse Full Template Gallery</a>
-              </div>
-            </div>
+            <SuggestedTemplates v-if="false" />
 
             <div class="w-[85%] flex flex-col mt-6">
               <div class="grid grid-cols-4 gap-4">

@@ -5,7 +5,19 @@ class WorkspaceService {
     return await TASKCRAFT_API.get('sanctum/csrf-cookie', {
       baseURL: import.meta.env.VITE_APP_TASKCRAFT_API
     }).then(async () => {
-      return await TASKCRAFT_API.post(`user/createWorkspace`, {
+      return await TASKCRAFT_API.post(`user/create-workspace`, {
+        name,
+        type,
+        description,
+      })
+    })
+  }
+
+  async updateWorkspace({ name, type, description, workspaceId }) {
+    return await TASKCRAFT_API.get('sanctum/csrf-cookie', {
+      baseURL: import.meta.env.VITE_APP_TASKCRAFT_API
+    }).then(async () => {
+      return await TASKCRAFT_API.put(`workspace/${workspaceId}/update-workspace`, {
         name,
         type,
         description,
