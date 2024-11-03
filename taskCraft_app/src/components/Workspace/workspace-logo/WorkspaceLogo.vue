@@ -1,44 +1,40 @@
 <script setup>
 import {useUserStore} from "@/stores/useUserStore.js";
-import {computed, ref} from "vue";
-import {useUserProfileStore} from "@/stores/useUserProfileStore.js";
+import {computed, ref, watch} from "vue";
+import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
+
+const colors = [ 'primary', 'secondary', 'danger', 'black', 'warning', 'info', 'success', 'gray' ]
+const tones = [ 50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
 
 const emit = defineEmits(['updated:image'])
-const props = defineProps({
+defineProps({
   editable: {
     type: Boolean,
     default: true
-  },
-  size: {
-    type: String,
-    default: '32'
   }
 })
 
 const fileInput = ref()
 const localImage = ref()
 const user = useUserStore()
-const userProfile = useUserProfileStore()
+const workspace = useWorkspaceStore()
 
-const profileImage = computed(() => {
-  return localImage.value || userProfile.profilePicture
-})
-
-const imageSizes = computed(() => {
-  return `w-${props.size} h-${props.size}`
+const workspaceLogo = computed(() => {
+  return localImage.value || workspace.currentWorkspace?.logo
 })
 
 const nameInitials = computed(() => {
   if (!user.name) return ''
 
-  const nameParts = user.name.split(' ')
+  const nameParts = workspace.currentWorkspace?.name?.split(' ')
 
-  return nameParts.map(part => {
+  return nameParts?.map(part => {
     return part[0].toUpperCase()
   }).join('')
 })
 
 const triggerFileUpload = () => {
+  console.log()
   fileInput.value.click();
 }
 
@@ -50,31 +46,44 @@ const handleFileUpload = (event) => {
       localImage.value = e.target.result
     }
     reader.readAsDataURL(file)
-    emit('updated:image', file)
+    emit('updated:logo', file)
   }
 }
+
+const getRandomElement = (array) => array[Math.floor(Math.random() * array.length)]
+
+const generateRandomBgColor = () => {
+  const color = getRandomElement(colors);
+  const tone = getRandomElement(tones);
+  return `bg-${color}-${tone}`;
+};
+
+const randomBgColor = ref(generateRandomBgColor());
+
+watch(() => workspace.currentWorkspace, () => {
+  randomBgColor.value = generateRandomBgColor();
+});
 
 
 </script>
 
 <template>
-  <div class="profile__image-container">
+  <div class="profile__image-container" @click="triggerFileUpload">
     <div class="rounded__image">
       <div
-        v-if="profileImage"
-        class="image-container rounded-full overflow-hidden"
-        :class="imageSizes"
+        v-if="workspaceLogo"
+        class="image-container w-20 h-20 rounded-md overflow-hidden"
       >
         <img
-          :src="profileImage"
+          :src="workspaceLogo"
           alt="Profile Image"
           class="w-full h-full object-cover"
         >
       </div>
       <div
-        v-if="!profileImage"
-        class="image-container bg-blue-500 rounded-full flex items-center justify-center text-white text-2xl"
-        :class="imageSizes"
+        v-if="!workspaceLogo"
+        class="image-container w-20 h-20 rounded-md flex items-center justify-center text-white text-2xl"
+        :class="randomBgColor"
       >
         <div class="initials">
           {{ nameInitials }}
@@ -82,10 +91,10 @@ const handleFileUpload = (event) => {
       </div>
     </div>
     <div
-      v-if="editable"
       class="flex mt-2 items-center justify-center text-white text-2xl"
     >
       <button
+        v-if="false"
         @click="triggerFileUpload"
         type="button"
         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -115,7 +124,8 @@ const handleFileUpload = (event) => {
   color: white;
 }
 
-.h-32 {
-  height: 8rem;
+.change-logo {
+  position: absolute;
+
 }
 </style>

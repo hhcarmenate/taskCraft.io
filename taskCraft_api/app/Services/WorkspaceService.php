@@ -9,6 +9,7 @@ use App\Models\WorkspaceUserRole;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 
 class WorkspaceService
@@ -117,5 +118,29 @@ class WorkspaceService
         );
 
         return config('app.ui_app_url').'invitation-link?url=' . $backendUrl;
+    }
+
+    /**
+     * Updates the logo of the workspace based on the provided request data.
+     *
+     * @param Request $request The request object containing the file data for the new logo.
+     * @param Workspace $workspace The workspace instance whose logo is being updated.
+     */
+    public function updateLogo(Request $request,Workspace $workspace): Workspace
+    {
+        if ($request->hasFile('workspaceLogo')) {
+            $image = $request->file('workspaceLogo');
+            $path = $image->store('workspace_logos', 'public');
+
+            if ($workspace->logo) {
+                Storage::disk('public')->delete($workspace->logo);
+            }
+
+            $workspace->logo = $path;
+            $workspace->save();
+        }
+
+        $workspace->refresh();
+        return $workspace;
     }
 }

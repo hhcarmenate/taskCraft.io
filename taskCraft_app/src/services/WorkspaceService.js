@@ -28,6 +28,22 @@ class WorkspaceService {
     })
   }
 
+  async updateWorkspaceLogo(workspaceId, file) {
+    return await TASKCRAFT_API.get('sanctum/csrf-cookie', {
+      baseURL: import.meta.env.VITE_APP_TASKCRAFT_API
+    }).then(async () => {
+      const formData = new FormData()
+
+      formData.append('workspaceLogo', file)
+
+      return await TASKCRAFT_API.post(`workspace/${workspaceId}/update-logo`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+    })
+  }
+
   async getUserWorkspaces(userId) {
     return await TASKCRAFT_API.get(`user/${userId}/workspaces`)
   }

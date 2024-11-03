@@ -23,7 +23,7 @@ onMounted(() => {
 <template>
   <main>
     <section class="title font-thin text-2xl ml-4">
-      <h1>User Profile</h1>
+      <h1>Workspaces</h1>
     </section>
 
     <section class="main mt-4">

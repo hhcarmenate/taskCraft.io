@@ -190,4 +190,21 @@ class WorkspaceController extends Controller
             return $this->genericFailResponse($e);
         }
     }
+
+    /**
+     * Updates the logo of the given workspace using the provided request data.
+     *
+     * @param Request $request The request containing the new logo data.
+     * @param Workspace $workspace The workspace to update the logo for.
+     * @return WorkspaceResource|JsonResponse The updated workspace resource if successful,
+     *                                      or a JSON response with error message if an exception occurs.
+     */
+    public function updateLogo(Request $request, Workspace $workspace): WorkspaceResource|JsonResponse
+    {
+        try {
+            return WorkspaceResource::make($this->workspaceService->updateLogo($request, $workspace));
+        } catch(Exception $e) {
+            return $this->genericFailResponse($e);
+        }
+    }
 }
