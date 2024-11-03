@@ -34,7 +34,6 @@ const nameInitials = computed(() => {
 })
 
 const triggerFileUpload = () => {
-  console.log()
   fileInput.value.click();
 }
 
@@ -63,8 +62,6 @@ const randomBgColor = ref(generateRandomBgColor());
 watch(() => workspace.currentWorkspace, () => {
   randomBgColor.value = generateRandomBgColor();
 });
-
-
 </script>
 
 <template>

@@ -232,7 +232,7 @@ const removeFromList = (invitation) => {
     </div>
 
     <div class="form__controls mt-4">
-      <p class="underline hand" @click="handleUpdateShow(false)">You can skip this step and add members later</p>
+      <p class="underline hand" @click="$emit('closeModal')">You can skip this step and add members later</p>
     </div>
   </div>
 </template>

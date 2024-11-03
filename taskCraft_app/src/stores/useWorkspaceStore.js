@@ -20,6 +20,15 @@ export const useWorkspaceStore = defineStore('workspace', {
       })
     },
 
+    async updateWorkspace({ name, type, description }) {
+      return await WorkspaceService.updateWorkspace({
+        name,
+        type,
+        description,
+        workspaceId: this.currentWorkspace.id
+      })
+    },
+
     async getOrCreateInvitationLink(){
       return await WorkspaceService.getOrCreateInvitationLink(this.currentWorkspace.id)
     },

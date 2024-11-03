@@ -71,13 +71,8 @@ class WorkspaceService
      */
     public function updateWorkspace(Request $request, Workspace $workspace): mixed
     {
-        if ($request->input('name')) {
-            $workspace->name = $request->input('name');
-        }
-
-        if ($request->input('type')) {
-            $workspace->type = $request->input('type');
-        }
+        $workspace->name = $request->input('name');
+        $workspace->type = $request->input('type');
 
         if ($request->input('description')) {
             $workspace->description = $request->input('description');
