@@ -18,8 +18,9 @@ class BoardResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'workspace' => WorkspaceResource::make($this->workspace),
+            'workspace_id' => $this->workspace_id,
             'visibility' => $this->visibility,
+            'starred' => $this->starred
         ];
     }
 }

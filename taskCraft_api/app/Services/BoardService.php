@@ -41,4 +41,20 @@ class BoardService
 
         return $board;
     }
+
+    /**
+     * Toggle the "starred" status of a board.
+     *
+     * @param mixed $board Board object to toggle the starred status for.
+     * @return mixed Board object after toggling the starred status.
+     */
+    public function toggleStarred(Board $board): mixed
+    {
+        $board->starred = !$board->starred;
+        $board->save();
+
+        $board->refresh();
+
+        return $board;
+    }
 }

@@ -29,9 +29,10 @@ const showCreateBoardModal = () => {
 
       <BoardCard
         v-if="boards.length"
-        v-for="board in boards"
+        v-for="(board,index) in boards"
         :key="board"
-        :board="board"
+        :workspaceBoard="board"
+        :index="index"
       />
     </div>
     <div class="board-image flex justify-center items-center mt-3">

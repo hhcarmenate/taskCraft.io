@@ -1,20 +1,91 @@
 <script setup>
-defineProps({
-  board: {
+import {computed, ref} from "vue";
+import OutlineStarIcon from "@/components/icon/OutlineStarIcon.vue";
+import {useBoardStore} from "@/stores/useBoardStore.js";
+import useNotification from "@/composables/useNotification.js";
+import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
+import {useUserStore} from "@/stores/useUserStore.js";
+import SolidStarIcon from "@/components/icon/SolidStarIcon.vue";
+
+const props = defineProps({
+  workspaceBoard: {
     type: Object,
+    required: true
+  },
+  index: {
+    type: Number,
     required: true
   }
 })
+
+const isHovered = ref(false);
+const board = useBoardStore()
+const { notify } = useNotification()
+const workspace = useWorkspaceStore()
+const user = useUserStore()
+
+const bgComputed = computed(() => {
+  let sum = props.index * 100 + 100
+  return `bg-blue-${sum} ${ sum > 500 ? 'text-white' : 'text-black-800' }`
+})
+
+const handleMouseEnter = () => isHovered.value = true;
+const handleMouseLeave = () => isHovered.value = false;
+
+const toggleStarred = async () => {
+  try {
+    const response = await board.toggleStarred(props.workspaceBoard.id)
+
+    if (response.status === 200) {
+      notify('success', 'Board Starred Successfully!')
+
+      await workspace.fetchUserWorkspaces(user.userId)
+    } else {
+      notify('error', 'Oops! something went wrong!')
+    }
+  } catch (err) {
+    console.log(err)
+    notify('error', 'Oops! something went wrong!')
+  }
+}
+
 </script>
 
 <template>
-  <div class="bg-blue-200 rounded rounded-4 p-6 hand">
-    {{ board.name }}
+  <div
+    class="board-card rounded rounded-4 px-2 py-1 hand font-semibold"
+    :class="bgComputed"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
+  >
+    {{ workspaceBoard.title }}
+    <SolidStarIcon
+      v-if="workspaceBoard.starred"
+      class="star-icon"
+      @click="toggleStarred"
+    />
+
+    <OutlineStarIcon
+      v-if="!workspaceBoard.starred && isHovered"
+      class="star-icon"
+      @click="toggleStarred"
+    />
   </div>
+
 </template>
 
 <style scoped>
 .hand {
   cursor: pointer;
+}
+
+.board-card {
+  position: relative;
+}
+
+.star-icon {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
 }
 </style>
