@@ -7,6 +7,7 @@ use App\Models\Workspace;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BoardService
 {
@@ -56,5 +57,37 @@ class BoardService
         $board->refresh();
 
         return $board;
+    }
+
+    /**
+     * Retrieves the count of starred boards across all workspaces of the logged-in user.
+     *
+     * @return int The count of starred boards.
+     * @throws Exception
+     */
+    public function getStarredCount(): int
+    {
+        $userLogged = request()->user();
+        if (!$userLogged) {
+            throw new Exception('Invalid user logged!');
+        }
+
+        $workspaces = $userLogged->workspaces;
+        if (!$workspaces) {
+            return 0;
+        }
+
+        $workspacesIds = $workspaces->map(function($work) {
+            return $work->id;
+        });
+
+        if ($workspacesIds->count()) {
+            return Board::query()
+                ->whereIn('workspace_id', $workspacesIds)
+                ->where('starred', 1)
+                ->count();
+        }
+
+        return 0;
     }
 }
