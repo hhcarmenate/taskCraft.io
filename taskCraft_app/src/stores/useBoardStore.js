@@ -4,7 +4,7 @@ import BoardService from "@/services/BoardService.js";
 export const useBoardStore = defineStore('board', {
   state: () => ({
     title: '',
-    workspaceId: '',
+    workspace: '',
     visibility: '',
     starred: false
   }),

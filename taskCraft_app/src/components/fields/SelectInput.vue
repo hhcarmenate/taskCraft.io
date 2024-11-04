@@ -9,7 +9,7 @@ const props = defineProps({
   classLabel: { type: String, default: ' ' },
   classInput: { type: String, default: 'classinput' },
   name: { type: String },
-  modelValue: { type: String, default: '' },
+  modelValue: { type: [String, Number], default: '' },
   hasIcon: { type: Boolean, default: false },
   isReadonly: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },

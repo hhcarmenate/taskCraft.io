@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->foreignId('workspace_id')->constrained()->onDelete('cascade');
             $table->enum('visibility', ['private', 'public', 'workspace']);
-            $table->string('background');
+            $table->string('background')->nullable();
             $table->timestamps();
         });
     }

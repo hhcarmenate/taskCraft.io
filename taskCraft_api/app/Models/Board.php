@@ -16,7 +16,6 @@ class Board extends Model
         'title',
         'workspace_id',
         'visibility',
-        'background'
     ];
 
     /**
