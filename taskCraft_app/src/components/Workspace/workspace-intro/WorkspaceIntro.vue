@@ -5,9 +5,9 @@ import {reactive, ref} from "vue";
 import useNotification from "@/composables/useNotification.js";
 import {useUserStore} from "@/stores/useUserStore.js";
 import TCIcon from "@/components/icon/TCIcon.vue";
-import EditWorkspaceModal from "@/components/modals/EditWorkspaceModal.vue";
+import EditWorkspaceModal from "@/components/modals/Workspace/EditWorkspaceModal.vue";
 import InviteMembers from "@/components/modals/Workspace/InviteMembers.vue";
-import InviteMembersModal from "@/components/modals/InviteMembersModal.vue";
+import InviteMembersModal from "@/components/modals/Workspace/InviteMembersModal.vue";
 
 const workspace = useWorkspaceStore()
 const user = useUserStore()
