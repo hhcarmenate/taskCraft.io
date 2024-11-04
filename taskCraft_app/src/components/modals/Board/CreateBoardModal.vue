@@ -81,6 +81,7 @@ const onSubmit = async () => {
     if (response.status >= 200 && response.status < 300) {
       notify('success', `Board ${localState.form.title} was updated successfully`)
 
+      console.log(response)
       // workspace.currentWorkspace = response?.data?.data ?? {}
 
       emit('update:show', false)

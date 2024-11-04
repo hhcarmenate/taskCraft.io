@@ -13,6 +13,10 @@ class BoardService {
     })
   }
 
+  async toggleStarred(boardId) {
+    return await TASKCRAFT_API.get(`board/${boardId}/toggle-starred`)
+  }
+
 }
 
 export default new BoardService()

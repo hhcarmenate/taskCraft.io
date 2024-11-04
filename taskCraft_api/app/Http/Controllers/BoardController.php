@@ -44,6 +44,21 @@ class BoardController extends Controller
     }
 
     /**
+     * Toggle board starred
+     * @param Board $board
+     * @return JsonResponse|BoardResource
+     */
+    public function toggleStarred(Board $board): JsonResponse|BoardResource
+    {
+        try {
+            return BoardResource::make($this->boardService->toggleStarred($board));
+        } catch (Exception $e) {
+            return $this->genericFailResponse($e);
+        }
+    }
+
+
+    /**
      * Display the specified resource.
      */
     public function show(Board $board)
