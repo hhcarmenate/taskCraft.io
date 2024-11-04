@@ -13,8 +13,8 @@ export const useBoardStore = defineStore('board', {
       return await BoardService.createBoard({ title, workspaceSelected, visibility })
     },
 
-    async toggleStarred(boardId) {
-      return await BoardService.toggleStarred(boardId)
+    async toggleStarred(boardId, starred) {
+      return await BoardService.toggleStarred(boardId, starred)
     }
   },
   getters: {

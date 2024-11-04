@@ -33,7 +33,7 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
 
         Route::post('board/create-board', [BoardController::class, 'store'])
             ->name('create-board');
-        Route::get('board/{board}/toggle-starred', [BoardController::class, 'toggleStarred'])
+        Route::post('board/{board}/toggle-starred', [BoardController::class, 'toggleStarred'])
             ->name('toggle-starred');
 
     });

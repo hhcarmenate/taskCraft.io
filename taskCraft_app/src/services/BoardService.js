@@ -13,8 +13,13 @@ class BoardService {
     })
   }
 
-  async toggleStarred(boardId) {
-    return await TASKCRAFT_API.get(`board/${boardId}/toggle-starred`)
+  async toggleStarred(boardId, starred) {
+    try {
+      await TASKCRAFT_API.get('sanctum/csrf-cookie', { baseURL: import.meta.env.VITE_APP_TASKCRAFT_API})
+      return await TASKCRAFT_API.post(`board/${boardId}/toggle-starred`, { starred })
+    } catch (e) {
+      console.log(e)
+    }
   }
 
 }

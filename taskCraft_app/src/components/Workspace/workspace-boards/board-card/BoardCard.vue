@@ -34,7 +34,7 @@ const handleMouseLeave = () => isHovered.value = false;
 
 const toggleStarred = async () => {
   try {
-    const response = await board.toggleStarred(props.workspaceBoard.id)
+    const response = await board.toggleStarred(props.workspaceBoard.id, !props.workspaceBoard.starred)
 
     if (response.status === 200) {
       notify('success', 'Board Starred Successfully!')
