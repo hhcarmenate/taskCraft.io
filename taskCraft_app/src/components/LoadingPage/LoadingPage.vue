@@ -37,8 +37,8 @@
   align-items: center;
   background-image: radial-gradient(
     circle farthest-corner at 10% 20%,
-    rgb(2, 12, 55) 0.1%,
-    rgb(21, 47, 101) 94.2%
+    rgb(17, 24, 39) 0.1%,
+    rgb(55, 65, 81) 94.2%
   );
   background-size: 100%;
   font-family: 'Montserrat', sans-serif;

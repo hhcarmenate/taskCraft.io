@@ -1,5 +1,4 @@
 <script setup>
-import TextareaInput from "@/components/fields/TextareaInput.vue";
 import {Form} from "vee-validate";
 import TextInput from "@/components/fields/TextInput.vue";
 import TCModal from "@/components/modals/TCModal.vue";
@@ -10,6 +9,7 @@ import {computed, reactive, watch} from "vue";
 import {toTypedSchema} from "@vee-validate/zod";
 import * as zod from "zod";
 import {useBoardStore} from "@/stores/useBoardStore.js";
+import {useUserStore} from "@/stores/useUserStore.js";
 
 const visibilityOptions = [
   { value: 'private', text: 'Private' },
@@ -30,6 +30,7 @@ defineProps({
 // Stores and Composables
 const workspace = useWorkspaceStore()
 const board = useBoardStore()
+const user = useUserStore()
 
 const { notify } = useNotification()
 
@@ -81,9 +82,7 @@ const onSubmit = async () => {
     if (response.status >= 200 && response.status < 300) {
       notify('success', `Board ${localState.form.title} was updated successfully`)
 
-      console.log(response)
-      // workspace.currentWorkspace = response?.data?.data ?? {}
-
+      await workspace.fetchUserWorkspaces(user.userId)
       emit('update:show', false)
     } else {
       notify('error', 'Ops! something went wrong')
