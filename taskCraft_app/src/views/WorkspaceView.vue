@@ -4,8 +4,9 @@ import {initFlowbite} from "flowbite";
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 import {useRoute} from "vue-router";
 import SelectInput from "@/components/fields/SelectInput.vue";
-import WorkspaceIntro from "@/components/Workspace/WorkspaceIntro.vue";
+import WorkspaceIntro from "@/components/Workspace/workspace-intro/WorkspaceIntro.vue";
 import SuggestedTemplates from "@/components/Workspace/suggested-templates/SuggestedTemplates.vue";
+import WorkspaceBoard from "@/components/Workspace/workspace-boards/WorkspaceBoard.vue";
 
 const workspace = useWorkspaceStore()
 const route = useRoute()
@@ -37,24 +38,7 @@ onMounted(() => {
             </div>
             <SuggestedTemplates v-if="false" />
 
-            <div class="w-[85%] flex flex-col mt-6">
-              <div class="grid grid-cols-4 gap-4">
-                <!-- Replace the divs below with your actual content/components -->
-                <div class="bg-secondary-700 rounded rounded-4 p-6 hand">
-                  Create New Board
-                </div>
-                <div class="bg-blue-200 rounded rounded-4 p-6">
-                  Item 2
-                </div>
-                <div class="bg-blue-300 rounded rounded-4 p-6">Item 3</div>
-                <div class="bg-blue-400 rounded rounded-4 p-6">Item 4</div>
-              </div>
-              <div class="board-image flex justify-center items-center mt-3">
-                <div class="image-container w-[60%]">
-                  <img src="/images/boards.svg" alt="">
-                </div>
-              </div>
-            </div>
+            <WorkspaceBoard />
 
           </div>
         </div>
