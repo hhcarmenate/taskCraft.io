@@ -56,6 +56,10 @@ export const useWorkspaceStore = defineStore('workspace', {
 
     initWorkspaces(data) {
       this.workspaces = data
+      if (this.currentWorkspace) {
+        this.currentWorkspace = this.workspaces.find((work) => work.id === this.currentWorkspace.id)
+      }
+
     },
 
     initCurrentWorkspace(name) {
