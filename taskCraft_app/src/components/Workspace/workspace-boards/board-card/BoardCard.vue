@@ -34,10 +34,14 @@ const handleMouseLeave = () => isHovered.value = false;
 
 const toggleStarred = async () => {
   try {
-    const response = await board.toggleStarred(props.workspaceBoard.id)
+    const response = await board.toggleStarred(props.workspaceBoard.id, !props.workspaceBoard.starred)
 
     if (response.status === 200) {
-      notify('success', 'Board Starred Successfully!')
+      let message = props.workspaceBoard.starred
+        ? 'Remove star successfully'
+        : 'Board Starred Successfully!'
+
+      notify('success', message)
 
       await workspace.fetchUserWorkspaces(user.userId)
     } else {
@@ -86,7 +90,6 @@ const toggleStarred = async () => {
 .board-card {
   position: relative;
   min-height: 80px;
-  padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

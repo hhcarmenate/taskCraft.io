@@ -19,12 +19,11 @@ const showCreateBoardModal = () => {
 <template>
   <div class="w-[85%] flex flex-col mt-6">
     <div class="grid grid-cols-4 gap-4">
-      <!-- Replace the divs below with your actual content/components -->
       <div
         @click="showCreateBoardModal"
-        class="bg-secondary-700 rounded rounded-4 p-6 hand"
+        class="bg-secondary-700 rounded rounded-4 hand flex justify-center items-center"
       >
-        Create New Board
+        <p>Create New Board</p>
       </div>
 
       <BoardCard
