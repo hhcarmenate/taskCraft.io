@@ -55,7 +55,7 @@ const validationSchema = computed(() => {
     zod.object({
       title: zod.string().min(3, {message: 'Board title must have at least 3 characters long'}),
       workspaceSelected: zod.number({message: 'Workspace is required'}),
-      visibility: zod.number({message: 'Visibility is required'})
+      visibility: zod.string({message: 'Visibility is required'})
     })
   )
 })

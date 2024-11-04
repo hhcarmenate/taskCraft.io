@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BoardController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\WorkspaceController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,10 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
             ->name('update-main-profile');
         Route::post('user/{user}/update-general-info-profile', [UserProfileController::class, 'updateGeneralProfile'])
             ->name('update-main-profile');
+
+
+        Route::post('board/create-board', [BoardController::class, 'store'])
+            ->name('create-board');
 
     });
 
