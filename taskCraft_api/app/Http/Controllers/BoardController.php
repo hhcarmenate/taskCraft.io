@@ -51,6 +51,13 @@ class BoardController extends Controller
     public function toggleStarred(Board $board): JsonResponse|BoardResource
     {
         try {
+            $starredCount = $this->boardService->getStarredCount();
+
+            if ($starredCount >= 5 ) {
+                return response()->json(['message' => 'Starred Limit reached'], 422);
+            }
+
+
             return BoardResource::make($this->boardService->toggleStarred($board));
         } catch (Exception $e) {
             return $this->genericFailResponse($e);

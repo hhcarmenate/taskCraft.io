@@ -41,10 +41,14 @@ const toggleStarred = async () => {
 
       await workspace.fetchUserWorkspaces(user.userId)
     } else {
-      notify('error', 'Oops! something went wrong!')
+      let message = 'Oops! something went wrong!'
+      message = response.error?.response?.data?.message ?? message
+
+      notify('error', message)
     }
   } catch (err) {
     console.log(err)
+
     notify('error', 'Oops! something went wrong!')
   }
 }
@@ -81,6 +85,11 @@ const toggleStarred = async () => {
 
 .board-card {
   position: relative;
+  min-height: 80px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .star-icon {
