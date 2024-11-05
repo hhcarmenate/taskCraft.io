@@ -21,7 +21,9 @@ class WorkspaceResource extends JsonResource
             'type' => $this->type,
             'description' => $this->description,
             'logo' => $this->logo ? config('app.app_url') . Storage::url($this->logo)  : null,
-            'boards' => BoardResource::collection($this->boards)
+            'boards' => BoardResource::collection($this->boards),
+            'members' => UserResource::collection($this->members),
+            'guest' => UserResource::collection($this->guests)
         ];
     }
 }

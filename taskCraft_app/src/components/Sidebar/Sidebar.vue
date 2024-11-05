@@ -23,6 +23,12 @@ const memberRoute = computed(() => {
   }
 })
 
+const boardsRoute = computed(() => {
+  if (workspace.currentWorkspace?.name) {
+    return `/workspace/${workspace.currentWorkspace.name}`
+  }
+})
+
 </script>
 
 <template>
@@ -30,10 +36,13 @@ const memberRoute = computed(() => {
     <div class="overflow-y-auto py-5 px-3 h-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
       <ul class="space-y-2">
         <li>
-          <a class="flex hand items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-green-500 group">
+          <router-link
+            class="flex hand items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-green-500 group"
+            :to="boardsRoute"
+          >
             <TCIcon :icon="'heroicons-outline:clipboard-document-list'" hand />
             <span class="ml-3">Boards</span>
-          </a>
+          </router-link>
         </li>
         <li>
           <router-link

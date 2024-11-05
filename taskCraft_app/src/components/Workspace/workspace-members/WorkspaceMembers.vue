@@ -1,6 +1,4 @@
 <script setup>
-
-import BoardCard from "@/components/Workspace/workspace-boards/board-card/BoardCard.vue";
 import WorkspaceCollaborators from "@/components/Workspace/workspace-members/collaborators/WorkspaceCollaborators.vue";
 </script>
 

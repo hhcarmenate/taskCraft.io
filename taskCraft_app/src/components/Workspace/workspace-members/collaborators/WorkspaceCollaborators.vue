@@ -1,12 +1,22 @@
 <script setup>
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import TextInput from "@/components/fields/TextInput.vue";
+import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 
+const workspace = useWorkspaceStore()
 const typeSelected = ref('workspace')
 
 const selectType = (type) => {
   typeSelected.value = type
 }
+
+const workspaceMembers = computed(() => {
+  return workspace.currentWorkspace?.members ?? []
+})
+
+const workspaceGuests = computed(() => {
+  return workspace.currentWorkspace?.guests ?? []
+})
 
 </script>
 
@@ -19,7 +29,7 @@ const selectType = (type) => {
         :class="{'bg-gray-900': typeSelected === 'workspace'}"
       >
         <p>Workspace Members</p>
-        <span>(1/10)</span>
+        <span>({{ workspaceMembers.length }}/10)</span>
       </div>
       <div
         class="p-2 mt-2 flex flex-row rounded justify-between items-center hand hover:bg-gray-700"
@@ -27,7 +37,7 @@ const selectType = (type) => {
         :class="{'bg-gray-900': typeSelected === 'guest'}"
       >
         <p>Guest</p>
-        <span>(0/10)</span>
+        <span>({{ workspaceGuests.length }}/10)</span>
       </div>
     </div>
     <div class="col-span-8" v-if="typeSelected === 'workspace'">
@@ -50,13 +60,16 @@ const selectType = (type) => {
         </div>
       </div>
 
-      <div class="pb-6 text-sm border-b border-gray-500 mt-5">
+      <div
+        class="pb-6 text-sm mt-5"
+        v-if="workspaceMembers.length"
+      >
         <div class="mb-2">
           <TextInput
             placeholder="Filter by name"
           />
         </div>
-        <div class="flex flex-row gap-4 justify-between items-center">
+        <div class="flex flex-row gap-4 justify-between items-center" >
           <ul class="w-full">
             <li>
               <div class="border-y border-solid border-gray-500 flex flex-row justify-between items-center px-1 py-2">
@@ -74,14 +87,19 @@ const selectType = (type) => {
                   </button>
                 </div>
               </div>
-
             </li>
           </ul>
         </div>
       </div>
+      <div
+        class="pb-6 text-sm mt-5"
+        v-else
+      >
+        There is no members in this workspace yet!
+      </div>
     </div>
     <div class="col-span-8" v-if="typeSelected === 'guest'">
-      <div class="pb-6 text-sm mt-5">
+      <div class="pb-6 text-sm mt-5" v-if="workspaceGuests.length">
         <h3 class="text-xl mb-2">Guests</h3>
         <div class="mb-2">
           <TextInput
@@ -106,10 +124,15 @@ const selectType = (type) => {
                   </button>
                 </div>
               </div>
-
             </li>
           </ul>
         </div>
+      </div>
+      <div
+        class="pb-6 text-sm mt-5"
+        v-else
+      >
+        There is no guests in this workspace yet!
       </div>
     </div>
   </div>

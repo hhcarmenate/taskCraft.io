@@ -39,6 +39,25 @@ class Workspace extends Model
     }
 
     /**
+     * Getting all members
+     * @return BelongsToMany
+     */
+    public function members(): BelongsToMany
+    {
+        return $this->belongsToMany(WorkspaceUserRole::class, 'workspace_user')->where('role_name', 'Member');
+    }
+
+    /**
+     * Getting all members
+     * @return BelongsToMany
+     */
+    public function guests(): BelongsToMany
+    {
+        return $this->belongsToMany(WorkspaceUserRole::class, 'workspace_user')->where('role_name', 'Guest');
+    }
+
+
+    /**
      * Get the boards associated with this instance.
      *
      * @return HasMany
