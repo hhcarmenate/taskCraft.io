@@ -21,7 +21,7 @@ const showCreateBoardModal = () => {
     <div class="grid grid-cols-4 gap-4">
       <div
         @click="showCreateBoardModal"
-        class="bg-secondary-700 rounded rounded-4 hand flex justify-center items-center"
+        class="bg-secondary-700 min-h-[80px] rounded rounded-4 hand flex justify-center items-center"
       >
         <p>Create New Board</p>
       </div>

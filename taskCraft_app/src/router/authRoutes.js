@@ -2,6 +2,7 @@ import DashboardView from "@/views/DashboardView.vue";
 import {useUserStore} from "@/stores/useUserStore.js";
 import ProfileView from "@/views/ProfileView.vue";
 import WorkspaceView from "@/views/WorkspaceView.vue";
+import WorkspaceMembersView from "@/views/WorkspaceMembersView.vue";
 
 export const authenticatedRoutes = [
   {
@@ -26,6 +27,14 @@ export const authenticatedRoutes = [
     component: WorkspaceView,
     meta: {
       title: 'Workspace'
+    }
+  },
+  {
+    path: '/workspace/:name/members',
+    name: 'workspace members',
+    component: WorkspaceMembersView,
+    meta: {
+      title: 'Workspace Members'
     }
   },
   {
