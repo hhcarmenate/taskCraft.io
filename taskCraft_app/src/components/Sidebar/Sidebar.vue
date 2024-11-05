@@ -1,6 +1,28 @@
 <script setup>
-
 import TCIcon from "@/components/icon/TCIcon.vue";
+import {computed, onMounted} from "vue";
+import {initFlowbite} from "flowbite";
+import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
+import {useRoute} from "vue-router";
+
+
+const workspace = useWorkspaceStore()
+const route = useRoute()
+
+onMounted(() => {
+  initFlowbite()
+
+  if (!workspace.currentWorkspace && route.params.name) {
+    workspace.initCurrentWorkspace(route.params.name)
+  }
+})
+
+const memberRoute = computed(() => {
+  if (workspace.currentWorkspace?.name) {
+    return `/workspace/${workspace.currentWorkspace.name}/members`
+  }
+})
+
 </script>
 
 <template>
@@ -8,20 +30,24 @@ import TCIcon from "@/components/icon/TCIcon.vue";
     <div class="overflow-y-auto py-5 px-3 h-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
       <ul class="space-y-2">
         <li>
-          <a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-green-500 group">
+          <a class="flex hand items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-green-500 group">
             <TCIcon :icon="'heroicons-outline:clipboard-document-list'" hand />
             <span class="ml-3">Boards</span>
           </a>
         </li>
         <li>
-          <a type="button" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-green-500" aria-controls="dropdown-pages" data-collapse-toggle="dropdown-pages">
+          <router-link
+            type="button"
+            class="flex hand items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-green-500"
+            :to="memberRoute"
+          >
             <TCIcon :icon="'heroicons-outline:user'" hand />
             <span class="flex-1 ml-3 text-left whitespace-nowrap">Members</span>
             <TCIcon :icon="'heroicons-outline:plus'" hand />
-          </a>
+          </router-link>
         </li>
         <li>
-          <button type="button" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-green-500" aria-controls="dropdown-sales" data-collapse-toggle="dropdown-sales">
+          <button type="button" class="flex hand items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-green-500" aria-controls="dropdown-sales" data-collapse-toggle="dropdown-sales">
             <TCIcon :icon="'heroicons-outline:cog-8-tooth'" hand />
             <span class="flex-1 ml-3 text-left whitespace-nowrap">Workspace Settings</span>
             <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -29,8 +55,7 @@ import TCIcon from "@/components/icon/TCIcon.vue";
           <ul id="dropdown-sales" class="hidden py-2 space-y-2">
             <li>
               <a
-                href="#"
-                class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-green-500"
+                class="flex hand items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-green-500"
               >
                 Workspace Settings
               </a>
@@ -80,5 +105,7 @@ import TCIcon from "@/components/icon/TCIcon.vue";
 </template>
 
 <style scoped>
-
+.hand {
+  cursor: pointer;
+}
 </style>

@@ -3,9 +3,11 @@ import {onMounted} from "vue";
 import {initFlowbite} from "flowbite";
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 import {useRoute} from "vue-router";
+import SelectInput from "@/components/fields/SelectInput.vue";
 import WorkspaceIntro from "@/components/Workspace/workspace-intro/WorkspaceIntro.vue";
 import SuggestedTemplates from "@/components/Workspace/suggested-templates/SuggestedTemplates.vue";
 import WorkspaceBoard from "@/components/Workspace/workspace-boards/WorkspaceBoard.vue";
+import WorkspaceMembers from "@/components/Workspace/workspace-members/WorkspaceMembers.vue";
 
 const workspace = useWorkspaceStore()
 const route = useRoute()
@@ -13,6 +15,7 @@ const route = useRoute()
 onMounted(() => {
   initFlowbite()
 
+  console.log(route.params)
   if (!workspace.currentWorkspace && route.params.name) {
     workspace.initCurrentWorkspace(route.params.name)
   }
@@ -32,12 +35,11 @@ onMounted(() => {
           <WorkspaceIntro />
           <div class="w-full flex flex-col justify-between items-center ">
             <div class="w-[85%] flex flex-row mt-4">
-              <h1 class="text-2xl font-semibold">Boards</h1>
+              <h1 class="text-2xl font-semibold">Members</h1>
             </div>
             <SuggestedTemplates v-if="false" />
 
-            <WorkspaceBoard />
-
+            <WorkspaceMembers />
           </div>
         </div>
 
