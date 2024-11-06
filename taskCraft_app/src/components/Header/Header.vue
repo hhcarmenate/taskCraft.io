@@ -22,7 +22,7 @@ const closeDropdown = () => {
 }
 
 const logoutUser = async () => {
-  return await router.push('logout')
+  return await router.push('/logout')
 }
 
 const handleUpdateShow = (show) => {
