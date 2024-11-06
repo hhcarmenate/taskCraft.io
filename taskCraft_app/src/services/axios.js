@@ -35,7 +35,7 @@ TASKCRAFT_API.interceptors.response.use(
         return await router.push({ name: 'maintenance' })
       }
 
-      return await router.push({ name: 'Logout' })
+      return await router.push({ name: 'logout' })
     }
 
     return { error }
