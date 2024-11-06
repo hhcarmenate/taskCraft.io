@@ -1,5 +1,6 @@
 import LoginView from "@/views/LoginView.vue";
 import RegisterView from "@/views/RegisterView.vue";
+import JoinWorkspace from "@/components/Workspace/join-workspace/JoinWorkspace.vue";
 
 export const nonAuthenticatedRoutes = [
   {
@@ -24,6 +25,14 @@ export const nonAuthenticatedRoutes = [
     component: RegisterView,
     meta: {
       title: 'Sign Up'
+    }
+  },
+  {
+    path: '/invitation-link',
+    name: 'invitation-link',
+    component: JoinWorkspace,
+    meta: {
+      title: 'Join Workspace'
     }
   }
 ];
