@@ -60,6 +60,10 @@ class WorkspaceService {
     return await TASKCRAFT_API.get(`user/${userId}/workspaces`)
   }
 
+  async getJoinData(url) {
+    return await TASKCRAFT_API.get(url)
+  }
+
 }
 
 export default new WorkspaceService()

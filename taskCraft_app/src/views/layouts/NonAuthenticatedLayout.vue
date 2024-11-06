@@ -25,7 +25,6 @@ const invitationWorkspace = computed(() => {
         </div>
         <div class="wrapper" v-else>
           <div class="greetings">
-            <h1 class="text-green-500">{{ msg }}</h1>
             <h4>
               Empowering Your Workflow with Organized and Collaborative Task Management
             </h4>

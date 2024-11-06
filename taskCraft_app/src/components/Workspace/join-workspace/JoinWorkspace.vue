@@ -2,9 +2,11 @@
 import {Form} from "vee-validate";
 import TextInput from "@/components/fields/TextInput.vue";
 import TCButton from "@/components/fields/TCButton.vue";
-import {computed, reactive} from "vue";
+import {computed, onBeforeMount, reactive, ref} from "vue";
 import {toTypedSchema} from "@vee-validate/zod";
 import * as zod from "zod";
+import useNotification from "@/composables/useNotification.js";
+import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 
 // Data
 const localState = reactive({
@@ -16,6 +18,10 @@ const localState = reactive({
     password: null
   }
 })
+const invalidInvitationLink = ref(true)
+const { notify } = useNotification()
+const workspace = useWorkspaceStore()
+
 
 // Computed
 const loginValidationSchema = computed(() => {
@@ -27,6 +33,46 @@ const loginValidationSchema = computed(() => {
     })
   )
 })
+
+// Hooks
+onBeforeMount(() => {
+  const query = window.location.search
+
+  if (query) {
+    const urlParams = new URLSearchParams(query)
+    const url = urlParams.get('url')
+
+    if (!url) {
+      invalidInvitationLink.value = true
+    } else {
+      invalidInvitationLink.value = false
+
+      initWorkspaceData(url)
+
+    }
+
+  } else {
+    invalidInvitationLink.value = true
+  }
+})
+
+const initWorkspaceData = async (url) => {
+  try {
+    const response = await workspace.getJoinData(url)
+
+    if(response.status === 200) {
+      localState.form.workspaceName = response.data?.data?.name ?? ''
+    } else {
+      invalidInvitationLink.value = true
+    }
+
+  } catch (e) {
+    console.error(e)
+
+    notify('error', 'Oops something went wrong!')
+  }
+}
+
 
 // Methods
 const onSubmit = (fields) => {
@@ -41,75 +87,82 @@ const onInvalidSubmit = (error) => {
 </script>
 
 <template>
-  <div v-if="!localState.registered" class="container">
-    <h1 class="text-3xl font-bold justify-center">Join Workspace!</h1>
-    <h3 class="text-2xl font-thin">John Doe is inviting you to collaborate!.</h3>
+  <div class="container" v-if="invalidInvitationLink">
+    <h3 class="text-2xl font-thin"> This Link is invalid.!</h3>
+  </div>
+  <template v-else>
+    <div  v-if="!localState.registered" class="container">
+      <h1 class="text-3xl font-bold justify-center">Join Workspace!</h1>
+      <h3 class="text-2xl font-thin">John Doe is inviting you to collaborate!.</h3>
 
-    <div class="section__body flex justify-center">
-      <Form
-        class="form__alt w-full flex justify-center"
-        :validation-schema="loginValidationSchema"
-        @submit="onSubmit"
-        @invalid-submit="onInvalidSubmit"
-      >
-        <div class="form__section flex flex-col">
-          <div class="form__row">
-            <div class="form__controls">
-              <TextInput
-                name="workspaceName"
-                type="text"
-                label="Workspace Name"
-                placeholder=""
-                v-model="localState.form.workspaceName"
-                show-error
+      <div class="section__body flex justify-center">
+        <Form
+          class="form__alt w-full flex justify-center"
+          :validation-schema="loginValidationSchema"
+          @submit="onSubmit"
+          @invalid-submit="onInvalidSubmit"
+        >
+          <div class="form__section flex flex-col">
+            <div class="form__row">
+              <div class="form__controls">
+                <TextInput
+                  name="workspaceName"
+                  type="text"
+                  label="Workspace Name"
+                  placeholder=""
+                  v-model="localState.form.workspaceName"
+                  show-error
+                  disabled
+                />
+              </div>
+            </div>
+
+            <div class="form__row">
+              <div class="form__controls">
+                <TextInput
+                  name="email"
+                  type="email"
+                  label="Email"
+                  placeholder="johnDoe@gmail.com"
+                  v-model="localState.form.email"
+                  show-error
+                />
+              </div>
+            </div>
+
+            <div class="form__row">
+              <div class="form__controls">
+                <TextInput
+                  name="password"
+                  type="password"
+                  label="Password"
+                  placeholder="***********"
+                  v-model="localState.form.password"
+                  show-error
+                />
+              </div>
+            </div>
+
+            <div class="form__row">
+              <TCButton
+                :loading="localState.sending"
+                id="submitButton"
+                button-type="submit"
+                type="success"
+                button-text="Join Workspace"
+                class="w-full"
               />
             </div>
           </div>
-
-          <div class="form__row">
-            <div class="form__controls">
-              <TextInput
-                name="email"
-                type="email"
-                label="Email"
-                placeholder="johnDoe@gmail.com"
-                v-model="localState.form.email"
-                show-error
-              />
-            </div>
-          </div>
-
-          <div class="form__row">
-            <div class="form__controls">
-              <TextInput
-                name="password"
-                type="password"
-                label="Password"
-                placeholder="***********"
-                v-model="localState.form.password"
-                show-error
-              />
-            </div>
-          </div>
-
-          <div class="form__row">
-            <TCButton
-              :loading="localState.sending"
-              id="submitButton"
-              button-type="submit"
-              type="success"
-              button-text="Register"
-              class="w-full"
-            />
-          </div>
-        </div>
-      </Form>
+        </Form>
+      </div>
     </div>
-  </div>
-  <div v-else class="container">
-    <h1 class="text-3xl font-bold justify-center">Thank You!</h1>
-    <h3 class="text-2xl font-thin">Please check your inbox to verify your email address.</h3>
-  </div>
+    <div v-else class="container">
+      <h1 class="text-3xl font-bold justify-center">Thank You!</h1>
+      <h3 class="text-2xl font-thin">Please check your inbox to verify your email address.</h3>
+    </div>
+  </template>
+
 </template>
 
 <style scoped>

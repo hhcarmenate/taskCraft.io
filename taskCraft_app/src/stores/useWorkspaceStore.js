@@ -63,10 +63,13 @@ export const useWorkspaceStore = defineStore('workspace', {
     },
 
     initCurrentWorkspace(name) {
-      console.log(name, this.workspaces)
       this.currentWorkspace = this.workspaces.find((workspace) => {
         return workspace.name === name
       })
+    },
+
+    async getJoinData(url) {
+      return await WorkspaceService.getJoinData(url)
     }
   }
 })
