@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreWorkspaceRequest;
 use App\Http\Requests\UpdateWorkspaceRequest;
+use App\Http\Requests\WorkspaceInvitationRequest;
 use App\Http\Resources\WorkspaceResource;
 use App\Http\Traits\FailResponseTrait;
 use App\Models\User;
@@ -14,6 +15,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 class WorkspaceController extends Controller
@@ -168,9 +170,17 @@ class WorkspaceController extends Controller
         }
     }
 
-    public function getInvitationInfo(User $user): AnonymousResourceCollection | JsonResponse
+    /**
+     * Get Invitation link info
+     * @param WorkspaceInvitationRequest $request
+     * @param Workspace $workspace
+     * @return WorkspaceResource
+     */
+    public function getInvitationInfo(WorkspaceInvitationRequest $request, Workspace $workspace): WorkspaceResource
     {
+        Log::info($workspace);
 
+        return WorkspaceResource::make($workspace);
     }
 
     /**

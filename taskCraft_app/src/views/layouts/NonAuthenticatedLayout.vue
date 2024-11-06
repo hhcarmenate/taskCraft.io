@@ -1,19 +1,35 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import {RouterLink, RouterView, useRoute} from 'vue-router'
 import HelloWorld from '@/components/HelloWorld.vue'
+import {computed} from "vue";
+
+const route = useRoute()
+
+const invitationWorkspace = computed(() => {
+  return route.name === 'invitation-link'
+})
+
 </script>
 
 <template>
   <div class="shell h-screen">
     <div class="non-auth-container">
       <header>
-        <div class="wrapper">
+        <div class="wrapper" v-if="!invitationWorkspace">
           <HelloWorld msg="Welcome to TaskCraft.io!" />
 
           <nav>
             <RouterLink :to="'/login'">Sign In</RouterLink>
             <RouterLink :to="'/register'">Sign Up</RouterLink>
           </nav>
+        </div>
+        <div class="wrapper" v-else>
+          <div class="greetings">
+            <h4>
+              Empowering Your Workflow with Organized and Collaborative Task Management
+            </h4>
+            <img src="/images/collaboration.svg" alt="">
+          </div>
         </div>
       </header>
       <RouterView />
