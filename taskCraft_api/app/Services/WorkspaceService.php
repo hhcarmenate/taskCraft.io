@@ -2,15 +2,20 @@
 
 namespace App\Services;
 
+use App\Models\Invitation;
 use App\Models\User;
 use App\Models\Workspace;
 use App\Models\WorkspaceUser;
 use App\Models\WorkspaceUserRole;
+use App\Notifications\WorkspaceInvitationNotification;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 
 class WorkspaceService
 {
@@ -60,6 +65,47 @@ class WorkspaceService
 
         return $workspace;
     }
+
+    /**
+     * Create unique token.
+     * @param User $user
+     * @param Workspace $workspace
+     * @return string
+     */
+    private function createInvitationToken(User $user, Workspace $workspace): string
+    {
+        $uniqueString = $workspace->id . '-' . $user->id . Str::random(40);
+
+        return hash('sha256', $uniqueString);
+    }
+
+
+    /**
+     * Send Workspace invitations.
+     * @param Request $request
+     * @param Workspace $workspace
+     * @return array
+     */
+    public function sendWorkspaceInvitation(Request $request, Workspace $workspace): array
+    {
+        $inviter_id = $request->user()->id;
+
+        foreach ($request->input('invitationList') as $email) {
+            Invitation::query()->create([
+                'workspace_id' => $workspace->id,
+                'inviter_id' => $inviter_id,
+                'invitee_email' => $email,
+                'token' => $this->createInvitationToken($request->user(), $workspace),
+                'status' => 'pending',
+                'invitation_text' => $request->input('invitationText'),
+                'expires_at' => now()->addMonth(),
+                'sent' => false
+            ]);
+        }
+
+        return ['message' => 'Workspace Invitations sent successfully'];
+    }
+
 
     /**
      * Updates the properties of a workspace based on the information provided in the request.

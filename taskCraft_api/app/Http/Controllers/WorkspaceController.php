@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SendWorkspaceInvitationRequest;
 use App\Http\Requests\StoreWorkspaceRequest;
 use App\Http\Requests\UpdateWorkspaceRequest;
 use App\Http\Requests\WorkspaceInvitationRequest;
@@ -141,30 +142,15 @@ class WorkspaceController extends Controller
      * @param Workspace $workspace The workspace for which the invitation is being sent.
      * @return JsonResponse A JSON response indicating the success status of sending the invitation.
      *                     Includes a message indicating if the workspace invitation was sent successfully.
+     * Todo: Create a new cron that should run every 10 minutes and send the invitations
+     * todo: if the user exist in the system send an invitation email and notification if not
+     * todo: then send only the email
+     *
      */
-    public function sendInvitation(Request $request, Workspace $workspace): JsonResponse
+    public function sendInvitation(SendWorkspaceInvitationRequest $request, Workspace $workspace): JsonResponse
     {
         try {
-            $request->validate([
-                'invitationList' => 'required|array',
-                'invitationTex' => 'string|nullable'
-            ]);
-
-            $subject = "New Workspace Invitation";
-
-            foreach ($request->input('invitationList') as $email) {
-                Notification::route('mail', trim($email))
-                    ->notify(new WorkspaceInvitationNotification(
-                        $subject,
-                        $request->input('invitationText'),
-                        $request->user()->name,
-                        $workspace->name,
-                        $this->workspaceService->useInvitationLink($workspace)
-                    ));
-            }
-
-
-            return response()->json(['message' => 'Workspace Invitation sent successfully']);
+            return response()->json($this->workspaceService->sendWorkspaceInvitation($request, $workspace));
         } catch (Exception $e) {
             return $this->genericFailResponse($e);
         }

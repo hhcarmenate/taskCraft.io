@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('workspace_id')->constrained()->onDelete('cascade');
             $table->foreignId('inviter_id')->constrained('users')->onDelete('cascade');
-            $table->string('invitee_email');
+            $table->string('invitee_email')->nullable();
             $table->string('token');
+            $table->text('invitation_text')->nullable();
             $table->enum('status', ['pending', 'accepted', 'declined'])->default('pending');
+            $table->tinyInteger('sent')->default(0);
             $table->timestamp('expires_at');
 
             $table->timestamps();

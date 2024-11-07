@@ -19,7 +19,9 @@ class Invitation extends Model
         'invitee_email',
         'token',
         'status',
-        'expires_at'
+        'expires_at',
+        'invitation_text',
+        'sent'
     ];
 
     /**
