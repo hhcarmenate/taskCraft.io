@@ -56,6 +56,18 @@ class Workspace extends Model
         return $this->belongsToMany(WorkspaceUserRole::class, 'workspace_user')->where('role_name', 'Guest');
     }
 
+    /**
+     * Owner Relationship
+     * @return BelongsToMany
+     */
+    public function owner(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'workspace_user')
+            ->whereHas('roles', function($query) {
+                $query->where('role_name', 'Owner');
+            });
+    }
+
 
     /**
      * Get the boards associated with this instance.

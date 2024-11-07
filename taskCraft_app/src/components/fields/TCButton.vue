@@ -62,7 +62,7 @@ const noReverseStatus = () => {
     case 'info':
       return `inline-flex items-center justify-center gap-2.5 py-2 px-10 text-center
                     font-medium hover:bg-opacity-90 lg:px-8 xl:px-10 bg-info-500
-                    text-white rounded-md`
+                    text-white rounded-md dark:bg-info-500 dark:text-gray-800`
     case 'default':
       return `inline-flex items-center justify-center gap-2.5 py-2 px-10 text-center
                     font-medium hover:bg-opacity-90 lg:px-8 xl:px-10 bg-secondary-300

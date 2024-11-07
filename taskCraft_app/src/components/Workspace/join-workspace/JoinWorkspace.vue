@@ -19,6 +19,7 @@ const localState = reactive({
   }
 })
 const invalidInvitationLink = ref(true)
+const ownerName = ref('')
 const { notify } = useNotification()
 const workspace = useWorkspaceStore()
 
@@ -62,6 +63,8 @@ const initWorkspaceData = async (url) => {
 
     if(response.status === 200) {
       localState.form.workspaceName = response.data?.data?.name ?? ''
+      ownerName.value = response.data?.data?.owner?.name ?? ''
+
     } else {
       invalidInvitationLink.value = true
     }
@@ -93,7 +96,13 @@ const onInvalidSubmit = (error) => {
   <template v-else>
     <div  v-if="!localState.registered" class="container">
       <h1 class="text-3xl font-bold justify-center">Join Workspace!</h1>
-      <h3 class="text-2xl font-thin">John Doe is inviting you to collaborate!.</h3>
+      <h3 class="text-2xl font-thin">
+        {{
+          ownerName
+            ? ownerName + ' is inviting you to collaborate!.'
+            : 'You are invited to collaborate!'
+        }}
+      </h3>
 
       <div class="section__body flex justify-center">
         <Form
@@ -149,7 +158,20 @@ const onInvalidSubmit = (error) => {
                 id="submitButton"
                 button-type="submit"
                 type="success"
-                button-text="Join Workspace"
+                button-text="Join TaskCraft to Collaborate"
+                class="w-full"
+              />
+            </div>
+            <div class="form__row">
+              or
+            </div>
+            <div class="form__row">
+              <TCButton
+                :loading="localState.sending"
+                id="submitButton"
+                button-type="submit"
+                type="info"
+                button-text="Login to your account"
                 class="w-full"
               />
             </div>
