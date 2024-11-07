@@ -41,15 +41,14 @@ onBeforeMount(() => {
 
   if (query) {
     const urlParams = new URLSearchParams(query)
-    const url = urlParams.get('url')
+    const token = urlParams.get('token')
 
-    if (!url) {
+    if (!token) {
       invalidInvitationLink.value = true
     } else {
       invalidInvitationLink.value = false
 
-      initWorkspaceData(url)
-
+      initWorkspaceData(token)
     }
 
   } else {
@@ -57,9 +56,9 @@ onBeforeMount(() => {
   }
 })
 
-const initWorkspaceData = async (url) => {
+const initWorkspaceData = async (token) => {
   try {
-    const response = await workspace.getJoinData(url)
+    const response = await workspace.getJoinData(token)
 
     if(response.status === 200) {
       localState.form.workspaceName = response.data?.data?.name ?? ''
@@ -75,7 +74,6 @@ const initWorkspaceData = async (url) => {
     notify('error', 'Oops something went wrong!')
   }
 }
-
 
 // Methods
 const onSubmit = (fields) => {

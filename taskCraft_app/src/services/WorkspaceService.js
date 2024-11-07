@@ -60,8 +60,8 @@ class WorkspaceService {
     return await TASKCRAFT_API.get(`user/${userId}/workspaces`)
   }
 
-  async getJoinData(url) {
-    return await TASKCRAFT_API.get(url)
+  async getJoinData(token) {
+    return await TASKCRAFT_API.get(`workspace/check-invitation/${token}`)
   }
 
 }
