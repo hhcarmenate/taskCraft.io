@@ -23,7 +23,8 @@ class WorkspaceResource extends JsonResource
             'logo' => $this->logo ? config('app.app_url') . Storage::url($this->logo)  : null,
             'boards' => BoardResource::collection($this->boards),
             'members' => UserResource::collection($this->members),
-            'guest' => UserResource::collection($this->guests)
+            'guest' => UserResource::collection($this->guests),
+            'owner' => UserResource::make($this->owner->first())
         ];
     }
 }

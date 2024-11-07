@@ -178,8 +178,6 @@ class WorkspaceController extends Controller
      */
     public function getInvitationInfo(WorkspaceInvitationRequest $request, Workspace $workspace): WorkspaceResource
     {
-        Log::info($workspace);
-
         return WorkspaceResource::make($workspace);
     }
 
