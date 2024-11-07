@@ -68,8 +68,8 @@ export const useWorkspaceStore = defineStore('workspace', {
       })
     },
 
-    async getJoinData(url) {
-      return await WorkspaceService.getJoinData(url)
+    async getJoinData(token) {
+      return await WorkspaceService.getJoinData(token)
     }
   }
 })

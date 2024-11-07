@@ -1,7 +1,7 @@
 @component('mail::message')
 # Workspace Invitation
 
-Hello {{ $name }}
+Hello
 
 You have been invited to join to this workspace
 

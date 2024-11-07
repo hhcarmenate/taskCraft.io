@@ -10,14 +10,11 @@ use App\Http\Resources\WorkspaceResource;
 use App\Http\Traits\FailResponseTrait;
 use App\Models\User;
 use App\Models\Workspace;
-use App\Notifications\WorkspaceInvitationNotification;
 use App\Services\WorkspaceService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
 
 class WorkspaceController extends Controller
 {
@@ -161,10 +158,11 @@ class WorkspaceController extends Controller
      * @param WorkspaceInvitationRequest $request
      * @param Workspace $workspace
      * @return WorkspaceResource
+     * @throws Exception
      */
-    public function getInvitationInfo(WorkspaceInvitationRequest $request, Workspace $workspace): WorkspaceResource
+    public function getInvitationInfo(WorkspaceInvitationRequest $request, String $token): WorkspaceResource
     {
-        return WorkspaceResource::make($workspace);
+        return WorkspaceResource::make($this->workspaceService->checkInvitation($token));
     }
 
     /**

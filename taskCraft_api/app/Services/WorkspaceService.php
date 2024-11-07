@@ -181,4 +181,22 @@ class WorkspaceService
         $workspace->refresh();
         return $workspace;
     }
+
+    /**
+     * @throws Exception
+     */
+    public function checkInvitation($token)
+    {
+        $invitation = Invitation::query()->where('token', $token)->first();
+
+        if (!$invitation) {
+            throw new Exception('Invalid invitation link');
+        }
+
+        if ($invitation->expires_at < now()) {
+            throw new Exception('This invitation already expired');
+        }
+
+        return $invitation->workspace;
+    }
 }
