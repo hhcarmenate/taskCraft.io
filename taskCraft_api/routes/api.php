@@ -22,6 +22,8 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
             ->name('update-logo');
         Route::put('workspace/{workspace}/update-workspace', [WorkspaceController::class, 'update'])
             ->name('update-logo');
+        Route::post('workspace/register-join', [WorkspaceController::class, 'registerAndJoin'])
+            ->name('register-join');
 
         Route::get('user/{user}/profile', [UserProfileController::class, 'getUserProfile'])
             ->name('get-user-profile');

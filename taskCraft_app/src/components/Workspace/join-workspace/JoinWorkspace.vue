@@ -22,13 +22,14 @@ const invalidInvitationLink = ref(true)
 const ownerName = ref('')
 const { notify } = useNotification()
 const workspace = useWorkspaceStore()
+const workspaceSelected = ref()
 
 
 // Computed
 const loginValidationSchema = computed(() => {
   return toTypedSchema(
     zod.object({
-      name: zod.string({message: 'Workspace Name is required'}),
+      workspaceName: zod.string({message: 'Workspace Name is required'}),
       email: zod.string({message: 'Email is required'}).email({ message: 'Please use a valid email' }),
       password: zod.string({message: 'Password is required'}).min(8, {message: 'Password must have at least 8 characters long'})
     })
@@ -61,6 +62,7 @@ const initWorkspaceData = async (token) => {
     const response = await workspace.getJoinData(token)
 
     if(response.status === 200) {
+      workspaceSelected.value = response.data?.data ?? null
       localState.form.workspaceName = response.data?.data?.name ?? ''
       ownerName.value = response.data?.data?.owner?.name ?? ''
 
@@ -76,8 +78,24 @@ const initWorkspaceData = async (token) => {
 }
 
 // Methods
-const onSubmit = (fields) => {
-  console.log(fields)
+const onSubmit = async () => {
+  try {
+    localState.sending = true
+    const response = await workspace.registerAndJoin({
+      email: localState.form.email,
+      password: localState.form.password,
+      workspace: workspaceSelected.value.id
+    })
+
+    console.log(response)
+
+  } catch (e) {
+    console.log(e)
+
+    notify('error', 'Oops something went wrong!')
+  } finally {
+    localState.sending = false
+  }
 }
 
 const onInvalidSubmit = (error) => {
