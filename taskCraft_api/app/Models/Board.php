@@ -25,6 +25,6 @@ class Board extends Model
      */
     public function workspace(): BelongsTo
     {
-        return $this->belongsTo(Workspace::class);
+        return $this->belongsTo(Workspace::class, 'workspace_id', 'id');
     }
 }

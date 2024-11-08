@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class WorkspaceResource extends JsonResource
@@ -15,6 +16,8 @@ class WorkspaceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        Log::info('checking boards', [$this->boards]);
+
         return [
             'id' => $this->id,
             'name' => $this->name,

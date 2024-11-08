@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Models\Board;
+use App\Models\StarredUserBoard;
 use App\Models\Workspace;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class BoardService
@@ -51,10 +53,26 @@ class BoardService
      */
     public function toggleStarred(Board $board): mixed
     {
-        $board->starred = !$board->starred;
-        $board->save();
+        $userId = Auth::user()->id;
+        $boardId = $board->id;
 
-        $board->refresh();
+        $starredBoardUser = StarredUserBoard::query()
+            ->where('user_id', $userId)
+            ->where('board_id', $boardId)
+            ->first();
+
+        if ($starredBoardUser) {
+            $starredBoardUser->is_starred = !$starredBoardUser->is_starred;
+            $starredBoardUser->save();
+            return $board;
+        }
+
+        StarredUserBoard::query()
+            ->create([
+                'user_id' => $userId,
+                'board_id' => $boardId,
+                'is_starred' => request()->input('starred')
+            ]);
 
         return $board;
     }
@@ -72,22 +90,7 @@ class BoardService
             throw new Exception('Invalid user logged!');
         }
 
-        $workspaces = $userLogged->workspaces;
-        if (!$workspaces) {
-            return 0;
-        }
-
-        $workspacesIds = $workspaces->map(function($work) {
-            return $work->id;
-        });
-
-        if ($workspacesIds->count()) {
-            return Board::query()
-                ->whereIn('workspace_id', $workspacesIds)
-                ->where('starred', 1)
-                ->count();
-        }
-
-        return 0;
+        return StarredUserBoard::query()
+            ->where('user_id', Auth::user()->id)->count() ?? 0;
     }
 }
