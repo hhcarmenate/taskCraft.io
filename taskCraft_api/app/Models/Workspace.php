@@ -44,7 +44,10 @@ class Workspace extends Model
      */
     public function members(): BelongsToMany
     {
-        return $this->belongsToMany(WorkspaceUserRole::class, 'workspace_user')->where('role_name', 'Member');
+        return $this->belongsToMany(User::class, 'workspace_user')
+            ->whereHas('roles', function($query){
+                $query->where('role_name', 'Member');
+            });
     }
 
     /**
@@ -53,7 +56,10 @@ class Workspace extends Model
      */
     public function guests(): BelongsToMany
     {
-        return $this->belongsToMany(WorkspaceUserRole::class, 'workspace_user')->where('role_name', 'Guest');
+        return $this->belongsToMany(User::class, 'workspace_user')
+            ->whereHas('roles', function($query){
+                $query->where('role_name', 'Guest');
+            });
     }
 
     /**

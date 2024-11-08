@@ -7,12 +7,14 @@ import {toTypedSchema} from "@vee-validate/zod";
 import * as zod from "zod";
 import useNotification from "@/composables/useNotification.js";
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
+import {useRouter} from "vue-router";
 
 // Data
 const localState = reactive({
   registered: false,
   sending: false,
   form: {
+    name: null,
     workspaceName: null,
     email: null,
     password: null
@@ -23,12 +25,14 @@ const ownerName = ref('')
 const { notify } = useNotification()
 const workspace = useWorkspaceStore()
 const workspaceSelected = ref()
+const router = useRouter()
 
 
 // Computed
 const loginValidationSchema = computed(() => {
   return toTypedSchema(
     zod.object({
+      name: zod.string({message: 'Name is required'}),
       workspaceName: zod.string({message: 'Workspace Name is required'}),
       email: zod.string({message: 'Email is required'}).email({ message: 'Please use a valid email' }),
       password: zod.string({message: 'Password is required'}).min(8, {message: 'Password must have at least 8 characters long'})
@@ -80,14 +84,23 @@ const initWorkspaceData = async (token) => {
 // Methods
 const onSubmit = async () => {
   try {
+    console.log(workspaceSelected.value.id)
+
     localState.sending = true
     const response = await workspace.registerAndJoin({
+      name: localState.form.name,
       email: localState.form.email,
       password: localState.form.password,
       workspace: workspaceSelected.value.id
     })
 
-    console.log(response)
+    if (response.status === 200) {
+      localState.registered = true
+
+      notify('success', `Thank for joining to ${workspaceSelected.value.name} workspace`)
+    } else {
+      notify('error', 'Oops something went wrong!')
+    }
 
   } catch (e) {
     console.log(e)
@@ -100,6 +113,10 @@ const onSubmit = async () => {
 
 const onInvalidSubmit = (error) => {
   console.log(error)
+}
+
+const goToLoginPage = async () => {
+  return await router.push('/login')
 }
 
 
@@ -138,6 +155,19 @@ const onInvalidSubmit = (error) => {
                   v-model="localState.form.workspaceName"
                   show-error
                   disabled
+                />
+              </div>
+            </div>
+
+            <div class="form__row">
+              <div class="form__controls">
+                <TextInput
+                  name="name"
+                  type="name"
+                  label="Name"
+                  placeholder="John Doe"
+                  v-model="localState.form.name"
+                  show-error
                 />
               </div>
             </div>
@@ -184,11 +214,12 @@ const onInvalidSubmit = (error) => {
             <div class="form__row">
               <TCButton
                 :loading="localState.sending"
-                id="submitButton"
-                button-type="submit"
+                id="buttonButton"
+                button-type="button"
                 type="info"
                 button-text="Login to your account"
                 class="w-full"
+                @click="goToLoginPage()"
               />
             </div>
           </div>
@@ -197,7 +228,7 @@ const onInvalidSubmit = (error) => {
     </div>
     <div v-else class="container">
       <h1 class="text-3xl font-bold justify-center">Thank You!</h1>
-      <h3 class="text-2xl font-thin">Please check your inbox to verify your email address.</h3>
+      <h3 class="text-2xl font-thin">Please <router-link :to="'/login'">Login</router-link> to start to collaborate!".</h3>
     </div>
   </template>
 

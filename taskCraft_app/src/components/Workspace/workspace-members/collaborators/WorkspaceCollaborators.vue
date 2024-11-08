@@ -5,6 +5,7 @@ import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 
 const workspace = useWorkspaceStore()
 const typeSelected = ref('workspace')
+const searchValue = ref('')
 
 const selectType = (type) => {
   typeSelected.value = type
@@ -16,6 +17,16 @@ const workspaceMembers = computed(() => {
 
 const workspaceGuests = computed(() => {
   return workspace.currentWorkspace?.guests ?? []
+})
+
+const workspaceOwner = computed(() => {
+  return workspace.currentWorkspace?.owner ?? {}
+})
+
+const membersComputed = computed(() => {
+  return workspaceMembers.value.filter((member) => {
+    return member.name.includes(searchValue.value)
+  })
 })
 
 </script>
@@ -64,30 +75,59 @@ const workspaceGuests = computed(() => {
         class="pb-6 text-sm mt-5"
         v-if="workspaceMembers.length"
       >
-        <div class="mb-2">
-          <TextInput
-            placeholder="Filter by name"
-          />
-        </div>
         <div class="flex flex-row gap-4 justify-between items-center" >
           <ul class="w-full">
-            <li>
+            <li v-if="workspaceOwner">
               <div class="border-y border-solid border-gray-500 flex flex-row justify-between items-center px-1 py-2">
                 <div class="member-name">
-                  Henry Carmenate
+                  {{ workspaceOwner.name }}
                 </div>
                 <div class="actions">
                   <button
                     class="px-2 ms-3 text-sm font-medium text-gray-900 focus:outline-none
                     bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700
                     focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700
-                    dark:bg-danger-800 dark:text-gray-400 dark:border-danger-800 dark:hover:text-white dark:hover:bg-danger-700"
+                    dark:bg-warning-600 dark:text-white dark:border-warning-600 dark:hover:text-white dark:hover:bg-warning-700"
                   >
-                    Leave
+                    Owner
                   </button>
                 </div>
               </div>
             </li>
+          </ul>
+        </div>
+
+        <div class="mb-2">
+          <TextInput
+            placeholder="Filter by name"
+            v-model="searchValue"
+          />
+        </div>
+        <div class="flex flex-row gap-4 justify-between items-center" >
+          <ul class="w-full">
+            <template v-if="membersComputed">
+              <li
+                v-for="member in membersComputed"
+                :key="member.id"
+              >
+                <div class="border-y border-solid border-gray-500 flex flex-row justify-between items-center px-1 py-2">
+                  <div class="member-name">
+                    {{ member.name }}
+                  </div>
+                  <div class="actions">
+                    <span class="text-gray-600">Member</span>
+                    <button
+                      class="px-2 ms-3 text-sm font-medium text-gray-900 focus:outline-none
+                    bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700
+                    focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700
+                    dark:bg-danger-600 dark:text-white dark:border-danger-600 dark:hover:text-white dark:hover:bg-danger-700"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </li>
+            </template>
           </ul>
         </div>
       </div>
@@ -108,7 +148,7 @@ const workspaceGuests = computed(() => {
         </div>
         <div class="flex flex-row gap-4 justify-between items-center">
           <ul class="w-full">
-            <li>
+            <li v-if="workspaceOwner">
               <div class="border-y border-solid border-gray-500 flex flex-row justify-between items-center px-1 py-2">
                 <div class="member-name">
                   Henry Carmenate

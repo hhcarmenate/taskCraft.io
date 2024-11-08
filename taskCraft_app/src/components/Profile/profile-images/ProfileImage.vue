@@ -73,10 +73,13 @@ const handleFileUpload = (event) => {
       </div>
       <div
         v-if="!profileImage"
-        class="image-container bg-blue-500 rounded-full flex items-center justify-center text-white text-2xl"
+        class="image-container bg-blue-500 rounded-full flex items-center justify-center text-white"
         :class="imageSizes"
       >
-        <div class="initials">
+        <div
+          class="initials"
+          :class="size === '32' ? 'text-5xl' : 'text-xl'"
+        >
           {{ nameInitials }}
         </div>
       </div>
@@ -111,7 +114,7 @@ const handleFileUpload = (event) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  /*font-size: 2rem;*/
   color: white;
 }
 
