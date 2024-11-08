@@ -72,8 +72,8 @@ export const useWorkspaceStore = defineStore('workspace', {
       return await WorkspaceService.getJoinData(token)
     },
 
-    async registerAndJoin({email, password, workspace}) {
-      return await WorkspaceService.registerAndJoin({email, password, workspace})
+    async registerAndJoin({name, email, password, workspace}) {
+      return await WorkspaceService.registerAndJoin({name, email, password, workspace})
     }
   }
 })

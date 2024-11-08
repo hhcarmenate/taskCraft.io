@@ -64,11 +64,12 @@ class WorkspaceService {
     return await TASKCRAFT_API.get(`workspace/check-invitation/${token}`)
   }
 
-  async registerAndJoin({email, password, workspace}) {
+  async registerAndJoin({name, email, password, workspace}) {
     return await TASKCRAFT_API.get('sanctum/csrf-cookie', {
       baseURL: import.meta.env.VITE_APP_TASKCRAFT_API
     }).then(async () => {
       return await TASKCRAFT_API.post(`workspace/register-join`, {
+        name,
         email,
         password,
         workspace_id: workspace.id
