@@ -72,7 +72,7 @@ class WorkspaceService {
         name,
         email,
         password,
-        workspace_id: workspace.id
+        workspace_id: workspace
       })
     })
   }
