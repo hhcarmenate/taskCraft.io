@@ -238,7 +238,7 @@ class WorkspaceController extends Controller
 
             return response()->json(['message' => 'User registered successfully']);
         } catch (Exception $e) {
-            return response()->json(['message' => 'Oops! Something went wrong'], 500);
+            return response()->json(['message' => 'Oops! Something went wrong '. $e->getMessage()], 500);
         }
     }
 }
