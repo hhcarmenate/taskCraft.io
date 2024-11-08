@@ -6,15 +6,19 @@ use App\Http\Requests\SendWorkspaceInvitationRequest;
 use App\Http\Requests\StoreWorkspaceRequest;
 use App\Http\Requests\UpdateWorkspaceRequest;
 use App\Http\Requests\WorkspaceInvitationRequest;
+use App\Http\Requests\WorkspaceRegisterJoinRequest;
 use App\Http\Resources\WorkspaceResource;
 use App\Http\Traits\FailResponseTrait;
 use App\Models\User;
 use App\Models\Workspace;
+use App\Models\WorkspaceUserRole;
 use App\Services\WorkspaceService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class WorkspaceController extends Controller
 {
@@ -197,6 +201,44 @@ class WorkspaceController extends Controller
             return WorkspaceResource::make($this->workspaceService->updateLogo($request, $workspace));
         } catch(Exception $e) {
             return $this->genericFailResponse($e);
+        }
+    }
+
+    /**
+     * Register a new user and join them to a workspace using the provided request data.
+     *
+     * @param WorkspaceRegisterJoinRequest $request The request containing the user and workspace data.
+     * @return JsonResponse A JSON response indicating success or failure of user registration and workspace join.
+     */
+    public function registerAndJoin(WorkspaceRegisterJoinRequest $request): JsonResponse
+    {
+        try {
+            $user = User::query()->create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password'))
+            ]);
+
+            if (!$user) {
+                throw ValidationException::withMessages([
+                    'email' => ['Invalid user credentials']
+                ]);
+            }
+
+            $workspace = Workspace::query()->find($request->input('workspace_id'));
+            if (!$workspace) {
+                throw new Exception('Invalid Workspace');
+            }
+
+            $member = WorkspaceUserRole::query()
+                ->where('role_name', 'Member')
+                ->firstOrFail();
+
+            $workspace->users()->attach($user->id,['workspace_user_role_id' => $member->id]);
+
+            return response()->json(['message' => 'User registered successfully']);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Oops! Something went wrong'], 500);
         }
     }
 }
