@@ -30,7 +30,13 @@ export const useBoardStore = defineStore('board', {
     initCurrentBoardFromWorkspace(boardId) {
       const workspace = useWorkspaceStore()
 
-      this.initCurrentBoard(workspace.currentWorkspace.boards.find((board) => board.id === boardId))
+      if (workspace.currentWorkspace) {
+        const selectedBoard = workspace.currentWorkspace.boards.find((board) => {
+          return board.id === parseInt(boardId)
+        })
+
+        this.initCurrentBoard(selectedBoard)
+      }
     }
   },
   getters: {

@@ -9,6 +9,7 @@ export const useUserStore = defineStore('user', {
     name: '',
     email: '',
     userId: '',
+    workspaceSelected: null,
     loadingData: false
   }),
   persist: true,
@@ -57,6 +58,11 @@ export const useUserStore = defineStore('user', {
 
         await userProfile.fetchUserProfile(this.userId)
         await workspace.fetchUserWorkspaces(this.userId)
+
+        if (this.workspaceSelected) {
+          workspace.currentWorkspace = workspace.workspaces.find((workspace) => workspace.id === this.workspaceSelected)
+        }
+
       } catch (e) {
         console.error(e)
       } finally {
