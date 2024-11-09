@@ -6,6 +6,7 @@ import useNotification from "@/composables/useNotification.js";
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 import {useUserStore} from "@/stores/useUserStore.js";
 import SolidStarIcon from "@/components/icon/SolidStarIcon.vue";
+import {useRouter} from "vue-router";
 
 const props = defineProps({
   workspaceBoard: {
@@ -23,6 +24,7 @@ const board = useBoardStore()
 const { notify } = useNotification()
 const workspace = useWorkspaceStore()
 const user = useUserStore()
+const router = useRouter()
 
 const bgComputed = computed(() => {
   let sum = props.index * 100 + 100
@@ -57,6 +59,12 @@ const toggleStarred = async () => {
   }
 }
 
+const handleBoardClick = async () => {
+  board.initCurrentBoard(props.workspaceBoard)
+
+  return await router.push(`/board/${props.workspaceBoard.id}`)
+}
+
 </script>
 
 <template>
@@ -65,6 +73,7 @@ const toggleStarred = async () => {
     :class="bgComputed"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    @click="handleBoardClick()"
   >
     {{ workspaceBoard.title }}
     <SolidStarIcon

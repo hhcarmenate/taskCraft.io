@@ -3,6 +3,7 @@ import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 import {computed, onMounted} from "vue";
 import {useRouter} from "vue-router";
 import {initFlowbite} from "flowbite";
+import {useUserStore} from "@/stores/useUserStore.js";
 
 const emit = defineEmits(['showModal', 'hideModal'])
 
@@ -10,6 +11,7 @@ const emit = defineEmits(['showModal', 'hideModal'])
 const workspace = useWorkspaceStore()
 const hasWorkspace = computed(() => workspace.workspaces.length)
 const router = useRouter()
+const user = useUserStore()
 
 onMounted(() => {
   initFlowbite()
@@ -22,6 +24,7 @@ const handleWorkspaceModal = () => {
 
 const handleChangeWorkSpace = async (work) => {
   workspace.setCurrentWorkSpace(work)
+  user.workspaceSelected = work.id
 
   return await router.push(`/workspace/${workspace.currentWorkspace?.name}`)
 }

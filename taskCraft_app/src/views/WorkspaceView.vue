@@ -1,21 +1,13 @@
 <script setup>
 import {onMounted} from "vue";
 import {initFlowbite} from "flowbite";
-import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
-import {useRoute} from "vue-router";
 import WorkspaceIntro from "@/components/Workspace/workspace-intro/WorkspaceIntro.vue";
 import SuggestedTemplates from "@/components/Workspace/suggested-templates/SuggestedTemplates.vue";
 import WorkspaceBoard from "@/components/Workspace/workspace-boards/WorkspaceBoard.vue";
 
-const workspace = useWorkspaceStore()
-const route = useRoute()
 
 onMounted(() => {
   initFlowbite()
-
-  if (!workspace.currentWorkspace && route.params.name) {
-    workspace.initCurrentWorkspace(route.params.name)
-  }
 })
 
 </script>
