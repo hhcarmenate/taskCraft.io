@@ -3,6 +3,7 @@ import {useUserStore} from "@/stores/useUserStore.js";
 import ProfileView from "@/views/ProfileView.vue";
 import WorkspaceView from "@/views/WorkspaceView.vue";
 import WorkspaceMembersView from "@/views/WorkspaceMembersView.vue";
+import BoardView from "@/views/BoardView.vue";
 
 export const authenticatedRoutes = [
   {
@@ -35,6 +36,14 @@ export const authenticatedRoutes = [
     component: WorkspaceMembersView,
     meta: {
       title: 'Workspace Members'
+    }
+  },
+  {
+    path: '/board/:id',
+    name: 'board',
+    component: BoardView,
+    meta: {
+      title: 'Board'
     }
   },
   {
