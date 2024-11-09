@@ -28,7 +28,7 @@ watch(
 </script>
 
 <template>
-  <section class="title font-thin text-2xl">
+  <section class="title font-thin text-2xl mb-3">
     <h1>Board <span v-if="board.title">{{ `${board.title ?? ''}` }}</span></h1>
   </section>
   <BoardComponent />
