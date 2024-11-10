@@ -6,7 +6,6 @@ use App\Models\Board;
 use App\Models\BoardList;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class BoardListService
 {
@@ -76,5 +75,23 @@ class BoardListService
         } catch (Exception $e) {
             throw new Exception('Oops! Something went wrong'. $e->getMessage());
         }
+    }
+
+    /**
+     * Update the title of a BoardList object with the new title provided in the request.
+     *
+     * @param Request $request The request containing the new list title.
+     * @param BoardList $boardList The BoardList object to be updated.
+     *
+     * @return BoardList The updated BoardList object with the new title.
+     */
+    public function updateListTitle(Request $request, BoardList $boardList): BoardList
+    {
+        $boardList->title = $request->input('newListTitle');
+        $boardList->save();
+
+        $boardList->refresh();
+
+        return $boardList;
     }
 }

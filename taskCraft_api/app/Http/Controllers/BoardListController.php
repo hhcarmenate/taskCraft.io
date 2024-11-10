@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateBoardListRequest;
 use App\Http\Requests\UpdateListPositionRequest;
+use App\Http\Requests\UpdateListTitleRequest;
 use App\Http\Resources\BoardListResource;
 use App\Http\Traits\FailResponseTrait;
 use App\Models\Board;
+use App\Models\BoardList;
 use App\Services\BoardListService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -62,4 +64,20 @@ class BoardListController extends Controller
         }
     }
 
+    /**
+     * Update the title of a board list.
+     *
+     * @param UpdateListTitleRequest $request The request containing the new title for the list
+     * @param BoardList $boardList The board list to be updated
+     *
+     * @return JsonResponse|BoardListResource Returns a JSON response or a resource representing the updated board list
+     */
+    public function updateListTitle(UpdateListTitleRequest $request, BoardList $boardList): JsonResponse | BoardListResource
+    {
+        try {
+            return BoardListResource::make($this->boardListService->updateListTitle($request, $boardList));
+        } catch (Exception $e) {
+            return $this->genericFailResponse($e);
+        }
+    }
 }

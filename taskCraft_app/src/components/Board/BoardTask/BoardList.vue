@@ -3,6 +3,7 @@ import draggable from "vuedraggable";
 import AddBoardTask from "@/components/Board/BoardTask/AddBoardTask.vue";
 import {ref} from "vue";
 import BoardListTask from "@/components/Board/BoardTask/BoardListTask.vue";
+import BoardListTitleComponent from "@/components/Board/BoardTask/BoardListTitleComponent.vue";
 
 const emit = defineEmits(['add:task'])
 const props = defineProps({
@@ -31,7 +32,7 @@ const handleAddNewTask = (taskTitle) => {
         :key="currentElement.id"
         class="board-list bg-white shadow-md rounded p-4 w-64 flex flex-col dark:bg-gray-800"
       >
-        <h2 class="text-xl font-semibold mb-2">{{ currentElement.title }}</h2>
+        <BoardListTitleComponent :list-element="currentElement" />
         <div class="task-content h-full flex flex-col justify-between">
           <draggable
             v-model="currentElement.tasks"
