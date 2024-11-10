@@ -21,44 +21,39 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import draggable from "vuedraggable";
 import BoardList from "@/components/Board/BoardTask/BoardList.vue";
 import AddBoardList from "@/components/Board/BoardTask/AddBoardList.vue";
+import {ref} from "vue";
+import {useBoardStore} from "@/stores/useBoardStore.js";
 
-export default {
-  components: {AddBoardList, BoardList, draggable },
-  data() {
-    return {
-      lists: [
-        { id: 1, title: "To Do", tasks: [{ id: 1, name: "Task 1" }] },
-        { id: 2, title: "In Progress", tasks: [{ id: 2, name: "Task 2" }] },
-        { id: 3, title: "Done", tasks: [{ id: 3, name: "Task 3" }] },
-      ],
-      addingTask: false
-    };
-  },
-  methods: {
-    handleAddTask(data) {
-      this.lists.forEach((list) => {
-        if (list.id === data.id) {
-          const index = list.tasks.length + 1
-          list.tasks.push({ id: index, name: data.title })
-        }
-      })
+// Data
+const board = useBoardStore()
+const lists = ref( [
+  { id: 1, title: "To Do", tasks: [{ id: 1, name: "Task 1" }] },
+  { id: 2, title: "In Progress", tasks: [{ id: 2, name: "Task 2" }] },
+  { id: 3, title: "Done", tasks: [{ id: 3, name: "Task 3" }] },
+])
+const addingTask = ref(false)
 
-
-      console.log('add data', data)
-    },
-    handleAddNewList(listName) {
-      this.lists.push({
-        id: this.lists.length + 1,
-        title: listName,
-        tasks: []
-      })
+// Methods
+const handleAddTask = (data) => {
+  lists.value.forEach((list) => {
+    if (list.id === data.id) {
+      const index = list.tasks.length + 1
+      list.tasks.push({ id: index, name: data.title })
     }
-  },
-};
+  })
+}
+
+const handleAddNewList = (listName) => {
+  lists.value.push({
+    id: lists.value.length + 1,
+    title: listName,
+    tasks: []
+  })
+}
 </script>
 
 <style lang="scss" scoped>

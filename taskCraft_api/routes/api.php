@@ -25,18 +25,20 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
         Route::post('workspace/register-join', [WorkspaceController::class, 'registerAndJoin'])
             ->name('register-join');
 
+        Route::post('board/create-board', [BoardController::class, 'store'])
+            ->name('create-board');
+        Route::post('board/{board}/toggle-starred', [BoardController::class, 'toggleStarred'])
+            ->name('toggle-starred');
+        Route::post('board/{board}/create-list', [BoardListController::class, 'createList'])
+            ->name('create-list');
+
+
         Route::get('user/{user}/profile', [UserProfileController::class, 'getUserProfile'])
             ->name('get-user-profile');
         Route::post('user/{user}/update-main-profile', [UserProfileController::class, 'updateMainProfile'])
             ->name('update-main-profile');
         Route::post('user/{user}/update-general-info-profile', [UserProfileController::class, 'updateGeneralProfile'])
             ->name('update-main-profile');
-
-
-        Route::post('board/create-board', [BoardController::class, 'store'])
-            ->name('create-board');
-        Route::post('board/{board}/toggle-starred', [BoardController::class, 'toggleStarred'])
-            ->name('toggle-starred');
 
     });
 
