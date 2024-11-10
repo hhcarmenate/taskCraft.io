@@ -42,7 +42,7 @@ class BoardListService
             ->orderBy('position', 'Desc')
             ->first();
 
-        if ($lastPost) {
+        if (!$lastPost) {
             return 1;
         }
 

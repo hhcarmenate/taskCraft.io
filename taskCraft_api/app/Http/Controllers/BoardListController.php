@@ -3,16 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateBoardListRequest;
-use App\Http\Requests\StoreBoardRequest;
-use App\Http\Requests\UpdateBoardRequest;
 use App\Http\Resources\BoardListResource;
-use App\Http\Resources\BoardResource;
 use App\Http\Traits\FailResponseTrait;
 use App\Models\Board;
 use App\Services\BoardListService;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class BoardListController extends Controller
 {

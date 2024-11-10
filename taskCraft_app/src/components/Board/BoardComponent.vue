@@ -1,9 +1,9 @@
 <template>
   <div class="board-container flex flex-nowrap gap-4 p-4 dark:bg-gray-700  overflow-x-scroll">
     <draggable
-      v-model="lists"
+      v-model="board.lists"
       group="lists"
-      class="flex gap-4"
+      class="flex gap-4 min-h-[95%]"
       :options="{ animation: 200 }"
       item-key="id"
     >
@@ -30,16 +30,13 @@ import {useBoardStore} from "@/stores/useBoardStore.js";
 
 // Data
 const board = useBoardStore()
-const lists = ref( [
-  { id: 1, title: "To Do", tasks: [{ id: 1, name: "Task 1" }] },
-  { id: 2, title: "In Progress", tasks: [{ id: 2, name: "Task 2" }] },
-  { id: 3, title: "Done", tasks: [{ id: 3, name: "Task 3" }] },
-])
+
 const addingTask = ref(false)
+
 
 // Methods
 const handleAddTask = (data) => {
-  lists.value.forEach((list) => {
+  board.lists.forEach((list) => {
     if (list.id === data.id) {
       const index = list.tasks.length + 1
       list.tasks.push({ id: index, name: data.title })
@@ -48,8 +45,8 @@ const handleAddTask = (data) => {
 }
 
 const handleAddNewList = (listName) => {
-  lists.value.push({
-    id: lists.value.length + 1,
+  board.lists.push({
+    id: board.lists.length + 1,
     title: listName,
     tasks: []
   })
@@ -63,7 +60,7 @@ const handleAddNewList = (listName) => {
 }
 
 .board-list {
-  min-height: 200px;
+  min-height: 95%;
 }
 
 .task {
