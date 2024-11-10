@@ -22,10 +22,19 @@ class BoardResource extends JsonResource
             'workspace_id' => $this->workspace_id,
             'visibility' => $this->visibility,
             'starred' => $this->getStarredStatus(),
-            'lists' => BoardListResource::collection($this->lists)
+            'lists' => BoardListResource::collection($this->orderedLists())
         ];
-
     }
+
+    /**
+     * Return this lists but ordered
+     * @return mixed
+     */
+    private function orderedLists()
+    {
+        return $this->lists->sortBy('position');
+    }
+
 
     /**
      * Retrieves the starred status of the current board for the authenticated user.

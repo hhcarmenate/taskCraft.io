@@ -42,7 +42,11 @@ const onSubmit = async () => {
     sending.value = true
     const response = await board.createList({ title: listName.value })
 
-    console.log(response)
+    if (response.status >= 200 && response.status < 300) {
+      notify('success', 'Board list added successfully!')
+    } else {
+      notify('error', 'Oops something went wrong!')
+    }
   } catch(e) {
     console.log(e)
 

@@ -32,6 +32,8 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
             ->name('toggle-starred');
         Route::post('board/{board}/create-list', [BoardListController::class, 'createList'])
             ->name('create-list');
+        Route::put('board/{board}/update-lists-positions', [BoardListController::class, 'updatePositions'])
+            ->name('update-lists-positions');
 
 
         Route::get('user/{user}/profile', [UserProfileController::class, 'getUserProfile'])

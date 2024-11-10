@@ -25,14 +25,13 @@
 import draggable from "vuedraggable";
 import BoardList from "@/components/Board/BoardTask/BoardList.vue";
 import AddBoardList from "@/components/Board/BoardTask/AddBoardList.vue";
-import {ref} from "vue";
 import {useBoardStore} from "@/stores/useBoardStore.js";
+import {watch} from "vue";
+import useNotification from "@/composables/useNotification.js";
 
 // Data
 const board = useBoardStore()
-
-const addingTask = ref(false)
-
+const {notify} = useNotification()
 
 // Methods
 const handleAddTask = (data) => {
@@ -51,6 +50,30 @@ const handleAddNewList = (listName) => {
     tasks: []
   })
 }
+
+const updatePosition = async (positions) => {
+  console.log('new positions', positions)
+  try {
+    await board.updateListsPositions(positions)
+  } catch(e) {
+    console.log(e)
+    notify('error', 'Oops, something went wrong')
+  }
+}
+
+// Observers
+watch(() => board.lists, (newList) => {
+  if (newList) {
+    let newPositions = []
+
+    newPositions = newList.map((list, index) => {
+      return { position: index + 1, id: list.id }
+    })
+
+    updatePosition(newPositions)
+  }
+}, {immediate: true})
+
 </script>
 
 <style lang="scss" scoped>

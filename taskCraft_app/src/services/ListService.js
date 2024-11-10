@@ -11,6 +11,16 @@ class ListService {
     })
   }
 
+  async updateListPositions({positions, boardId}){
+    return await TASKCRAFT_API.get('sanctum/csrf-cookie', {
+      baseURL: import.meta.env.VITE_APP_TASKCRAFT_API
+    }).then(async () => {
+      return await TASKCRAFT_API.put(`board/${boardId}/update-lists-positions`, {
+        positions,
+      })
+    })
+  }
+
 }
 
 export default new ListService()

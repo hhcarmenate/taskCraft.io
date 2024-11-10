@@ -6,6 +6,7 @@ use App\Models\Board;
 use App\Models\BoardList;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BoardListService
 {
@@ -47,5 +48,33 @@ class BoardListService
         }
 
         return $lastPost->position + 1;
+    }
+
+
+    /**
+     * Updating board positions.
+     * @throws Exception
+     */
+    public function updateBoardListPositions($request, $board): void
+    {
+        try {
+            $positions = $request->input('positions');
+            if (count($positions)) {
+                foreach($positions as $position) {
+                    $list = BoardList::query()
+                        ->where('board_id', $board->id)
+                        ->where('id', $position['id'])
+                        ->first();
+
+                    if ($list) {
+                        $list->position = $position['position'];
+                        $list->save();
+                    }
+
+                }
+            }
+        } catch (Exception $e) {
+            throw new Exception('Oops! Something went wrong'. $e->getMessage());
+        }
     }
 }
