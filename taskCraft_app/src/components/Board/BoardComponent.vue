@@ -1,5 +1,5 @@
 <template>
-  <div class="board-container flex flex-wrap gap-4 p-4 dark:bg-gray-700  overflow-x-scroll">
+  <div class="board-container flex flex-nowrap gap-4 p-4 dark:bg-gray-700  overflow-x-scroll">
     <draggable
       v-model="lists"
       group="lists"
@@ -15,20 +15,25 @@
         />
       </template>
     </draggable>
+    <AddBoardList
+      @update:new-list="handleAddNewList"
+    />
   </div>
 </template>
 
 <script>
 import draggable from "vuedraggable";
 import BoardList from "@/components/Board/BoardTask/BoardList.vue";
+import AddBoardList from "@/components/Board/BoardTask/AddBoardList.vue";
 
 export default {
-  components: {BoardList, draggable },
+  components: {AddBoardList, BoardList, draggable },
   data() {
     return {
       lists: [
         { id: 1, title: "To Do", tasks: [{ id: 1, name: "Task 1" }] },
         { id: 2, title: "In Progress", tasks: [{ id: 2, name: "Task 2" }] },
+        { id: 3, title: "Done", tasks: [{ id: 3, name: "Task 3" }] },
       ],
       addingTask: false
     };
@@ -44,6 +49,13 @@ export default {
 
 
       console.log('add data', data)
+    },
+    handleAddNewList(listName) {
+      this.lists.push({
+        id: this.lists.length + 1,
+        title: listName,
+        tasks: []
+      })
     }
   },
 };
@@ -52,7 +64,6 @@ export default {
 <style lang="scss" scoped>
 .board-container {
   width: 100%;
-  max-width: 100%;
   min-height: 95%;
 }
 
