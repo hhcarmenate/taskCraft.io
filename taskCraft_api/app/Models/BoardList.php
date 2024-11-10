@@ -10,7 +10,7 @@ class BoardList extends Model
 {
     /** @use HasFactory<\Database\Factories\BoardFactory> */
     use HasFactory;
-    protected $table = 'boards';
+    protected $table = 'board_lists';
 
     protected $fillable = [
         'board_id',
@@ -26,6 +26,6 @@ class BoardList extends Model
      */
     public function board(): BelongsTo
     {
-        return $this->belongsTo(Board::class, 'board', 'id');
+        return $this->belongsTo(Board::class, 'board_id', 'id');
     }
 }

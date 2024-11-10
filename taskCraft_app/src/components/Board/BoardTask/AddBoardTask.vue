@@ -40,7 +40,6 @@ const cancelAddTask = () => {
     >
       <TextareaInput
         name="taskName"
-        label="Task Title"
         show-error
         v-model="taskName"
         placeholder="Task Title"

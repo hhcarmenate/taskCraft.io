@@ -4,6 +4,7 @@ import {Form} from "vee-validate";
 import TextInput from "@/components/fields/TextInput.vue";
 import {toTypedSchema} from "@vee-validate/zod";
 import * as zod from 'zod'
+import useNotification from "@/composables/useNotification.js";
 
 // Emits
 const emit = defineEmits(['update:newList'])
@@ -11,6 +12,8 @@ const emit = defineEmits(['update:newList'])
 // Data
 const addingList = ref(false)
 const listName = ref('')
+const sending = ref(false)
+const { notify } = useNotification()
 
 // Computed
 const validationSchema = computed(() => {
@@ -32,7 +35,19 @@ const showAddList = () => {
  addingList.value = true
 }
 
-const onSubmit = () => {
+const onSubmit = async () => {
+  try {
+    sending.value = true
+    const response = await ListService.createList()
+
+
+  } catch(e) {
+    console.log(e)
+
+    notify('error', 'Oops something went wrong!')
+  } finally {
+    sending.value = false
+  }
   emit('update:newList', listName.value)
   addingList.value = false
 }

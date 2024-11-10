@@ -21,7 +21,8 @@ class BoardResource extends JsonResource
             'title' => $this->title,
             'workspace_id' => $this->workspace_id,
             'visibility' => $this->visibility,
-            'starred' => $this->getStarredStatus()
+            'starred' => $this->getStarredStatus(),
+            'lists' => BoardListResource::collection($this->lists)
         ];
 
     }

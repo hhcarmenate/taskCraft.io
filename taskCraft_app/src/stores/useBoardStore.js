@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import BoardService from "@/services/BoardService.js";
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
+import ListService from "@/services/ListService.js";
 
 export const useBoardStore = defineStore('board', {
   state: () => ({
@@ -8,7 +9,8 @@ export const useBoardStore = defineStore('board', {
     title: '',
     workspace: '',
     visibility: '',
-    starred: false
+    starred: false,
+    lists: []
   }),
   actions: {
     async createBoard({ title, workspaceSelected, visibility}){
@@ -25,6 +27,7 @@ export const useBoardStore = defineStore('board', {
       this.workspace = board.workspace
       this.visibility = board.visibility
       this.starred = board.starred
+      this.lists = board.lists
     },
 
     initCurrentBoardFromWorkspace(boardId) {
@@ -37,6 +40,10 @@ export const useBoardStore = defineStore('board', {
 
         this.initCurrentBoard(selectedBoard)
       }
+    },
+
+    async createList({title}) {
+      return await ListService.createBoardList({title, boardId: this.id})
     }
   },
   getters: {
