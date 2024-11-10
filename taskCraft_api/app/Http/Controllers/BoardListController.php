@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateBoardListRequest;
+use App\Http\Requests\UpdateListPositionRequest;
 use App\Http\Resources\BoardListResource;
 use App\Http\Traits\FailResponseTrait;
 use App\Models\Board;
@@ -37,6 +38,25 @@ class BoardListController extends Controller
     {
         try {
             return BoardListResource::make($this->boardListService->createBoardList($request, $board));
+        } catch (Exception $e) {
+            return $this->genericFailResponse($e);
+        }
+    }
+
+    /**
+     * Update the positions of board lists.
+     *
+     * @param UpdateListPositionRequest $request The request containing the updated list positions
+     * @param Board $board The board to update list positions for
+     *
+     * @return JsonResponse A JSON response indicating the success or failure of updating positions
+     */
+    public function updatePositions(UpdateListPositionRequest $request, Board $board): JsonResponse
+    {
+        try {
+            $this->boardListService->updateBoardListPositions($request, $board);
+
+            return response()->json(['message' => 'Positions updated successfully']);
         } catch (Exception $e) {
             return $this->genericFailResponse($e);
         }

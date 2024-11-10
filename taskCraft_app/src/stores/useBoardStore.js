@@ -44,6 +44,12 @@ export const useBoardStore = defineStore('board', {
 
     async createList({title}) {
       return await ListService.createBoardList({title, boardId: this.id})
+    },
+
+    async updateListsPositions(positions) {
+      if (this.id) {
+        return await ListService.updateListPositions({positions, boardId: this.id})
+      }
     }
   },
   getters: {
