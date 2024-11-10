@@ -34,6 +34,8 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
             ->name('create-list');
         Route::put('board/{board}/update-lists-positions', [BoardListController::class, 'updatePositions'])
             ->name('update-lists-positions');
+        Route::put('list/{boardList}/update-lists-title', [BoardListController::class, 'updateListTitle'])
+            ->name('update-lists-title');
 
 
         Route::get('user/{user}/profile', [UserProfileController::class, 'getUserProfile'])

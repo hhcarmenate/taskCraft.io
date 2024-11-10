@@ -50,6 +50,10 @@ export const useBoardStore = defineStore('board', {
       if (this.id) {
         return await ListService.updateListPositions({positions, boardId: this.id})
       }
+    },
+
+    async updateListName({ listId, newListTitle }) {
+      return await ListService.updateTitle({ listId, newListTitle })
     }
   },
   getters: {
