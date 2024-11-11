@@ -21,6 +21,7 @@ const currentElement = ref(props.listElement)
 const board = useBoardStore()
 const elementTasks = ref(props.listElement.tasks)
 const {notify} = useNotification()
+const draggedItem = ref(null)
 
 // Methods
 const showAddTask = () => {
@@ -48,7 +49,6 @@ const updateLists = async (tasks) => {
     })
 
     if (response.status === 200) {
-      // todo update lists in board
     } else {
       notify('error', 'Oops something went wrong!')
     }
@@ -67,7 +67,6 @@ watch(() => elementTasks.value, (newTasks) => {
   deep: true
 })
 
-
 </script>
 
 <template>
@@ -84,6 +83,7 @@ watch(() => elementTasks.value, (newTasks) => {
             :options="{ animation: 200 }"
             item-key="id"
             @move="handleMove"
+            :ghostClass="'task-ghost'"
           >
             <template #item="{ element }">
               <BoardListTask
@@ -113,5 +113,13 @@ watch(() => elementTasks.value, (newTasks) => {
 </template>
 
 <style scoped>
+.sortable-chosen {
+  opacity: 0.1;
+  background-color: #7e5454;
+  transform: rotate(-2deg);
+}
 
+.flip-list-move {
+  transform: rotate(-2deg)
+}
 </style>
