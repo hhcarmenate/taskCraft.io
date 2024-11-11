@@ -38,8 +38,8 @@ const handleMove = (data) => {
 
 const updateLists = async (tasks) => {
   try {
-    const tasksInOrder = tasks.map((task) => {
-      return { id: task.id, position: task.position }
+    const tasksInOrder = tasks.map((task, index) => {
+      return { id: task.id, position: index + 1 }
     })
 
     const response = await board.updateLists({
@@ -61,7 +61,8 @@ const updateLists = async (tasks) => {
 }
 
 watch(() => elementTasks.value, (newTasks) => {
-  updateLists(newTasks, )
+  console.log(newTasks)
+  updateLists(newTasks)
 }, {
   deep: true
 })

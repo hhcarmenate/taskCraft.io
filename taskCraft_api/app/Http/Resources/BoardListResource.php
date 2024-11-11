@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class BoardListResource extends JsonResource
 {
@@ -21,7 +20,16 @@ class BoardListResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'position' => $this->position,
-            'tasks' => TaskResource::collection($this->tasks)
+            'tasks' => TaskResource::collection($this->orderByPosition())
         ];
+    }
+
+    /**
+     * Orders the tasks by their position attribute in ascending order.
+     *
+     * This method sorts the*/
+    private function orderByPosition()
+    {
+        return $this->tasks->sortBy('position');
     }
 }
