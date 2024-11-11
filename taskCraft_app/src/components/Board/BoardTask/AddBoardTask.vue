@@ -36,9 +36,15 @@ const onSubmit = async () => {
     })
 
     if (response.status >= 200 && response.status < 300) {
-      // todo: Update board data
+      const { data } = response.data
+
+      const currentList = board.lists.find((selectedList) => selectedList.id === props.boardList.id)
+
+      if (currentList) {
+        currentList.tasks.push(data)
+      }
+
       emit('update:cancel')
-      console.log(response)
     } else {
       notify('error', 'Oops something went wrong!')
     }
