@@ -5,6 +5,7 @@ import CreateWorkspaceModal from "@/components/modals/Workspace/CreateWorkspaceM
 import {useUserStore} from "@/stores/useUserStore.js";
 import HeaderWorkspace from "@/components/Header/HeaderComponents/HeaderWorkspace.vue";
 import ProfileImage from "@/components/Profile/profile-images/ProfileImage.vue";
+import HeaderStarredBoards from "@/components/Header/HeaderComponents/HeaderStarredBoards.vue";
 
 // Data
 const dropdownOpen = ref(false)
@@ -135,12 +136,7 @@ const showWorkspaceModal = () => {
             </div>
           </li>
           <li>
-            <a
-              href="#"
-              class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-info-700 md:p-1 dark:text-white md:dark:hover:bg-gray-700 dark:hover:bg-gray-700 dark:hover:text-green-500 md:dark:hover:bg-gray-700"
-            >
-              Starred
-            </a>
+            <HeaderStarredBoards />
           </li>
           <li>
             <div class="flex items-center md:p-1">

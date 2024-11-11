@@ -74,6 +74,24 @@ export const useWorkspaceStore = defineStore('workspace', {
 
     async registerAndJoin({name, email, password, workspace}) {
       return await WorkspaceService.registerAndJoin({name, email, password, workspace})
+    },
+  },
+
+  getters: {
+    starredBoard() {
+      let userStarredBoards = []
+
+      this.workspaces.forEach((workspace) => {
+        if (workspace.boards) {
+          workspace.boards.forEach((board) => {
+            if (board.starred === true) {
+              userStarredBoards.push(board)
+            }
+          })
+        }
+      })
+
+      return userStarredBoards
     }
   }
 })
