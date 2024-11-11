@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTasksListsRequest;
+use App\Http\Resources\BoardListResource;
 use App\Http\Resources\TaskResource;
 use App\Http\Traits\FailResponseTrait;
 use App\Models\BoardList;
@@ -36,6 +38,15 @@ class TaskController extends Controller
     {
         try {
             return TaskResource::make($this->taskService->createListTask($request, $boardList));
+        } catch (Exception $e) {
+            return $this->genericFailResponse($e);
+        }
+    }
+
+    public function updateTasksLists(UpdateTasksListsRequest $request, BoardList $boardList): BoardListResource|JsonResponse
+    {
+        try {
+            return BoardListResource::make($this->taskService->updateTasksLists($request, $boardList));
         } catch (Exception $e) {
             return $this->genericFailResponse($e);
         }

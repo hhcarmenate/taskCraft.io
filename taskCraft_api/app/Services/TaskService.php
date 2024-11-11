@@ -55,4 +55,32 @@ class TaskService
         return $lastTask->position + 1;
     }
 
+    /**
+     * Update the positions of tasks within a given board list based on the provided request data.
+     *
+     * @param Request $request The request object containing task information, including task positions.
+     * @param BoardList $boardList The board list whose tasks' positions will be updated.
+     *
+     * @return BoardList The board list after updating the tasks' positions.
+     */
+    public function updateTasksLists(Request $request, BoardList $boardList): BoardList
+    {
+        $tasks = $request->input('tasks');
+
+        if (count($tasks)) {
+            foreach ($tasks as $task) {
+                Task::query()
+                    ->where('id', $task['id'])
+                    ->update([
+                        'position' => $task['position'],
+                        'list_id' => $boardList->id
+                    ]);
+            }
+        }
+
+        $boardList->refresh();
+
+        return $boardList;
+    }
+
 }

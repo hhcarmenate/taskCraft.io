@@ -40,6 +40,8 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
 
         Route::post('list/{boardList}/create-task', [TaskController::class, 'createTask'])
             ->name('create-task');
+        Route::post('list/{boardList}/update-task-list', [TaskController::class, 'updateTasksLists'])
+            ->name('update-tasks-lists');
 
 
         Route::get('user/{user}/profile', [UserProfileController::class, 'getUserProfile'])

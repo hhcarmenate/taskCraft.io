@@ -2,6 +2,7 @@ import {defineStore} from "pinia";
 import BoardService from "@/services/BoardService.js";
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 import ListService from "@/services/ListService.js";
+import {watch} from "vue";
 
 export const useBoardStore = defineStore('board', {
   state: () => ({
@@ -58,6 +59,10 @@ export const useBoardStore = defineStore('board', {
 
     async addTaskToBoardList({ boardListId, taskTitle }) {
       return await ListService.createTask({ boardListId, taskTitle })
+    },
+
+    async updateLists({tasks, listId}) {
+      return await ListService.updateTasksList({tasks, listId} )
     }
   },
   getters: {
