@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\BoardListController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\WorkspaceController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,9 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
             ->name('update-lists-positions');
         Route::put('list/{boardList}/update-lists-title', [BoardListController::class, 'updateListTitle'])
             ->name('update-lists-title');
+
+        Route::post('list/{boardList}/create-task', [TaskController::class, 'createTask'])
+            ->name('create-task');
 
 
         Route::get('user/{user}/profile', [UserProfileController::class, 'getUserProfile'])

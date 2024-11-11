@@ -4,21 +4,50 @@ import {computed, ref} from "vue";
 import {Form} from "vee-validate";
 import {toTypedSchema} from "@vee-validate/zod";
 import * as zod from "zod";
+import useNotification from "@/composables/useNotification.js";
+import {useBoardStore} from "@/stores/useBoardStore.js";
 
 const emit = defineEmits(['update:cancel', 'update:new'])
-const taskName = ref()
+const props = defineProps({
+  boardList: {
+    type: Object,
+    default: true
+  }
+})
+
+const taskTitle = ref()
+const { notify } = useNotification()
+const board = useBoardStore()
 
 const validationSchema = computed(() => {
   return toTypedSchema(
     zod.object({
-      taskName: zod.string({message: 'Task title is required'})
+      taskTitle: zod.string({message: 'Task title is required'})
         .min(5,{message: 'Task should have at least 5 characters long'})
     })
   )
 })
 
-const onSubmit = () => {
-  emit('update:new', taskName.value)
+const onSubmit = async () => {
+  try {
+    const response = await board.addTaskToBoardList({
+      boardListId: props.boardList.id,
+      taskTitle: taskTitle.value
+    })
+
+    if (response.status >= 200 && response.status < 300) {
+      // todo: Update board data
+      emit('update:cancel')
+      console.log(response)
+    } else {
+      notify('error', 'Oops something went wrong!')
+    }
+
+  } catch (e) {
+    console.log(e)
+
+    notify('error', 'Oops something went wrong!')
+  }
 }
 
 const onInvalidSubmit = (error) => {
@@ -39,9 +68,9 @@ const cancelAddTask = () => {
       @invalid-submit="onInvalidSubmit"
     >
       <TextareaInput
-        name="taskName"
+        name="taskTitle"
         show-error
-        v-model="taskName"
+        v-model="taskTitle"
         placeholder="Task Title"
       />
       <div class="flex flex-row gap-2">

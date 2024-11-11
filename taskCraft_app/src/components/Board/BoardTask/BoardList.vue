@@ -48,6 +48,7 @@ const handleAddNewTask = (taskTitle) => {
             </template>
           </draggable>
           <AddBoardTask
+            :board-list="listElement"
             v-if="addingTask"
             @update:cancel="addingTask = false"
             @update:new="handleAddNewTask"
