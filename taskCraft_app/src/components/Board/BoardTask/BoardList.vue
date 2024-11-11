@@ -1,10 +1,13 @@
 <script setup>
 import draggable from "vuedraggable";
 import AddBoardTask from "@/components/Board/BoardTask/AddBoardTask.vue";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import BoardListTask from "@/components/Board/BoardTask/BoardListTask.vue";
 import BoardListTitleComponent from "@/components/Board/BoardTask/BoardListTitleComponent.vue";
+import {useBoardStore} from "@/stores/useBoardStore.js";
+import useNotification from "@/composables/useNotification.js";
 
+// Emits ands Props
 const emit = defineEmits(['add:task'])
 const props = defineProps({
   listElement: {
@@ -12,18 +15,57 @@ const props = defineProps({
     required: true
   }
 })
-const addingTask = ref(false)
 
+const addingTask = ref(false)
+const currentElement = ref(props.listElement)
+const board = useBoardStore()
+const elementTasks = ref(props.listElement.tasks)
+const {notify} = useNotification()
+
+// Methods
 const showAddTask = () => {
   addingTask.value = true
 }
-
-const currentElement = ref(props.listElement)
 
 const handleAddNewTask = (taskTitle) => {
   emit('add:task', {id: currentElement.value.id, title: taskTitle})
   addingTask.value = false
 }
+
+const handleMove = (data) => {
+  console.log(data.draggedContext)
+}
+
+const updateLists = async (tasks) => {
+  try {
+    const tasksInOrder = tasks.map((task) => {
+      return { id: task.id, position: task.position }
+    })
+
+    const response = await board.updateLists({
+      listId: props.listElement.id,
+      tasks: tasksInOrder
+    })
+
+    if (response.status === 200) {
+      // todo update lists in board
+    } else {
+      notify('error', 'Oops something went wrong!')
+    }
+
+    } catch (e) {
+      console.log(e)
+
+      notify('error', 'Oops something went wrong')
+    }
+}
+
+watch(() => elementTasks.value, (newTasks) => {
+  updateLists(newTasks, )
+}, {
+  deep: true
+})
+
 
 </script>
 
@@ -35,11 +77,12 @@ const handleAddNewTask = (taskTitle) => {
         <BoardListTitleComponent :list-element="currentElement" />
         <div class="task-content h-full flex flex-col justify-between">
           <draggable
-            v-model="currentElement.tasks"
+            v-model="elementTasks"
             group="tasks"
             class="flex flex-col gap-2"
             :options="{ animation: 200 }"
             item-key="id"
+            @move="handleMove"
           >
             <template #item="{ element }">
               <BoardListTask
