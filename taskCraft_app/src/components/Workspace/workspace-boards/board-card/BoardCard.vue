@@ -68,14 +68,16 @@ const handleBoardClick = async () => {
 </script>
 
 <template>
-  <div
-    class="board-card rounded rounded-4 px-2 py-1 hand font-semibold"
-    :class="bgComputed"
-    @mouseenter="handleMouseEnter"
-    @mouseleave="handleMouseLeave"
-    @click="handleBoardClick()"
-  >
-    {{ workspaceBoard.title }}
+  <div class="board-container">
+    <div
+      class="board-card rounded rounded-4 px-2 py-1 hand font-semibold"
+      :class="bgComputed"
+      @mouseenter="handleMouseEnter"
+      @mouseleave="handleMouseLeave"
+      @click="handleBoardClick()"
+    >
+      {{ workspaceBoard.title }}
+    </div>
     <SolidStarIcon
       v-if="workspaceBoard.starred"
       class="star-icon"
@@ -89,6 +91,7 @@ const handleBoardClick = async () => {
     />
   </div>
 
+
 </template>
 
 <style scoped>
@@ -96,8 +99,11 @@ const handleBoardClick = async () => {
   cursor: pointer;
 }
 
+.board-container {
+  position: relative
+}
+
 .board-card {
-  position: relative;
   min-height: 80px;
   display: flex;
   flex-direction: column;

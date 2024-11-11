@@ -73,7 +73,7 @@ const membersComputed = computed(() => {
 
       <div
         class="pb-6 text-sm mt-5"
-        v-if="workspaceMembers.length"
+        v-if="workspaceMembers.length || workspaceOwner"
       >
         <div class="flex flex-row gap-4 justify-between items-center" >
           <ul class="w-full">
@@ -97,7 +97,7 @@ const membersComputed = computed(() => {
           </ul>
         </div>
 
-        <div class="mb-2">
+        <div class="mb-2" v-if="workspaceMembers.length">
           <TextInput
             placeholder="Filter by name"
             v-model="searchValue"
