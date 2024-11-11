@@ -9,7 +9,6 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class BoardService
 {
@@ -91,6 +90,8 @@ class BoardService
         }
 
         return StarredUserBoard::query()
-            ->where('user_id', Auth::user()->id)->count() ?? 0;
+            ->where('user_id', Auth::user()->id)
+            ->where('is_starred', 1)
+            ->count() ?? 0;
     }
 }

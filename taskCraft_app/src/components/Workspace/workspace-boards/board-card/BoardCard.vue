@@ -34,7 +34,10 @@ const bgComputed = computed(() => {
 const handleMouseEnter = () => isHovered.value = true;
 const handleMouseLeave = () => isHovered.value = false;
 
-const toggleStarred = async () => {
+const toggleStarred = async (event) => {
+  event.stopPropagation();
+  console.log('click')
+
   try {
     const response = await board.toggleStarred(props.workspaceBoard.id, !props.workspaceBoard.starred)
 
@@ -74,21 +77,26 @@ const handleBoardClick = async () => {
       :class="bgComputed"
       @mouseenter="handleMouseEnter"
       @mouseleave="handleMouseLeave"
-      @click="handleBoardClick()"
+      @click="handleBoardClick"
     >
       {{ workspaceBoard.title }}
     </div>
-    <SolidStarIcon
+    <button
       v-if="workspaceBoard.starred"
-      class="star-icon"
       @click="toggleStarred"
-    />
+      class="star-icon"
+    >
+      <SolidStarIcon />
+    </button>
 
-    <OutlineStarIcon
-      v-if="!workspaceBoard.starred && isHovered"
-      class="star-icon"
+    <button
       @click="toggleStarred"
-    />
+      v-if="!workspaceBoard.starred "
+      class="star-icon"
+    >
+      <OutlineStarIcon />
+    </button>
+
   </div>
 
 

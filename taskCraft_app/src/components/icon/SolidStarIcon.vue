@@ -4,9 +4,14 @@ import { defineComponent } from 'vue';
 defineComponent({
   name: 'HeroiconsStarSolid',
 });
+
+
 </script>
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+  <svg
+    @click="$emit('click', $event)"
+    xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+  >
     <path
       fill="#f1b900"
       fill-rule="evenodd"
