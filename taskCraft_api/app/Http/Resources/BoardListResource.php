@@ -21,6 +21,7 @@ class BoardListResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'position' => $this->position,
+            'tasks' => TaskResource::collection($this->tasks)
         ];
     }
 }
