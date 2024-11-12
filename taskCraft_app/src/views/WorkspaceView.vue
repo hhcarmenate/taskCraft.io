@@ -1,14 +1,8 @@
 <script setup>
-import {onMounted} from "vue";
-import {initFlowbite} from "flowbite";
 import WorkspaceIntro from "@/components/Workspace/workspace-intro/WorkspaceIntro.vue";
 import SuggestedTemplates from "@/components/Workspace/suggested-templates/SuggestedTemplates.vue";
 import WorkspaceBoard from "@/components/Workspace/workspace-boards/WorkspaceBoard.vue";
 
-
-onMounted(() => {
-  initFlowbite()
-})
 
 </script>
 

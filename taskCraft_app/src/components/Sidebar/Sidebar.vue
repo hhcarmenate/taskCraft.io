@@ -1,17 +1,16 @@
 <script setup>
 import TCIcon from "@/components/icon/TCIcon.vue";
 import {computed, onMounted} from "vue";
-import {initFlowbite} from "flowbite";
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 import {useRoute} from "vue-router";
+import {initDropdowns} from "flowbite";
 
 
 const workspace = useWorkspaceStore()
 const route = useRoute()
 
 onMounted(() => {
-  initFlowbite()
-
+  initDropdowns()
   if (!workspace.currentWorkspace && route.params.name) {
     workspace.initCurrentWorkspace(route.params.name)
   }
@@ -21,12 +20,16 @@ const memberRoute = computed(() => {
   if (workspace.currentWorkspace?.name) {
     return `/workspace/${workspace.currentWorkspace.name}/members`
   }
+
+  return ''
 })
 
 const boardsRoute = computed(() => {
   if (workspace.currentWorkspace?.name) {
     return `/workspace/${workspace.currentWorkspace.name}`
   }
+
+  return ''
 })
 
 </script>

@@ -1,12 +1,12 @@
 <script setup>
 import {computed, onMounted} from "vue";
-import {initFlowbite} from "flowbite";
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
+import {initDropdowns} from "flowbite";
 
 const workspace = useWorkspaceStore()
 
 onMounted(() => {
-  initFlowbite()
+  initDropdowns()
 })
 
 const hasRecentBoards = computed(() => workspace.recentBoards.length)

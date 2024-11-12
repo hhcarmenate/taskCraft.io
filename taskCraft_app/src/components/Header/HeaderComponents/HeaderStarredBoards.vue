@@ -2,8 +2,8 @@
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 import {computed, onMounted} from "vue";
 import {useRouter} from "vue-router";
-import {initFlowbite} from "flowbite";
 import {useUserStore} from "@/stores/useUserStore.js";
+import {initDropdowns} from "flowbite";
 
 // Data
 const workspace = useWorkspaceStore()
@@ -12,7 +12,7 @@ const router = useRouter()
 const user = useUserStore()
 
 onMounted(() => {
-  initFlowbite()
+  initDropdowns()
 })
 
 const handleRedirectBoard = (star) => {
