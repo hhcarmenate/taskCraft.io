@@ -77,7 +77,7 @@ const showWorkspaceModal = () => {
               @hide-modal="handleUpdateShow(false)"
             />
           </li>
-          <li class="relative" v-click-outside="closeDropdown">
+          <li class="relative" >
             <HeaderRecent />
           </li>
           <li>

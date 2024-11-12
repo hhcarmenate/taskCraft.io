@@ -55,8 +55,8 @@ const handleRedirectRecent = (recent) => {
       </div>
       <ul class="py-1" role="none" v-else>
         <li
-          v-for="recent in workspace.recentBoards"
-          :key="recent.id"
+          v-for="(recent, index) in workspace.recentBoards"
+          :key="recent.id + ' ' + index"
           @click="handleRedirectRecent(recent)"
         >
           <a
