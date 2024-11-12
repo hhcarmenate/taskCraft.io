@@ -9,6 +9,8 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class BoardService
 {
@@ -94,4 +96,54 @@ class BoardService
             ->where('is_starred', 1)
             ->count() ?? 0;
     }
+
+    /**
+     * Saves a recent board for the current user.
+     *
+     * @param int $boardId The ID of the board to be saved as recent.
+     *
+     * @throws Exception
+     */
+    public function saveRecent(int $boardId)
+    {
+        try {
+            $board = Board::query()->find($boardId);
+            $user = Auth::user();
+            $cacheName = 'recent_boards_' . $user->id;
+
+            $recentBoards = collect(Cache::get($cacheName, []));
+
+            $filteredBoards = $recentBoards->filter(function($recent) use ($board) {
+                return $recent['id'] !== $board->id;
+            });
+
+            $filteredBoards->unshift($board);
+            $updatedRecentBoards = $filteredBoards->slice(0, 5);
+            Cache::put($cacheName, $updatedRecentBoards->toArray());
+
+            return $board;
+        } catch (Exception $e) {
+            Log::error('Recent Board cache fail', [$e]);
+
+            throw new Exception('Recent Board cache fail');
+        }
+    }
+
+    /**
+     * Retrieves the recent boards for the current user.
+     *
+     * This method fetches the recent boards for the currently authenticated user by retrieving the information stored in the cache.
+     */
+    public function getRecent()
+    {
+        $user = Auth::user();
+        $cacheBoards = Cache::get('recent_boards_' . $user->id, []);
+
+        return collect($cacheBoards)->map(function($boardData) {
+            $board = new Board($boardData);
+            $board->id = $boardData['id'];
+            return $board;
+        });
+    }
+
 }

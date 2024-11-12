@@ -1,10 +1,12 @@
 import {defineStore} from "pinia";
 import WorkspaceService from "@/services/WorkspaceService.js";
+import BoardService from "@/services/BoardService.js";
 
 export const useWorkspaceStore = defineStore('workspace', {
   state: () => ({
     workspaces: [],
-    currentWorkspace: null
+    currentWorkspace: null,
+    recentBoards: []
   }),
   actions: {
 
@@ -43,12 +45,22 @@ export const useWorkspaceStore = defineStore('workspace', {
 
     async fetchUserWorkspaces(userId) {
       try {
-        const response = await WorkspaceService.getUserWorkspaces(userId)
-        if (response.data) {
-          const { data } = response.data
 
+        const [workspaceResponse, recentBoardResponse] = await Promise.all([
+          WorkspaceService.getUserWorkspaces(userId),
+          BoardService.getRecentBoards()
+        ])
+
+        if (workspaceResponse.data) {
+          const { data } = workspaceResponse.data
           this.initWorkspaces(data)
         }
+
+        if (recentBoardResponse.data) {
+          const { data } = recentBoardResponse.data
+          this.recentBoards = data
+        }
+
       } catch (error) {
         console.error('Failed to fetch user profile:', error)
       }
@@ -75,6 +87,16 @@ export const useWorkspaceStore = defineStore('workspace', {
     async registerAndJoin({name, email, password, workspace}) {
       return await WorkspaceService.registerAndJoin({name, email, password, workspace})
     },
+
+    async saveRecentBoard(boardId){
+      const response = await BoardService.saveRecentBoard(boardId)
+
+      if (response.status >= 200 && response.status < 300) {
+        const { data } = response.data
+        this.recentBoards.unshift(data)
+        this.recentBoards = this.recentBoards.slice(0, 5)
+      }
+    }
   },
 
   getters: {

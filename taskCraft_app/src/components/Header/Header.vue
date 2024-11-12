@@ -6,6 +6,7 @@ import {useUserStore} from "@/stores/useUserStore.js";
 import HeaderWorkspace from "@/components/Header/HeaderComponents/HeaderWorkspace.vue";
 import ProfileImage from "@/components/Profile/profile-images/ProfileImage.vue";
 import HeaderStarredBoards from "@/components/Header/HeaderComponents/HeaderStarredBoards.vue";
+import HeaderRecent from "@/components/Header/HeaderComponents/HeaderRecent.vue";
 
 // Data
 const dropdownOpen = ref(false)
@@ -77,63 +78,7 @@ const showWorkspaceModal = () => {
             />
           </li>
           <li class="relative" v-click-outside="closeDropdown">
-            <button
-              @click="toggleDropdown"
-              id="dropdownNavbarLink"
-              class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-info-700 md:p-1 md:w-auto dark:text-white md:dark:hover:bg-gray-700 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-gray-700 dark:hover:text-green-500"
-            >
-              Recent
-              <svg
-                class="w-2.5 h-2.5 ms-2.5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 10 6"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="m1 1 4 4 4-4"
-                />
-              </svg>
-            </button>
-            <!-- Dropdown menu -->
-            <div
-              id="dropdownNavbar"
-              :class="{ hidden: !dropdownOpen }"
-              class="absolute right-0 z-10 mt-2 w-44 rounded-md shadow-lg bg-white ring-1 ring-gray-800 ring-opacity-5 dark:bg-gray-700 dark:divide-gray-600"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="dropdownNavbarLink"
-            >
-              <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
-                <li>
-                  <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-green-500">
-                    Dashboard
-                  </a>
-                </li>
-                <li>
-                  <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-green-500">
-                    Settings
-                  </a>
-                </li>
-                <li>
-                  <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-green-500">
-                    Earnings
-                  </a>
-                </li>
-              </ul>
-              <div class="py-1">
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-green-500"
-                >
-                  Sign out
-                </a>
-              </div>
-            </div>
+            <HeaderRecent />
           </li>
           <li>
             <HeaderStarredBoards />

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function() {
     Route::middleware('auth:sanctum')->group(function(){
+
+        // Workspace Routes
         Route::get('user/{user}/workspaces', [WorkspaceController::class, 'getWorkspaces' ])
             ->name('get-workspaces');
         Route::post('user/create-workspace', [WorkspaceController::class, 'store' ])
@@ -27,6 +29,7 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
         Route::post('workspace/register-join', [WorkspaceController::class, 'registerAndJoin'])
             ->name('register-join');
 
+        // Board Routes
         Route::post('board/create-board', [BoardController::class, 'store'])
             ->name('create-board');
         Route::post('board/{board}/toggle-starred', [BoardController::class, 'toggleStarred'])
@@ -35,15 +38,22 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
             ->name('create-list');
         Route::put('board/{board}/update-lists-positions', [BoardListController::class, 'updatePositions'])
             ->name('update-lists-positions');
+        Route::post('board/recent-boards', [BoardController::class, 'saveRecentBoard'])
+            ->name('save-recent-board');
+        Route::get('board/recent-boards', [BoardController::class, 'getRecentBoards'])
+            ->name('get-recent-boards');
+
+
+        // List Routes
         Route::put('list/{boardList}/update-lists-title', [BoardListController::class, 'updateListTitle'])
             ->name('update-lists-title');
-
         Route::post('list/{boardList}/create-task', [TaskController::class, 'createTask'])
             ->name('create-task');
         Route::post('list/{boardList}/update-task-list', [TaskController::class, 'updateTasksLists'])
             ->name('update-tasks-lists');
 
 
+        // User Routes
         Route::get('user/{user}/profile', [UserProfileController::class, 'getUserProfile'])
             ->name('get-user-profile');
         Route::post('user/{user}/update-main-profile', [UserProfileController::class, 'updateMainProfile'])

@@ -48,8 +48,7 @@ const updateLists = async (tasks) => {
       tasks: tasksInOrder
     })
 
-    if (response.status === 200) {
-    } else {
+    if (response.status === 200) { /* empty */ } else {
       notify('error', 'Oops something went wrong!')
     }
 
