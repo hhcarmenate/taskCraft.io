@@ -3,15 +3,12 @@ import Header from '@/components/Header/Header.vue'
 import Sidebar from "@/components/Sidebar/Sidebar.vue";
 import ModalOverlay from "@/components/modals/ModalOverlay.vue";
 import {onMounted} from "vue";
-import { initFlowbite } from 'flowbite'
 import {useUserStore} from "@/stores/useUserStore.js";
 import LoadingPage from "@/components/LoadingPage/LoadingPage.vue";
 
 const user = useUserStore()
 
 onMounted(async () => {
-  initFlowbite()
-
   await user.loadAppData()
 });
 

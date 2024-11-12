@@ -2,7 +2,7 @@
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 import {computed, onMounted} from "vue";
 import {useRouter} from "vue-router";
-import {initFlowbite} from "flowbite";
+import {initDropdowns} from "flowbite";
 import {useUserStore} from "@/stores/useUserStore.js";
 
 const emit = defineEmits(['showModal', 'hideModal'])
@@ -14,7 +14,7 @@ const router = useRouter()
 const user = useUserStore()
 
 onMounted(() => {
-  initFlowbite()
+  initDropdowns()
 })
 
 // Methods
