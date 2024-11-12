@@ -121,7 +121,7 @@ class BoardService
             $updatedRecentBoards = $filteredBoards->slice(0, 5);
             Cache::put($cacheName, $updatedRecentBoards->toArray());
 
-            return $board;
+            return $this->getRecent();
         } catch (Exception $e) {
             Log::error('Recent Board cache fail', [$e]);
 

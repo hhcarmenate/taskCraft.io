@@ -77,7 +77,7 @@ const showWorkspaceModal = () => {
               @hide-modal="handleUpdateShow(false)"
             />
           </li>
-          <li class="relative" >
+          <li >
             <HeaderRecent />
           </li>
           <li>
@@ -149,7 +149,3 @@ const showWorkspaceModal = () => {
   </nav>
   <CreateWorkspaceModal :show="showModal" @update:show="handleUpdateShow"/>
 </template>
-
-<style scoped>
-/* Scoped styles for optional customizations */
-</style>
