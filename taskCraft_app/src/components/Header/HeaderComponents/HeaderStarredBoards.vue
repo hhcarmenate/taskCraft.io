@@ -17,7 +17,11 @@ const dropdownClasses = computed(() => {
 
 const handleRedirectBoard = async (star) => {
   dropdownStarred.value = false
-  workspace.setCurrentWorkSpace(workspace.workspaces.find(work => work.id === star.id))
+
+  const current = workspace.workspaces.find((work) => {
+    return work.id === star.workspace_id
+  })
+  workspace.setCurrentWorkSpace(current)
   board.initCurrentBoard(star)
 
   await workspace.saveRecentBoard(star.id)
