@@ -65,6 +65,8 @@ const toggleStarred = async (event) => {
 const handleBoardClick = async () => {
   board.initCurrentBoard(props.workspaceBoard)
 
+  await workspace.saveRecentBoard(props.workspaceBoard.id)
+
   return await router.push(`/board/${props.workspaceBoard.id}`)
 }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveRecentBoardRequest;
 use App\Http\Requests\StoreBoardRequest;
 use App\Http\Requests\UpdateBoardRequest;
 use App\Http\Resources\BoardResource;
@@ -11,6 +12,7 @@ use App\Services\BoardService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class BoardController extends Controller
 {
@@ -66,36 +68,34 @@ class BoardController extends Controller
         }
     }
 
-
     /**
-     * Display the specified resource.
+     * Save the board specified in the request as a recent board.
+     *
+     * @param SaveRecentBoardRequest $request The request containing the board ID to be saved as recent.
+     *
+     * @return BoardResource|JsonResponse The resource representing the saved recent board.
      */
-    public function show(Board $board)
+    public function saveRecentBoard(SaveRecentBoardRequest $request): BoardResource | JsonResponse
     {
-        //
+        try {
+            return BoardResource::make($this->boardService->saveRecent($request->input('boardId')));
+        } catch (Exception $e) {
+            return $this->genericFailResponse($e);
+        }
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Get the most recent boards.
+     *
+     * @return JsonResponse|AnonymousResourceCollection A JSON response containing a collection of recent boards. If an exception occurs, a generic fail response is returned.
      */
-    public function edit(Board $board)
+    public function getRecentBoards(): JsonResponse|AnonymousResourceCollection
     {
-        //
+        try {
+            return BoardResource::collection($this->boardService->getRecent());
+        } catch (Exception $e) {
+            return $this->genericFailResponse($e);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateBoardRequest $request, Board $board)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Board $board)
-    {
-        //
-    }
 }

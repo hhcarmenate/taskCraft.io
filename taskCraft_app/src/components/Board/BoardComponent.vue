@@ -52,7 +52,6 @@ const handleAddNewList = (listName) => {
 }
 
 const updatePosition = async (positions) => {
-  console.log('new positions', positions)
   try {
     await board.updateListsPositions(positions)
   } catch(e) {
