@@ -17,7 +17,7 @@ const hasRecentBoards = computed(() => workspace.recentBoards.length)
 
 const handleRedirectRecent = async (recent) => {
   dropdownRecent.value = false
-  workspace.setCurrentWorkSpace(workspace.workspaces.find(work => work.id === recent.id))
+  workspace.setCurrentWorkSpace(workspace.workspaces.find(work => work.id === recent.workspace_id))
   board.initCurrentBoard(recent)
 
   return await router.push(`/board/${recent.id}`)
