@@ -1,6 +1,6 @@
 <script setup>
 import {onMounted, ref} from "vue";
-import {initFlowbite} from "flowbite";
+import {initTabs} from "flowbite";
 import {useUserStore} from "@/stores/useUserStore.js";
 import {useUserProfileStore} from "@/stores/useUserProfileStore.js";
 import MainUserProfileComponent from "@/components/Profile/MainUserProfileComponent.vue";
@@ -10,7 +10,7 @@ const user = useUserStore()
 const userProfile = useUserProfileStore()
 
 onMounted(() => {
-  initFlowbite()
+  initTabs()
 })
 
 </script>

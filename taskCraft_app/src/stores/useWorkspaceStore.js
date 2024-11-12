@@ -93,8 +93,7 @@ export const useWorkspaceStore = defineStore('workspace', {
 
       if (response.status >= 200 && response.status < 300) {
         const { data } = response.data
-        this.recentBoards.unshift(data)
-        this.recentBoards = this.recentBoards.slice(0, 5)
+        this.recentBoards = data
       }
     }
   },

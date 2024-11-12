@@ -1,9 +1,7 @@
 <script setup>
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
-import {computed, onMounted, ref} from "vue";
+import {computed, ref} from "vue";
 import {useRouter} from "vue-router";
-import {useUserStore} from "@/stores/useUserStore.js";
-import {initDropdowns} from "flowbite";
 import {useBoardStore} from "@/stores/useBoardStore.js";
 
 // Data
@@ -11,12 +9,7 @@ const workspace = useWorkspaceStore()
 const board = useBoardStore()
 const hasStarredBoards = computed(() => workspace.starredBoard.length)
 const router = useRouter()
-const user = useUserStore()
 const dropdownStarred = ref(false)
-
-onMounted(() => {
-  initDropdowns()
-})
 
 const dropdownClasses = computed(() => {
   return (dropdownStarred.value) ? 'dropdown-open' : 'hidden'

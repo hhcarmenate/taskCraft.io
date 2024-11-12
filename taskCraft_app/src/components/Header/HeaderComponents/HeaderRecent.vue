@@ -1,26 +1,45 @@
 <script setup>
-import {computed, onMounted} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
-import {initDropdowns} from "flowbite";
+import {useBoardStore} from "@/stores/useBoardStore.js";
+import {useRouter} from "vue-router";
 
 const workspace = useWorkspaceStore()
+const board = useBoardStore()
+const dropdownRecent = ref(false)
+const router = useRouter()
 
-onMounted(() => {
-  initDropdowns()
+const dropdownClasses = computed(() => {
+  return (dropdownRecent.value) ? 'dropdown-open' : 'hidden'
 })
 
 const hasRecentBoards = computed(() => workspace.recentBoards.length)
 
-const handleRedirectRecent = (recent) => {
+const handleRedirectRecent = async (recent) => {
+  dropdownRecent.value = false
+  workspace.setCurrentWorkSpace(workspace.workspaces.find(work => work.id === recent.id))
+  board.initCurrentBoard(recent)
 
+  return await router.push(`/board/${recent.id}`)
+}
+
+const closeDropdown = () => {
+  dropdownRecent.value = false
+}
+
+const toggleDropdownRecent = () => {
+  dropdownRecent.value = !dropdownRecent.value
 }
 
 </script>
 
 <template>
-  <div class="header__workspace-container">
+  <div
+    class="header__workspace-container"
+    v-click-outside="closeDropdown"
+  >
     <button
-      data-dropdown-toggle="dropdown-recent"
+      @click="toggleDropdownRecent"
       id="dropdownNavbarLink"
       class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-info-700 md:p-1 md:w-auto dark:text-white md:dark:hover:bg-gray-700 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-gray-700 dark:hover:text-green-500"
     >
@@ -42,8 +61,8 @@ const handleRedirectRecent = (recent) => {
       </svg>
     </button>
     <div
-      class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
-      id="dropdown-recent"
+      class="z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
+      :class="dropdownClasses"
     >
       <div class="py-1" role="none" v-if="!hasRecentBoards" >
         <p
@@ -73,11 +92,17 @@ const handleRedirectRecent = (recent) => {
 </template>
 
 <style scoped>
-#dropdown-recent {
-  min-width: 165px
-}
 
 .hand {
   cursor: pointer;
 }
+
+.dropdown-open {
+  min-width: 165px;
+  position: absolute;
+  margin: 0;
+  transform: translate(-30px, 8px);
+}
+
+
 </style>

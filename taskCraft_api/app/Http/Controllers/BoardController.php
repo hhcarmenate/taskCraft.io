@@ -75,10 +75,10 @@ class BoardController extends Controller
      *
      * @return BoardResource|JsonResponse The resource representing the saved recent board.
      */
-    public function saveRecentBoard(SaveRecentBoardRequest $request): BoardResource | JsonResponse
+    public function saveRecentBoard(SaveRecentBoardRequest $request): BoardResource | AnonymousResourceCollection
     {
         try {
-            return BoardResource::make($this->boardService->saveRecent($request->input('boardId')));
+            return BoardResource::collection($this->boardService->saveRecent($request->input('boardId')));
         } catch (Exception $e) {
             return $this->genericFailResponse($e);
         }
