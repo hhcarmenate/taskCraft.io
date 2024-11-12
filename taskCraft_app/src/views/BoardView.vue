@@ -1,8 +1,7 @@
 <script setup>
 import BoardComponent from "@/components/Board/BoardComponent.vue";
 import {useBoardStore} from "@/stores/useBoardStore.js";
-import {onMounted, watch} from "vue";
-import {initFlowbite} from "flowbite";
+import {watch} from "vue";
 import {useRoute} from "vue-router";
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 
@@ -11,9 +10,6 @@ const board = useBoardStore()
 const workspace = useWorkspaceStore()
 const route = useRoute()
 
-onMounted(() => {
-  initFlowbite()
-})
 
 watch(
   () => workspace.currentWorkspace,

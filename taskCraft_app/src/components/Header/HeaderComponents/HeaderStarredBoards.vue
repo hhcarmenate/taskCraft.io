@@ -1,31 +1,55 @@
 <script setup>
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
-import {computed, onMounted} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 import {useUserStore} from "@/stores/useUserStore.js";
 import {initDropdowns} from "flowbite";
+import {useBoardStore} from "@/stores/useBoardStore.js";
 
 // Data
 const workspace = useWorkspaceStore()
+const board = useBoardStore()
 const hasStarredBoards = computed(() => workspace.starredBoard.length)
 const router = useRouter()
 const user = useUserStore()
+const dropdownStarred = ref(false)
 
 onMounted(() => {
   initDropdowns()
 })
 
-const handleRedirectBoard = (star) => {
-  console.log(star)
+const dropdownClasses = computed(() => {
+  return (dropdownStarred.value) ? 'dropdown-open' : 'hidden'
+})
+
+const handleRedirectBoard = async (star) => {
+  dropdownStarred.value = false
+  workspace.setCurrentWorkSpace(workspace.workspaces.find(work => work.id === star.id))
+  board.initCurrentBoard(star)
+
+  await workspace.saveRecentBoard(star.id)
+  return await router.push(`/board/${star.id}`)
 }
 
+const toggleDropdownStarred = () => {
+  dropdownStarred.value = !dropdownStarred.value
+}
+
+const closeDropdown = () => {
+  if (dropdownStarred.value) {
+    dropdownStarred.value = false
+  }
+}
 
 </script>
 
 <template>
-  <div class="header__workspace-container">
+  <div
+    class="header__workspace-container"
+    v-click-outside="closeDropdown"
+  >
     <button
-      data-dropdown-toggle="dropdown-starred"
+      @click="toggleDropdownStarred"
       id="dropdownNavbarLink"
       class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-info-700 md:p-1 md:w-auto dark:text-white md:dark:hover:bg-gray-700 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-gray-700 dark:hover:text-green-500"
     >
@@ -47,8 +71,8 @@ const handleRedirectBoard = (star) => {
       </svg>
     </button>
     <div
-      class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
-      id="dropdown-starred"
+      class="z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
+      :class="dropdownClasses"
     >
       <div class="py-1" role="none" v-if="!hasStarredBoards" >
         <p
@@ -78,11 +102,15 @@ const handleRedirectBoard = (star) => {
 </template>
 
 <style scoped>
-#dropdown-starred {
-  min-width: 165px
-}
-
 .hand {
   cursor: pointer;
 }
+
+.dropdown-open {
+  min-width: 165px;
+  position: absolute;
+  margin: 0;
+  transform: translate(-30px, 8px);
+}
+
 </style>
