@@ -62,6 +62,10 @@ export const useBoardStore = defineStore('board', {
 
     async updateLists({tasks, listId}) {
       return await ListService.updateTasksList({tasks, listId} )
+    },
+
+    async updateTaskTitle({taskId, newTitle}) {
+      return await ListService.updateTasksTitle({taskId, newTitle})
     }
   },
   getters: {
