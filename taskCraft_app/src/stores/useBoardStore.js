@@ -2,7 +2,6 @@ import {defineStore} from "pinia";
 import BoardService from "@/services/BoardService.js";
 import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 import ListService from "@/services/ListService.js";
-import {watch} from "vue";
 
 export const useBoardStore = defineStore('board', {
   state: () => ({

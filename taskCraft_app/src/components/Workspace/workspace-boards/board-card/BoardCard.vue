@@ -36,7 +36,6 @@ const handleMouseLeave = () => isHovered.value = false;
 
 const toggleStarred = async (event) => {
   event.stopPropagation();
-  console.log('click')
 
   try {
     const response = await board.toggleStarred(props.workspaceBoard.id, !props.workspaceBoard.starred)
