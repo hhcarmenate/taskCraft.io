@@ -52,6 +52,10 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
         Route::post('list/{boardList}/update-task-list', [TaskController::class, 'updateTasksLists'])
             ->name('update-tasks-lists');
 
+        // Task Routes
+        Route::patch('task/{task}/update-task-title', [TaskController::class, 'updateTaskTitle'])
+            ->name('update-task-title');
+
 
         // User Routes
         Route::get('user/{user}/profile', [UserProfileController::class, 'getUserProfile'])

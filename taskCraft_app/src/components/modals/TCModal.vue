@@ -1,6 +1,10 @@
 <script setup>
-import { watch } from "vue";
+import {computed, ref, watch} from "vue";
 import {useOverlayStore} from "@/stores/useOverlayStore.js";
+import TextInput from "@/components/fields/TextInput.vue";
+import {Form} from "vee-validate";
+import {toTypedSchema} from "@vee-validate/zod";
+import * as zod from 'zod'
 
 // Todo: Move this to a composable or store and make this modal generic
 const props = defineProps({
@@ -11,10 +15,29 @@ const props = defineProps({
   title: {
     type: String,
     default: 'Modal Title'
+  },
+  editableTitle: {
+    type: Boolean,
+    default: false
+  },
+  callBackEditableTitle: {
+    type: Function,
+    required: false
   }
 });
 
 const overlay = useOverlayStore()
+const showEditTitleInput = ref(false)
+const newTitle = ref('')
+
+const validationSchema = computed(() => {
+  return toTypedSchema(
+    zod.object({
+        newTitle: zod.string({message: 'New Task Title is required'})
+    })
+  )
+})
+
 
 watch(() => props.show, (newValue) => {
   if (newValue) {
@@ -22,7 +45,32 @@ watch(() => props.show, (newValue) => {
   } else {
     overlay.hideOverlay()
   }
-});
+})
+
+const handleEditTitle = () => {
+  if (props.editableTitle) {
+    showEditTitleInput.value = true
+    newTitle.value = props.title
+  }
+}
+
+const onSubmit = () => {
+  if (props.editableTitle) {
+    props.callBackEditableTitle(newTitle.value)
+    newTitle.value = ''
+    showEditTitleInput.value = false
+  }
+}
+
+const onInvalidSubmit = (error) => {
+  console.log(error)
+}
+
+const cancelEditTitle = () => {
+  newTitle.value = ''
+  showEditTitleInput.value = false
+}
+
 </script>
 
 <template>
@@ -37,9 +85,52 @@ watch(() => props.show, (newValue) => {
       <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
         <!-- Modal header -->
         <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+          <h3
+            v-if="!showEditTitleInput"
+            class="text-xl font-semibold text-gray-900 dark:text-white"
+            @click="handleEditTitle"
+            :class="{hand: editableTitle}"
+          >
             {{ title }}
           </h3>
+          <div v-else>
+            <Form
+              class="flex flex-row items-center gap-2"
+              :validation-schema="validationSchema"
+              @submit="onSubmit"
+              @invalidSubmit="onInvalidSubmit"
+            >
+              <TextInput
+                name="newTitle"
+                placeholder="New Title"
+                v-model="newTitle"
+              />
+
+              <button
+                class="py-1 px-2 ms-3 text-sm font-medium text-gray-900 focus:outline-none
+                       bg-white rounded-lg border border-gray-200 hover:bg-gray-100
+                       hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100
+                       dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400
+                       dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                type="submit"
+              >
+                save
+              </button>
+              <button
+                class="py-1 px-2 text-sm font-medium text-gray-900 focus:outline-none
+                      bg-white rounded-lg border border-gray-200 hover:bg-gray-100
+                      hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100
+                      dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-danger-400
+                       dark:border-danger-600 dark:hover:text-danger-400
+                       dark:hover:bg-gray-700"
+                type="button"
+                @click="cancelEditTitle"
+              >
+                Cancel
+              </button>
+            </Form>
+
+          </div>
           <button @click="$emit('update:show', false)" type="button"
                   class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                   data-modal-hide="default-modal">
@@ -73,5 +164,7 @@ watch(() => props.show, (newValue) => {
 </template>
 
 <style scoped>
-/* Additional styles if needed */
+.hand {
+  cursor: pointer;
+}
 </style>
