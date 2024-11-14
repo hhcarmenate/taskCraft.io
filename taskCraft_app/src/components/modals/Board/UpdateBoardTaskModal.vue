@@ -7,6 +7,7 @@ import {toTypedSchema} from "@vee-validate/zod";
 import * as zod from "zod";
 import {useBoardStore} from "@/stores/useBoardStore.js";
 import TextareaInput from "@/components/fields/TextareaInput.vue";
+import TextInput from "@/components/fields/TextInput.vue";
 
 
 // Emits and Props
@@ -194,6 +195,21 @@ const cancelEditDescription = () => {
                 </div>
               </Form>
             </div>
+
+            <div class="activity-container flex flex-col mt-24">
+              <h3 class="text-xl font-thin">Activity</h3>
+              <div class="activity-content">
+                <div class="">
+                  <TextInput
+                    placeholder="Comment"
+                  ></TextInput>
+                </div>
+                <div>
+                  activities
+                </div>
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -214,6 +230,15 @@ const cancelEditDescription = () => {
               <div class="reporter-container flex flex-row justify-between my-2">
                 <div class="font-semibold">Reporter</div>
                 <div class="priority-value">{{ localTask.created_by?.name ?? 'No Reporter' }}</div>
+              </div>
+
+              <div class="reporter-container flex flex-row justify-between mt-12">
+                <div class="font-semibold">Start Date</div>
+                <div class="priority-value">{{ localTask.start_date ?? 'Set Start Date' }}</div>
+              </div>
+              <div class="reporter-container flex flex-row justify-between my-2">
+                <div class="font-semibold">Due Date</div>
+                <div class="priority-value">{{ localTask.due_date ?? 'Set Due Date' }}</div>
               </div>
             </div>
           </div>
