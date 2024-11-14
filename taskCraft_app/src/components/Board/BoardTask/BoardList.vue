@@ -1,7 +1,7 @@
 <script setup>
 import draggable from "vuedraggable";
 import AddBoardTask from "@/components/Board/BoardTask/AddBoardTask.vue";
-import {ref, watch} from "vue";
+import {ref} from "vue";
 import BoardListTask from "@/components/Board/BoardTask/BoardListTask.vue";
 import BoardListTitleComponent from "@/components/Board/BoardTask/BoardListTitleComponent.vue";
 import {useBoardStore} from "@/stores/useBoardStore.js";
@@ -36,13 +36,13 @@ const handleAddNewTask = (taskTitle) => {
   addingTask.value = false
 }
 
-const handleMove = (data) => {
-  console.log(data.draggedContext)
+const handleChange = () => {
+  updateLists()
 }
 
-const updateLists = async (tasks) => {
+const updateLists = async () => {
   try {
-    const tasksInOrder = tasks.map((task, index) => {
+    const tasksInOrder = elementTasks.value.map((task, index) => {
       return { id: task.id, position: index + 1 }
     })
 
@@ -61,13 +61,6 @@ const updateLists = async (tasks) => {
       notify('error', 'Oops something went wrong')
     }
 }
-
-watch(() => elementTasks.value, (newTasks) => {
-  console.log(newTasks)
-  updateLists(newTasks)
-}, {
-  deep: true
-})
 
 const handleSelectTask = (task) => {
   selectedTask.value = task
@@ -94,7 +87,7 @@ const handleCloseModal = () => {
         class="flex flex-col gap-2"
         :options="{ animation: 200 }"
         item-key="id"
-        @move="handleMove"
+        @change="handleChange"
         :ghostClass="'task-ghost'"
       >
         <template #item="{ element }">

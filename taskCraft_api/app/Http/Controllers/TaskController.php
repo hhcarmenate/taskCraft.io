@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskDescriptionRequest;
 use App\Http\Requests\UpdateTasksListsRequest;
 use App\Http\Requests\UpdateTaskTitleRequest;
 use App\Http\Resources\BoardListResource;
@@ -35,14 +36,11 @@ class TaskController extends Controller
      * @param BoardList $boardList The board list where the task will be created.
      *
      * @return TaskResource|JsonResponse Returns the created task as a resource or a JSON response in case of failure.
+     * @throws Exception
      */
     public function createTask(StoreTaskRequest $request, BoardList $boardList): TaskResource|JsonResponse
     {
-        try {
-            return TaskResource::make($this->taskService->createListTask($request, $boardList));
-        } catch (Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return TaskResource::make($this->taskService->createListTask($request, $boardList));
     }
 
     /**
@@ -56,11 +54,7 @@ class TaskController extends Controller
      */
     public function updateTasksLists(UpdateTasksListsRequest $request, BoardList $boardList): BoardListResource|JsonResponse
     {
-        try {
-            return BoardListResource::make($this->taskService->updateTasksLists($request, $boardList));
-        } catch (Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return BoardListResource::make($this->taskService->updateTasksLists($request, $boardList));
     }
 
     /**
@@ -72,15 +66,26 @@ class TaskController extends Controller
      */
     public function updateTaskTitle(UpdateTaskTitleRequest $request, Task $task): TaskResource|JsonResponse
     {
-        try {
-            $task->title = $request->input('newTitle');
-            $task->save();
-            $task->refresh();
+        $task->title = $request->input('newTitle');
+        $task->save();
+        $task->refresh();
 
-            return TaskResource::make($task);
+        return TaskResource::make($task);
+    }
 
-        } catch (Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+    /**
+     * Update the description of a task.
+     *
+     * @param UpdateTaskDescriptionRequest $request The request object containing the new task description.
+     * @param Task $task The task object to be updated.
+     * @return TaskResource|JsonResponse Returns a TaskResource if the task is updated successfully, or a JsonResponse with error message on failure.
+     */
+    public function updateTaskDescription(UpdateTaskDescriptionRequest $request, Task $task): TaskResource|JsonResponse
+    {
+        $task->description = $request->input('taskDescription');
+        $task->save();
+        $task->refresh();
+
+        return TaskResource::make($task);
     }
 }

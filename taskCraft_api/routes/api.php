@@ -6,6 +6,7 @@ use App\Http\Controllers\BoardListController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\WorkspaceController;
+use App\Http\Middleware\HandleExceptions;
 use Illuminate\Support\Facades\Route;
 
 Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function() {
@@ -54,7 +55,11 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
 
         // Task Routes
         Route::patch('task/{task}/update-task-title', [TaskController::class, 'updateTaskTitle'])
+            ->middleware(HandleExceptions::class)
             ->name('update-task-title');
+        Route::patch('task/{task}/update-task-description', [TaskController::class, 'updateTaskDescription'])
+            ->middleware(HandleExceptions::class)
+            ->name('update-task-description');
 
 
         // User Routes

@@ -1,21 +1,12 @@
 <script setup>
 import {Form} from "vee-validate";
-import TextInput from "@/components/fields/TextInput.vue";
 import TCModal from "@/components/modals/TCModal.vue";
-import SelectInput from "@/components/fields/SelectInput.vue";
-import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
 import useNotification from "@/composables/useNotification.js";
 import {computed, reactive, ref, watch} from "vue";
 import {toTypedSchema} from "@vee-validate/zod";
 import * as zod from "zod";
 import {useBoardStore} from "@/stores/useBoardStore.js";
-import {useUserStore} from "@/stores/useUserStore.js";
-
-const visibilityOptions = [
-  { value: 'private', text: 'Private' },
-  { value: 'public', text: 'Public' },
-  { value: 'workspace', text: 'Workspace' },
-]
+import TextareaInput from "@/components/fields/TextareaInput.vue";
 
 
 // Emits and Props
@@ -32,11 +23,11 @@ const props = defineProps({
 })
 
 // Stores and Composables
-const workspace = useWorkspaceStore()
 const board = useBoardStore()
-const user = useUserStore()
 const { notify } = useNotification()
+
 const localTask = ref()
+const editingDescription = ref(false)
 
 // Data
 const localState = reactive({
@@ -49,25 +40,12 @@ const localState = reactive({
 })
 
 // Computed properties
-const formattedWorkspaces = computed(() => {
-  return workspace.workspaces.map((work) => {
-    return { value: work.id, text: work.name }
-  })
-})
-
-const validationSchema = computed(() => {
+const editDescriptionValidationSchema = computed(() => {
   return toTypedSchema(
     zod.object({
-      title: zod.string().min(3, {message: 'Board title must have at least 3 characters long'}),
-      workspaceSelected: zod.number({message: 'Workspace is required'}),
-      visibility: zod.string({message: 'Visibility is required'})
+      taskDescription: zod.string().nullable(),
     })
   )
-})
-
-
-watch(() => workspace.currentWorkspace, () => {
-  initLocalState()
 })
 
 watch(() => props.selectedTask, (newValue) => {
@@ -84,20 +62,18 @@ const handleUpdateShow = (show) => {
   emit('update:show', show)
 }
 
-const onSubmit = async () => {
+const descriptionSubmit = async () => {
   try {
     localState.sending = true
-    const response = await board.createBoard({
-      title: localState.form.title,
-      workspaceSelected: localState.form.workspaceSelected,
-      visibility: localState.form.visibility
+    const response = await board.updateTaskDescription({
+      taskId: localTask.value.id,
+      taskDescription: localTask.value.description,
     })
 
     if (response.status >= 200 && response.status < 300) {
-      notify('success', `Board ${localState.form.title} was updated successfully`)
+      notify('success', `Task description updated`)
 
-      await workspace.fetchUserWorkspaces(user.userId)
-      emit('update:show', false)
+      editingDescription.value = false
     } else {
       notify('error', 'Ops! something went wrong')
     }
@@ -110,14 +86,7 @@ const onSubmit = async () => {
   }
 }
 
-const initLocalState = () => {
-  if (workspace.currentWorkspace) {
-    localState.form.workspaceSelected = workspace.currentWorkspace.id
-    localState.form.visibility = 'workspace'
-  }
-}
-
-const onInvalidSubmit = (e) => {
+const invalidDescriptionSubmit = (e) => {
   console.log('Invalid submit', e)
 }
 
@@ -149,6 +118,14 @@ const updateTaskTitle = async (newTitle) => {
   }
 }
 
+const handleEditDescription = () => {
+  editingDescription.value = true
+}
+
+const cancelEditDescription = () => {
+  editingDescription.value = false
+}
+
 </script>
 
 <template>
@@ -160,61 +137,70 @@ const updateTaskTitle = async (newTitle) => {
     :call-back-editable-title="updateTaskTitle"
   >
     <template #body>
-      <Form
-        class="space-y-4"
-        :validation-schema="validationSchema"
-        @submit="onSubmit"
-        @invalid-submit="onInvalidSubmit"
-      >
-        <div class="form__section flex flex-col">
-          <div class="form__row">
-            <div class="form__controls">
-              <TextInput
-                name="title"
-                type="text"
-                label="Board Title"
-                placeholder=""
-                v-model="localState.form.title"
-                show-error
-              />
+      <div class="task-container p-2 grid grid-cols-[3fr_1fr]">
+        <!-- Main Content -->
+        <div class="p-4">
+          <div class="description-section">
+            <h3 class="text-xl font-thin">Description</h3>
+            <div
+              v-if="!editingDescription"
+              class="description-content rounded-md p-4 bg-gray-500 mt-3 cursor-pointer"
+              @click="handleEditDescription"
+            >
+              <p class="text-gray-700" v-if="localTask.description">
+                {{ localTask.description }}
+              </p>
+              <p v-else>
+                Added a more detailed description
+              </p>
             </div>
-          </div>
-          <div class="form__row mt-8">
-            <div class="form__controls">
-              <SelectInput
-                name="workspaceSelected"
-                :items="formattedWorkspaces"
-                label="Workspace"
-                v-model="localState.form.workspaceSelected"
-                show-error
-              />
-            </div>
-          </div>
-
-          <div class="form__row mt-8">
-            <div class="form__controls">
-              <SelectInput
-                name="visibility"
-                :items="visibilityOptions"
-                label="Visibility"
-                v-model="localState.form.visibility"
-                show-error
-              />
-            </div>
-          </div>
-
-          <div class="form__row mt-4">
-            <div class="form__controls flex justify-end">
-              <button
-                type="submit"
-                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+            <div
+              v-else
+            >
+              <Form
+                class="flex flex-col"
+                :validation-schema="editDescriptionValidationSchema"
+                @submit="descriptionSubmit"
+                @invalidSubmit="invalidDescriptionSubmit"
               >
-                Create Workspace
-              </button>
+                <TextareaInput
+                  name="taskDescription"
+                  placeholder="Add a detailed description"
+                  v-model="localTask.description"
+                />
+                <div class="description-actions flex flex-row gap-2 justify-start mt-2">
+                  <button
+                    class="py-1 px-2 text-sm font-medium text-gray-900 focus:outline-none
+                       bg-white rounded-lg border border-gray-200 hover:bg-gray-100
+                       hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100
+                       dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400
+                       dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                    type="submit"
+                  >
+                    save
+                  </button>
+                  <button
+                    class="py-1 px-2 text-sm font-medium text-gray-900 focus:outline-none
+                       bg-white rounded-lg border border-gray-200 hover:bg-gray-100
+                       hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100
+                       dark:focus:ring-gray-700 dark:bg-danger-800 dark:text-gray-400
+                       dark:border-gray-600 dark:hover:text-white dark:hover:bg-danger-700"
+                    type="button"
+                    @click="cancelEditDescription"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </Form>
             </div>
           </div>
+
         </div>
-      </Form>
+        <!-- Side Content -->
+        <div class="p-4 border-l border-solid border-secondary-600">
+          <p class="text-gray-700">This is the side content of the modal, which takes 1fr.</p>
+        </div>
+      </div>
     </template>
     <template #footer>
       <button
