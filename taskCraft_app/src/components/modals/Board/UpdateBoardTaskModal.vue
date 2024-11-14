@@ -51,6 +51,7 @@ const editDescriptionValidationSchema = computed(() => {
 watch(() => props.selectedTask, (newValue) => {
   if (newValue) {
     localTask.value = props.selectedTask
+    console.log(localTask.value)
   }
 },
   { immediate: true }
@@ -137,7 +138,7 @@ const cancelEditDescription = () => {
     :call-back-editable-title="updateTaskTitle"
   >
     <template #body>
-      <div class="task-container p-2 grid grid-cols-[3fr_1fr]">
+      <div class="task-container p-2 grid grid-cols-[4fr_2fr]">
         <!-- Main Content -->
         <div class="p-4">
           <div class="description-section">
@@ -198,7 +199,24 @@ const cancelEditDescription = () => {
         </div>
         <!-- Side Content -->
         <div class="p-4 border-l border-solid border-secondary-600">
-          <p class="text-gray-700">This is the side content of the modal, which takes 1fr.</p>
+          <div class="details-container">
+            <h3 class="text-xl font-thin">Details</h3>
+            <div class="details-container mt-3">
+              <div class="priority-container flex flex-row justify-between my-2">
+                <div class="font-semibold">Priority</div>
+                <div class="priority-value">{{ localTask.priority }}</div>
+              </div>
+              <div class="assignee-container flex flex-row justify-between my-2">
+                <div class="font-semibold">Assignee</div>
+                <div class="priority-value">{{ localTask.assigned_to ?? 'Unassigned' }}</div>
+              </div>
+
+              <div class="reporter-container flex flex-row justify-between my-2">
+                <div class="font-semibold">Reporter</div>
+                <div class="priority-value">{{ localTask.created_by?.name ?? 'No Reporter' }}</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </template>

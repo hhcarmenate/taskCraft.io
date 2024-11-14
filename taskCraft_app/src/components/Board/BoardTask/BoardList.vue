@@ -119,6 +119,7 @@ const handleCloseModal = () => {
   <UpdateBoardTaskModal
     :show="showEditModal"
     :selected-task="selectedTask"
+    :size="'extra-large'"
     @update:show="handleCloseModal"
   />
 </template>
