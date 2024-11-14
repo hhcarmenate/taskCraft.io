@@ -6,7 +6,6 @@ import {Form} from "vee-validate";
 import {toTypedSchema} from "@vee-validate/zod";
 import * as zod from 'zod'
 
-// Todo: Move this to a composable or store and make this modal generic
 const props = defineProps({
   show: {
     type: Boolean,
@@ -23,6 +22,10 @@ const props = defineProps({
   callBackEditableTitle: {
     type: Function,
     required: false
+  },
+  size: {
+    type: String,
+    required: false
   }
 });
 
@@ -36,6 +39,21 @@ const validationSchema = computed(() => {
         newTitle: zod.string({message: 'New Task Title is required'})
     })
   )
+})
+
+const modalSize = computed(() => {
+  switch (props.size){
+    case ('small'):
+      return 'max-w-xl'
+    case ('default'):
+      return 'max-w-2xl'
+    case ('large'):
+      return 'max-w-4xl'
+    case ('extra-large'):
+      return 'max-w-6xl'
+    default:
+      return 'max-w-2xl'
+  }
 })
 
 
@@ -80,7 +98,9 @@ const cancelEditTitle = () => {
     class="fixed inset-0 z-100 flex items-center justify-center bg-black bg-opacity-50"
     :class="{'hidden': !show}"
   >
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
+    <div class="relative p-4 w-full max-h-full"
+      :class="modalSize"
+    >
       <!-- Modal content -->
       <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
         <!-- Modal header -->

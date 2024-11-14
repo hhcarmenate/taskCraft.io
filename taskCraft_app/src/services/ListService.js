@@ -61,6 +61,16 @@ class ListService {
     })
   }
 
+  async updateTaskDescription({taskId, taskDescription}) {
+    return await TASKCRAFT_API.get('sanctum/csrf-cookie', {
+      baseURL: import.meta.env.VITE_APP_TASKCRAFT_API
+    }).then(async () => {
+      return await TASKCRAFT_API.patch(`task/${taskId}/update-task-description`, {
+        taskDescription,
+      })
+    })
+  }
+
 }
 
 export default new ListService()
