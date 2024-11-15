@@ -1,12 +1,12 @@
 <script setup>
-import draggable from "vuedraggable";
-import AddBoardTask from "@/components/Board/BoardTask/AddBoardTask.vue";
-import {ref} from "vue";
-import BoardListTask from "@/components/Board/BoardTask/BoardListTask.vue";
-import BoardListTitleComponent from "@/components/Board/BoardTask/BoardListTitleComponent.vue";
-import {useBoardStore} from "@/stores/useBoardStore.js";
-import useNotification from "@/composables/useNotification.js";
-import UpdateBoardTaskModal from "@/components/modals/Board/UpdateBoardTaskModal.vue";
+import draggable from "vuedraggable"
+import AddBoardTask from "@/components/Board/BoardTask/AddBoardTask.vue"
+import {ref} from "vue"
+import BoardListTask from "@/components/Board/BoardTask/BoardListTask.vue"
+import BoardListTitleComponent from "@/components/Board/BoardTask/BoardListTitleComponent.vue"
+import {useBoardStore} from "@/stores/useBoardStore.js"
+import useNotification from "@/composables/useNotification.js"
+import UpdateBoardTaskModal from "@/components/modals/Board/UpdateBoardTaskModal.vue"
 
 // Emits ands Props
 const emit = defineEmits(['add:task'])
@@ -22,7 +22,7 @@ const currentElement = ref(props.listElement)
 const board = useBoardStore()
 const elementTasks = ref(props.listElement.tasks)
 const {notify} = useNotification()
-const selectedTask = ref({})
+const selectedTask = ref(null)
 const showEditModal = ref(false)
 
 
@@ -88,7 +88,7 @@ const handleCloseModal = () => {
         :options="{ animation: 200 }"
         item-key="id"
         @change="handleChange"
-        :ghostClass="'task-ghost'"
+        :ghost-class="'task-ghost'"
       >
         <template #item="{ element }">
           <BoardListTask
@@ -117,6 +117,7 @@ const handleCloseModal = () => {
     </button>
   </div>
   <UpdateBoardTaskModal
+    v-if="selectedTask"
     :show="showEditModal"
     :selected-task="selectedTask"
     :size="'extra-large'"

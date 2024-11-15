@@ -1,15 +1,15 @@
 <script setup>
-import {Form} from "vee-validate";
-import TextInput from "@/components/fields/TextInput.vue";
-import TCModal from "@/components/modals/TCModal.vue";
-import SelectInput from "@/components/fields/SelectInput.vue";
-import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
-import useNotification from "@/composables/useNotification.js";
-import {computed, reactive, watch} from "vue";
-import {toTypedSchema} from "@vee-validate/zod";
-import * as zod from "zod";
-import {useBoardStore} from "@/stores/useBoardStore.js";
-import {useUserStore} from "@/stores/useUserStore.js";
+import {Form} from "vee-validate"
+import TextInput from "@/components/fields/TextInput.vue"
+import TCModal from "@/components/modals/TCModal.vue"
+import SelectInput from "@/components/fields/SelectInput.vue"
+import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js"
+import useNotification from "@/composables/useNotification.js"
+import {computed, reactive, watch} from "vue"
+import {toTypedSchema} from "@vee-validate/zod"
+import * as zod from "zod"
+import {useBoardStore} from "@/stores/useBoardStore.js"
+import {useUserStore} from "@/stores/useUserStore.js"
 
 const visibilityOptions = [
   { value: 'private', text: 'Private' },
@@ -118,7 +118,10 @@ const onInvalidSubmit = (e) => {
     <template #body>
       <div class="flex flex-row gap-3 justify-center">
         <div class="image-container w-[50%]">
-          <img src="/images/board2.svg" alt="">
+          <img
+            src="/images/board2.svg"
+            alt=""
+          />
         </div>
       </div>
 
