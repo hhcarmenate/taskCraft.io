@@ -1,0 +1,27 @@
+FROM php:8.2-cli
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
+    git \
+    curl \
+    libonig-dev \
+    libxml2-dev \
+    supervisor
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Expose WebSocket port
+EXPOSE 6001
+
+# Use the correct Artisan command to start Reverb server
+CMD ["php", "artisan", "reverb:start"]
