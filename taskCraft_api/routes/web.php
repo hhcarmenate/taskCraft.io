@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\TestBroadcast;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -20,4 +21,9 @@ Route::get('/test-email', function () {
     });
 
     return 'Test email sent!';
+});
+
+Route::get('/test-broadcast', function(){
+   broadcast(new TestBroadcast('This is the test message'));
+   return 'Event has benn broadcasted!';
 });
