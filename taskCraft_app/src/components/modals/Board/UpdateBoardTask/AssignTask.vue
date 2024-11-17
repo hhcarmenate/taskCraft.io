@@ -45,7 +45,7 @@ const updateAssignTo = async (userId) => {
     })
 
     if (response.status === 200) {
-      board.updateTaskAssignToStore(board.selectedTask?.id, response.data?.data)
+      board.updateTaskStore(board.selectedTask?.id, response.data?.data)
 
       notify('success', 'Task assigned successfully!')
       editingTask.value = false

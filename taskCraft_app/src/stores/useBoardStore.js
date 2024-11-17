@@ -91,8 +91,8 @@ export const useBoardStore = defineStore('board', {
       return await ListService.updateTaskAssignTo({taskId, userId})
     },
 
-    updateTaskAssignToStore(taskId, newTask) {
-      console.log(taskId, newTask)
+    updateTaskStore(taskId, newTask) {
+      this.selectedTask = newTask
       this.lists.some((list) => {
         const taskIndex = list.tasks.findIndex(task => task.id === taskId)
         if (taskIndex !== -1) {
@@ -102,6 +102,10 @@ export const useBoardStore = defineStore('board', {
         return false
       })
     },
+
+    async updateStartDate(startDate) {
+      return await ListService.updateTaskStartDate({ taskId: this.selectedTask.id, startDate })
+    }
 
   },
 

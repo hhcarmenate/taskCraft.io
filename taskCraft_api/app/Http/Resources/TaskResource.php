@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 class TaskResource extends JsonResource
 {
@@ -22,7 +23,7 @@ class TaskResource extends JsonResource
             'priority' => $this->priority,
             'created_by' => UserResource::make($this->createdBy),
             'assigned_to' => UserResource::make($this->assignedTo),
-            'start_date' => $this->start_date,
+            'start_date' =>  Carbon::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('m/d/Y'),
             'due_date' => $this->due_date,
             'position' => $this->position
         ];
