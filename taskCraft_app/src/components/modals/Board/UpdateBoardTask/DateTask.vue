@@ -6,9 +6,16 @@ import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import useNotification from '@/composables/useNotification.js'
 
+const props = defineProps({
+  attr: {
+    type: String,
+    required: true
+  }
+})
+
 const editingStartDate = ref(false)
 const board = useBoardStore()
-const startDate = ref(board.selectedTask.start_date)
+const date = ref(board.selectedTask[props.attr])
 const { notify } = useNotification()
 
 const handleStartDate = () => {
@@ -17,8 +24,8 @@ const handleStartDate = () => {
 
 const handleBlur = async () => {
   try {
-    if (startDate.value) {
-      const response = await board.updateStartDate(startDate.value)
+    if (date.value) {
+      const response = await board.updateDate({attribute: props.attr, value: date.value})
 
       if (response.status === 200) {
         board.updateTaskStore(board.selectedTask.id, response.data?.data)
@@ -49,12 +56,12 @@ const handleBlur = async () => {
       v-if="!editingStartDate"
       @click="handleStartDate"
     >
-      {{ board.selectedTask.start_date ?? 'Set start date' }}
+      {{ board.selectedTask[attr] ?? 'Set start date' }}
     </span>
     <span v-else>
       <VueDatePicker
-        id="start_date"
-        v-model="startDate"
+        :id="attr"
+        v-model="date"
         :dark="true"
         :enable-time-picker="false"
         format="MM/dd/yyyy"

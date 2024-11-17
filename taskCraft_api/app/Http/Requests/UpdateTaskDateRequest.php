@@ -6,7 +6,7 @@ use App\Rules\TaskDateFormat;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTaskStartDateRequest extends FormRequest
+class UpdateTaskDateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,8 @@ class UpdateTaskStartDateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'startDate' => ['required', new TaskDateFormat('m/d/Y')]
+            'attribute' => 'required|string',
+            'value' => ['required', new TaskDateFormat('m/d/Y')]
         ];
     }
 }

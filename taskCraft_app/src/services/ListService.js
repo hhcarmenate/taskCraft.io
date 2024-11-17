@@ -91,12 +91,13 @@ class ListService {
     })
   }
 
-  async updateTaskStartDate({ taskId, startDate }) {
+  async updateDate({ taskId, attribute, value }) {
     return await TASKCRAFT_API.get('sanctum/csrf-cookie', {
       baseURL: import.meta.env.VITE_APP_TASKCRAFT_API
     }).then(async () => {
-      return await TASKCRAFT_API.patch(`task/${taskId}/update-task-start-date`, {
-        startDate,
+      return await TASKCRAFT_API.patch(`task/${taskId}/update-task-date`, {
+        attribute,
+        value
       })
     })
   }
