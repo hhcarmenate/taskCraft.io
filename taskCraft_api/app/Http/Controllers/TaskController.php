@@ -7,7 +7,7 @@ use App\Http\Requests\UpdateTaskAssignRequest;
 use App\Http\Requests\UpdateTaskDescriptionRequest;
 use App\Http\Requests\UpdateTaskPriorityRequest;
 use App\Http\Requests\UpdateTasksListsRequest;
-use App\Http\Requests\UpdateTaskStartDateRequest;
+use App\Http\Requests\UpdateTaskDateRequest;
 use App\Http\Requests\UpdateTaskTitleRequest;
 use App\Http\Resources\BoardListResource;
 use App\Http\Resources\TaskResource;
@@ -114,17 +114,17 @@ class TaskController extends Controller
     /**
      * Update the start date of a task.
      *
-     * @param UpdateTaskStartDateRequest $request The request containing the new start date for the task.
+     * @param UpdateTaskDateRequest $request The request containing the new start date for the task.
      * @param Task $task The task to update.
      *
      * @return TaskResource A resource representing the updated task with the new start date set.
      */
-    public function updateTaskStartDate(UpdateTaskStartDateRequest $request, Task $task): TaskResource
+    public function updateTaskDate(UpdateTaskDateRequest $request, Task $task): TaskResource
     {
        return TaskResource::make(
            $this->taskService->updateTaskField(
-               'start_date',
-               Carbon::createFromFormat('m/d/Y', $request->input('startDate'))->startOfDay(),
+               $request->input('attribute'),
+               Carbon::createFromFormat('m/d/Y', $request->input('value'))->startOfDay(),
                $task)
        );
     }

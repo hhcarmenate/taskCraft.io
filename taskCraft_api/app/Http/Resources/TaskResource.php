@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class TaskResource extends JsonResource
 {
@@ -21,10 +22,10 @@ class TaskResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'priority' => $this->priority,
-            'created_by' => UserResource::make($this->createdBy),
-            'assigned_to' => UserResource::make($this->assignedTo),
-            'start_date' =>  Carbon::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('m/d/Y'),
-            'due_date' => $this->due_date,
+            'created_by' => $this->createdBy ? UserResource::make($this->createdBy) : null,
+            'assigned_to' => $this->assignedTo ? UserResource::make($this->assignedTo) : null,
+            'start_date' => $this->start_date ?  Carbon::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('m/d/Y') : null,
+            'due_date' => $this->due_date ? Carbon::createFromFormat('Y-m-d H:i:s', $this->due_date)->format('m/d/Y') : null,
             'position' => $this->position
         ];
     }

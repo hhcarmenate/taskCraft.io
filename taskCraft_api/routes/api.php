@@ -66,7 +66,7 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
         Route::patch('task/{task}/update-task-assign', [TaskController::class, 'updateTaskAssignTo'])
             ->middleware(HandleExceptions::class)
             ->name('update-task-assign');
-        Route::patch('task/{task}/update-task-start-date', [TaskController::class, 'updateTaskStartDate'])
+        Route::patch('task/{task}/update-task-date', [TaskController::class, 'updateTaskDate'])
             ->middleware(HandleExceptions::class)
             ->name('update-task-start-date');
 

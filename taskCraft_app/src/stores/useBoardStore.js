@@ -103,8 +103,12 @@ export const useBoardStore = defineStore('board', {
       })
     },
 
-    async updateStartDate(startDate) {
-      return await ListService.updateTaskStartDate({ taskId: this.selectedTask.id, startDate })
+    async updateDate({attribute, value}) {
+      return await ListService.updateDate({
+        taskId: this.selectedTask.id,
+        attribute,
+        value
+      })
     }
 
   },
