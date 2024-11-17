@@ -1,5 +1,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
+import useNotification from '@/composables/useNotification.js'
+import { useBoardStore } from '@/stores/useBoardStore.js'
 
 // Constants
 const TASK_PRIORITIES = [
@@ -7,23 +9,17 @@ const TASK_PRIORITIES = [
   { value: 'high', text: 'High' },
 ]
 
-// Properties
-const props = defineProps({
-  priority: {
-    type: [String, null],
-    required: true
-  }
-})
-
 // Data
-const newPriority = ref(props.priority)
 const editingPriority = ref(false)
+const { notify } = useNotification()
+const board = useBoardStore()
+const newPriority = ref(board.selectedTask.priority)
 
 
 // Computed properties
 const taskPriority = computed(() => {
-  if (!props.priority) return ''
-  return capitalizeFirstLetter(props.priority)
+  if (!board.selectedTask || !board.selectedTask?.priority) return ''
+  return capitalizeFirstLetter(board.selectedTask.priority)
 })
 
 // Methods
@@ -37,12 +33,36 @@ const handleEditPriority = () => {
 }
 
 const handleFieldBlur = () => {
+  editingPriority.value = false
+}
 
+const updatePriority = async (priority) => {
+  try {
+    const response = await board.updateTaskPriority({
+      taskId: board.selectedTask.id,
+      taskPriority: priority
+    })
+
+    if (response.status === 200) {
+      board.updateTaskPriorityStore(board.selectedTask.id, priority)
+
+      notify('success', 'Task priority updated successfully!')
+      editingPriority.value = false
+      return
+    }
+
+
+    notify('error', 'Oops something went wrong!')
+  } catch (e) {
+    console.error(e)
+
+    notify('error', 'Oops something went wrong!')
+  }
 }
 
 // Watch for priority changes and trigger form submission
 watch(newPriority, (newValue) => {
-  console.log(newValue)
+  updatePriority(newValue)
 })
 
 

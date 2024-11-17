@@ -18,28 +18,13 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  selectedTask: {
-    type: Object,
-    required: true
-  }
 })
 
 // Stores and Composables
 const board = useBoardStore()
 const { notify } = useNotification()
-
-const localTask = ref()
+const sending = ref(false)
 const editingDescription = ref(false)
-
-// Data
-const localState = reactive({
-  form: {
-    title: null,
-    workspaceSelected: null,
-    visibility: null
-  },
-  sending: false,
-})
 
 // Computed properties
 const editDescriptionValidationSchema = computed(() => {
@@ -50,16 +35,6 @@ const editDescriptionValidationSchema = computed(() => {
   )
 })
 
-watch(() => props.selectedTask, (newValue) => {
-  if (newValue) {
-    localTask.value = props.selectedTask
-    console.log(localTask.value)
-  }
-},
-  { immediate: true }
-)
-
-
 // Methods
 const handleUpdateShow = (show) => {
   emit('update:show', show)
@@ -67,10 +42,10 @@ const handleUpdateShow = (show) => {
 
 const descriptionSubmit = async () => {
   try {
-    localState.sending = true
+    sending.value = true
     const response = await board.updateTaskDescription({
-      taskId: localTask.value.id,
-      taskDescription: localTask.value.description,
+      taskId: board.selectedTask.id,
+      taskDescription: board.selectedTask.description,
     })
 
     if (response.status >= 200 && response.status < 300) {
@@ -85,7 +60,7 @@ const descriptionSubmit = async () => {
 
     notify('error', 'Ops! something went wrong')
   } finally {
-    localState.sending = false
+    sending.value = false
   }
 }
 
@@ -97,7 +72,7 @@ const updateTaskTitle = async (newTitle) => {
   if (newTitle) {
     try {
       const response = await board.updateTaskTitle({
-        taskId: localTask.value.id,
+        taskId: board.selectedTask.id,
         newTitle
       })
 
@@ -106,12 +81,7 @@ const updateTaskTitle = async (newTitle) => {
         return
       }
 
-      localTask.value.title = newTitle
-      board.lists?.tasks?.forEach((task) => {
-        if (task.id === localTask.value.id) {
-          task.title = localTask.value.title
-        }
-      })
+      board.selectedTask.title = newTitle
 
     } catch (e) {
       console.log(e)
@@ -133,7 +103,7 @@ const cancelEditDescription = () => {
 
 <template>
   <TCModal
-    :title="localTask.title"
+    :title="board.selectedTask.title"
     :show="show"
     @update:show="handleUpdateShow"
     :editable-title="true"
@@ -152,9 +122,9 @@ const cancelEditDescription = () => {
             >
               <p
                 class="text-gray-700"
-                v-if="localTask.description"
+                v-if="board.selectedTask.description"
               >
-                {{ localTask.description }}
+                {{ board.selectedTask.description }}
               </p>
               <p v-else>
                 Added a more detailed description
@@ -172,7 +142,7 @@ const cancelEditDescription = () => {
                 <TextareaInput
                   name="taskDescription"
                   placeholder="Add a detailed description"
-                  v-model="localTask.description"
+                  v-model="board.selectedTask.description"
                 />
                 <div class="description-actions flex flex-row gap-2 justify-start mt-2">
                   <button
@@ -216,7 +186,7 @@ const cancelEditDescription = () => {
           </div>
         </div>
         <!-- Side Content -->
-        <TaskDetails :task="localTask" />
+        <TaskDetails />
       </div>
     </template>
     <template #footer>

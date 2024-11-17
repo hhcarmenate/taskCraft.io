@@ -1,6 +1,6 @@
-import {defineStore} from "pinia";
-import WorkspaceService from "@/services/WorkspaceService.js";
-import BoardService from "@/services/BoardService.js";
+import {defineStore} from "pinia"
+import WorkspaceService from "@/services/WorkspaceService.js"
+import BoardService from "@/services/BoardService.js"
 
 export const useWorkspaceStore = defineStore('workspace', {
   state: () => ({
@@ -9,7 +9,6 @@ export const useWorkspaceStore = defineStore('workspace', {
     recentBoards: []
   }),
   actions: {
-
     setCurrentWorkSpace(work) {
       this.currentWorkspace = work
     },
@@ -111,8 +110,16 @@ export const useWorkspaceStore = defineStore('workspace', {
           })
         }
       })
-
       return userStarredBoards
+    },
+
+    getCurrentWorkspaceMembers() {
+      let currentMembers = []
+
+      currentMembers = [...this.currentWorkspace.members]
+      currentMembers.push(this.currentWorkspace.owner)
+
+      return currentMembers
     }
   }
 })

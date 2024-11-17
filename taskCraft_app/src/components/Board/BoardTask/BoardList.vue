@@ -63,12 +63,12 @@ const updateLists = async () => {
 }
 
 const handleSelectTask = (task) => {
-  selectedTask.value = task
+  board.selectedTask = task
   showEditModal.value = true
 }
 
 const handleCloseModal = () => {
-  selectedTask.value = {}
+  board.selectedTask = null
   showEditModal.value = false
 }
 
@@ -117,9 +117,8 @@ const handleCloseModal = () => {
     </button>
   </div>
   <UpdateBoardTaskModal
-    v-if="selectedTask"
+    v-if="board.selectedTask"
     :show="showEditModal"
-    :selected-task="selectedTask"
     :size="'extra-large'"
     @update:show="handleCloseModal"
   />

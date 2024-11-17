@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskAssignRequest;
 use App\Http\Requests\UpdateTaskDescriptionRequest;
+use App\Http\Requests\UpdateTaskPriorityRequest;
 use App\Http\Requests\UpdateTasksListsRequest;
 use App\Http\Requests\UpdateTaskTitleRequest;
 use App\Http\Resources\BoardListResource;
@@ -66,11 +68,7 @@ class TaskController extends Controller
      */
     public function updateTaskTitle(UpdateTaskTitleRequest $request, Task $task): TaskResource|JsonResponse
     {
-        $task->title = $request->input('newTitle');
-        $task->save();
-        $task->refresh();
-
-        return TaskResource::make($task);
+        return TaskResource::make($this->taskService->updateTaskField('title', $request->input('newTitle'), $task));
     }
 
     /**
@@ -82,10 +80,33 @@ class TaskController extends Controller
      */
     public function updateTaskDescription(UpdateTaskDescriptionRequest $request, Task $task): TaskResource|JsonResponse
     {
-        $task->description = $request->input('taskDescription');
-        $task->save();
-        $task->refresh();
-
-        return TaskResource::make($task);
+        return TaskResource::make($this->taskService->updateTaskField('description', $request->input('taskDescription'), $task));
     }
+
+    /**
+     * Updates the priority of a task.
+     *
+     * @param UpdateTaskPriorityRequest $request The request containing the updated task priority.
+     * @param Task $task The task to be updated with the new priority.
+     *
+     * @return TaskResource|JsonResponse A TaskResource instance representing the updated task or a JsonResponse object.
+     */
+    public function updateTaskPriority(UpdateTaskPriorityRequest $request, Task $task): TaskResource|JsonResponse
+    {
+        return TaskResource::make($this->taskService->updateTaskField('priority', $request->input('taskPriority'), $task));
+    }
+
+    /**
+     * Update the assigned user of a task.
+     *
+     * @param UpdateTaskAssignRequest $request The request containing the new user ID to assign the task to.
+     * @param Task $task The task to update.
+     *
+     * @return TaskResource A resource representing the updated task with the new user assigned to it.
+     */
+    public function updateTaskAssignTo(UpdateTaskAssignRequest $request, Task $task): TaskResource
+    {
+        return TaskResource::make($this->taskService->updateTaskField('assigned_to', $request->input('userId'), $task));
+    }
+
 }

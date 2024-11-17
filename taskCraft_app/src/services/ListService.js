@@ -71,6 +71,26 @@ class ListService {
     })
   }
 
+  async updateTaskPriority({taskId, taskPriority}) {
+    return await TASKCRAFT_API.get('sanctum/csrf-cookie', {
+      baseURL: import.meta.env.VITE_APP_TASKCRAFT_API
+    }).then(async () => {
+      return await TASKCRAFT_API.patch(`task/${taskId}/update-task-priority`, {
+        taskPriority,
+      })
+    })
+  }
+
+  async updateTaskAssignTo({taskId, userId}) {
+    return await TASKCRAFT_API.get('sanctum/csrf-cookie', {
+      baseURL: import.meta.env.VITE_APP_TASKCRAFT_API
+    }).then(async () => {
+      return await TASKCRAFT_API.patch(`task/${taskId}/update-task-assign`, {
+        userId,
+      })
+    })
+  }
+
 }
 
 export default new ListService()

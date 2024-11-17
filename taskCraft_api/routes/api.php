@@ -60,6 +60,12 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
         Route::patch('task/{task}/update-task-description', [TaskController::class, 'updateTaskDescription'])
             ->middleware(HandleExceptions::class)
             ->name('update-task-description');
+        Route::patch('task/{task}/update-task-priority', [TaskController::class, 'updateTaskPriority'])
+            ->middleware(HandleExceptions::class)
+            ->name('update-task-priority');
+        Route::patch('task/{task}/update-task-assign', [TaskController::class, 'updateTaskAssignTo'])
+            ->middleware(HandleExceptions::class)
+            ->name('update-task-assign');
 
 
         // User Routes

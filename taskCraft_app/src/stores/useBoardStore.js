@@ -1,7 +1,7 @@
-import {defineStore} from "pinia";
-import BoardService from "@/services/BoardService.js";
-import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
-import ListService from "@/services/ListService.js";
+import {defineStore} from "pinia"
+import BoardService from "@/services/BoardService.js"
+import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js"
+import ListService from "@/services/ListService.js"
 
 export const useBoardStore = defineStore('board', {
   state: () => ({
@@ -10,7 +10,8 @@ export const useBoardStore = defineStore('board', {
     workspace: '',
     visibility: '',
     starred: false,
-    lists: []
+    lists: [],
+    selectedTask: null
   }),
   actions: {
     async createBoard({ title, workspaceSelected, visibility}){
@@ -70,8 +71,40 @@ export const useBoardStore = defineStore('board', {
 
     async updateTaskDescription({taskId, taskDescription }) {
       return await ListService.updateTaskDescription({taskId, taskDescription})
-    }
+    },
+
+    async updateTaskPriority({taskId, taskPriority}) {
+      return await ListService.updateTaskPriority({taskId, taskPriority})
+    },
+
+    updateTaskPriorityStore(taskId, priority) {
+      this.lists.forEach((list) => {
+        const currentTask = list.tasks.find(task => task.id === taskId)
+
+        if (currentTask) {
+          currentTask.priority = priority
+        }
+      })
+    },
+
+    async updateTaskAssignTo({ taskId, userId}) {
+      return await ListService.updateTaskAssignTo({taskId, userId})
+    },
+
+    updateTaskAssignToStore(taskId, newTask) {
+      console.log(taskId, newTask)
+      this.lists.some((list) => {
+        const taskIndex = list.tasks.findIndex(task => task.id === taskId)
+        if (taskIndex !== -1) {
+          list.tasks[taskIndex] = { ...list.tasks[taskIndex], ...newTask }
+          return true
+        }
+        return false
+      })
+    },
+
   },
+
   getters: {
 
   }
