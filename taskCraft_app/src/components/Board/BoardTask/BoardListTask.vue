@@ -1,4 +1,6 @@
 <script setup>
+import { useAttrs } from 'vue'
+
 const emit = defineEmits(['update:task'])
 const props = defineProps({
   taskElement: {
@@ -11,15 +13,17 @@ const selectTask = () => {
   emit('update:task', props.taskElement )
 }
 
+const attrs = useAttrs()
+
 </script>
 
 <template>
   <div
-    :key="taskElement.id"
+    v-bind="attrs"
     class="task hand bg-blue-100 p-2 rounded shadow dark:bg-gray-900 list-group-item"
     @click="selectTask"
   >
-    {{ taskElement.title }}
+    <p>{{ taskElement.title }}</p>
   </div>
 </template>
 

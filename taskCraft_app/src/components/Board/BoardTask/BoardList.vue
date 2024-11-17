@@ -1,7 +1,7 @@
 <script setup>
 import draggable from "vuedraggable"
 import AddBoardTask from "@/components/Board/BoardTask/AddBoardTask.vue"
-import {ref} from "vue"
+import { ref, useAttrs } from 'vue'
 import BoardListTask from "@/components/Board/BoardTask/BoardListTask.vue"
 import BoardListTitleComponent from "@/components/Board/BoardTask/BoardListTitleComponent.vue"
 import {useBoardStore} from "@/stores/useBoardStore.js"
@@ -25,6 +25,7 @@ const {notify} = useNotification()
 const selectedTask = ref(null)
 const showEditModal = ref(false)
 
+const attrs = useAttrs()
 
 // Methods
 const showAddTask = () => {
@@ -77,6 +78,7 @@ const handleCloseModal = () => {
 <template>
   <div
     :key="currentElement.id"
+    v-bind="attrs"
     class="board-list bg-white shadow-md rounded p-4 w-64 flex flex-col dark:bg-gray-800"
   >
     <BoardListTitleComponent :list-element="currentElement" />

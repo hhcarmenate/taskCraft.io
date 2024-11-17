@@ -1,20 +1,15 @@
 <template>
   <div class="board-container flex flex-nowrap gap-4 p-4 dark:bg-gray-700  overflow-x-scroll">
-    <draggable
-      v-model="board.lists"
-      group="lists"
+    <div
+      v-for="list in board.lists"
       class="flex gap-4 min-h-[95%]"
-      :options="{ animation: 200 }"
-      item-key="id"
+      :key="list.id"
     >
-      <template #item="{ element }">
-        <BoardList
-          :list-element="element"
-          :key="element.id"
-          @add:task="handleAddTask"
-        />
-      </template>
-    </draggable>
+      <BoardList
+        :list-element="list"
+        @add:task="handleAddTask"
+      />
+    </div>
     <AddBoardList
       @update:new-list="handleAddNewList"
     />
@@ -22,12 +17,10 @@
 </template>
 
 <script setup>
-import draggable from "vuedraggable";
-import BoardList from "@/components/Board/BoardTask/BoardList.vue";
-import AddBoardList from "@/components/Board/BoardTask/AddBoardList.vue";
-import {useBoardStore} from "@/stores/useBoardStore.js";
-import {watch} from "vue";
-import useNotification from "@/composables/useNotification.js";
+import BoardList from "@/components/Board/BoardTask/BoardList.vue"
+import AddBoardList from "@/components/Board/BoardTask/AddBoardList.vue"
+import {useBoardStore} from "@/stores/useBoardStore.js"
+import useNotification from "@/composables/useNotification.js"
 
 // Data
 const board = useBoardStore()
@@ -51,27 +44,6 @@ const handleAddNewList = (listName) => {
   })
 }
 
-const updatePosition = async (positions) => {
-  try {
-    await board.updateListsPositions(positions)
-  } catch(e) {
-    console.log(e)
-    notify('error', 'Oops, something went wrong')
-  }
-}
-
-// Observers
-watch(() => board.lists, (newList) => {
-  if (newList) {
-    let newPositions = []
-
-    newPositions = newList.map((list, index) => {
-      return { position: index + 1, id: list.id }
-    })
-
-    updatePosition(newPositions)
-  }
-}, {immediate: true})
 
 </script>
 
