@@ -83,4 +83,22 @@ class TaskService
         return $boardList;
     }
 
+    /**
+     * Updates the value of a specific field for a given task.
+     *
+     * @param string $field The name of the field to update.
+     * @param mixed $value The new value to assign to the field.
+     * @param Task $task The task object to update.
+     *
+     * @return Task The updated task object after the field value has been updated and saved.
+     */
+    public function updateTaskField(string $field, $value, Task $task): Task
+    {
+        $task->$field = $value;
+        $task->save();
+        $task->refresh();
+
+        return $task;
+    }
+
 }

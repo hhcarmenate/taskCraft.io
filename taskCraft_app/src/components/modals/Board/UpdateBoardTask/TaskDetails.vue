@@ -20,7 +20,10 @@ const newPriority = ref(props.task.priority)
       <div class="details-container mt-3">
         <div class="priority-container flex flex-row justify-between items-center my-2">
           <div class="font-semibold">Priority</div>
-          <PrioritySelect :priority="newPriority" />
+          <PrioritySelect
+            :priority="newPriority"
+            :task="task"
+          />
         </div>
         <div class="assignee-container flex flex-row justify-between my-2">
           <div class="font-semibold">Assignee</div>

@@ -1,7 +1,7 @@
-import {defineStore} from "pinia";
-import BoardService from "@/services/BoardService.js";
-import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
-import ListService from "@/services/ListService.js";
+import {defineStore} from "pinia"
+import BoardService from "@/services/BoardService.js"
+import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js"
+import ListService from "@/services/ListService.js"
 
 export const useBoardStore = defineStore('board', {
   state: () => ({
@@ -70,8 +70,23 @@ export const useBoardStore = defineStore('board', {
 
     async updateTaskDescription({taskId, taskDescription }) {
       return await ListService.updateTaskDescription({taskId, taskDescription})
+    },
+
+    async updateTaskPriority({taskId, taskPriority}) {
+      return await ListService.updateTaskPriority({taskId, taskPriority})
+    },
+
+    updateTaskPriorityStore(taskId, priority) {
+      this.lists.forEach((list) => {
+        const currentTask = list.tasks.find(task => task.id === taskId)
+
+        if (currentTask) {
+          currentTask.priority = priority
+        }
+      })
     }
   },
+
   getters: {
 
   }
