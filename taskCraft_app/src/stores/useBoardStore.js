@@ -10,7 +10,8 @@ export const useBoardStore = defineStore('board', {
     workspace: '',
     visibility: '',
     starred: false,
-    lists: []
+    lists: [],
+    selectedTask: null
   }),
   actions: {
     async createBoard({ title, workspaceSelected, visibility}){
@@ -84,7 +85,24 @@ export const useBoardStore = defineStore('board', {
           currentTask.priority = priority
         }
       })
-    }
+    },
+
+    async updateTaskAssignTo({ taskId, userId}) {
+      return await ListService.updateTaskAssignTo({taskId, userId})
+    },
+
+    updateTaskAssignToStore(taskId, newTask) {
+      console.log(taskId, newTask)
+      this.lists.some((list) => {
+        const taskIndex = list.tasks.findIndex(task => task.id === taskId)
+        if (taskIndex !== -1) {
+          list.tasks[taskIndex] = { ...list.tasks[taskIndex], ...newTask }
+          return true
+        }
+        return false
+      })
+    },
+
   },
 
   getters: {

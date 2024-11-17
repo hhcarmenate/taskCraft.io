@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskAssignRequest;
 use App\Http\Requests\UpdateTaskDescriptionRequest;
 use App\Http\Requests\UpdateTaskPriorityRequest;
 use App\Http\Requests\UpdateTasksListsRequest;
@@ -95,5 +96,17 @@ class TaskController extends Controller
         return TaskResource::make($this->taskService->updateTaskField('priority', $request->input('taskPriority'), $task));
     }
 
+    /**
+     * Update the assigned user of a task.
+     *
+     * @param UpdateTaskAssignRequest $request The request containing the new user ID to assign the task to.
+     * @param Task $task The task to update.
+     *
+     * @return TaskResource A resource representing the updated task with the new user assigned to it.
+     */
+    public function updateTaskAssignTo(UpdateTaskAssignRequest $request, Task $task): TaskResource
+    {
+        return TaskResource::make($this->taskService->updateTaskField('assigned_to', $request->input('userId'), $task));
+    }
 
 }

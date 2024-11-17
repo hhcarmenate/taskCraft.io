@@ -9,25 +9,17 @@ const TASK_PRIORITIES = [
   { value: 'high', text: 'High' },
 ]
 
-// Properties
-const props = defineProps({
-  task: {
-    type: Object,
-    required: true
-  }
-})
-
 // Data
-const newPriority = ref(props.task.priority)
 const editingPriority = ref(false)
 const { notify } = useNotification()
 const board = useBoardStore()
+const newPriority = ref(board.selectedTask.priority)
 
 
 // Computed properties
 const taskPriority = computed(() => {
-  if (!props.task || !props.task?.priority) return ''
-  return capitalizeFirstLetter(props.task.priority)
+  if (!board.selectedTask || !board.selectedTask?.priority) return ''
+  return capitalizeFirstLetter(board.selectedTask.priority)
 })
 
 // Methods
@@ -47,12 +39,12 @@ const handleFieldBlur = () => {
 const updatePriority = async (priority) => {
   try {
     const response = await board.updateTaskPriority({
-      taskId: props.task.id,
+      taskId: board.selectedTask.id,
       taskPriority: priority
     })
 
     if (response.status === 200) {
-      board.updateTaskPriorityStore(props.task.id, priority)
+      board.updateTaskPriorityStore(board.selectedTask.id, priority)
 
       notify('success', 'Task priority updated successfully!')
       editingPriority.value = false
