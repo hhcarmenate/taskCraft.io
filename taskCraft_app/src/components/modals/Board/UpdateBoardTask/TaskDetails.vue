@@ -2,6 +2,7 @@
 import PrioritySelect from '@/components/modals/Board/UpdateBoardTask/PrioritySelect.vue'
 import AssignTask from '@/components/modals/Board/UpdateBoardTask/AssignTask.vue'
 import { useBoardStore } from '@/stores/useBoardStore.js'
+import StartDateTask from '@/components/modals/Board/UpdateBoardTask/StartDateTask.vue'
 
 const board = useBoardStore()
 
@@ -23,16 +24,20 @@ const board = useBoardStore()
 
         <div class="reporter-container flex flex-row justify-between items-center my-2">
           <div class="font-semibold">Reporter</div>
-          <div class="priority-value">{{ board.selectedTask.created_by?.name ?? 'No Reporter' }}</div>
+          <div class="priority-value">
+            {{ board.selectedTask.created_by?.name ?? 'No Reporter' }}
+          </div>
         </div>
 
-        <div class="reporter-container flex flex-row justify-between mt-12">
+        <div class="reporter-container flex flex-row justify-between items-center mt-12">
           <div class="font-semibold">Start Date</div>
-          <div class="priority-value">{{ board.selectedTask.start_date ?? 'Set Start Date' }}</div>
+          <StartDateTask />
         </div>
         <div class="reporter-container flex flex-row justify-between my-2">
           <div class="font-semibold">Due Date</div>
-          <div class="priority-value">{{ board.selectedTask.due_date ?? 'Set Due Date' }}</div>
+          <div class="priority-value">
+            {{ board.selectedTask.due_date ?? 'Set Due Date' }}
+          </div>
         </div>
       </div>
     </div>

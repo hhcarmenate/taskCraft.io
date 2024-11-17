@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\TaskDateFormat;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTaskPriorityRequest extends FormRequest
+class UpdateTaskStartDateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +24,7 @@ class UpdateTaskPriorityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'taskPriority' => 'required|string'
+            'startDate' => ['required', new TaskDateFormat('m/d/Y')]
         ];
     }
 }
