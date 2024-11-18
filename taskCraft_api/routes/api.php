@@ -90,7 +90,7 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
         Route::patch('task-checklist-item/{taskChecklistItem}', [TaskChecklistItemController::class, 'updateTaskChecklistItem'])
             ->middleware(HandleExceptions::class)
             ->name('update-task-checklist-item');
-        Route::delete('task-checklist-item/{taskChecklist}', [TaskChecklistItemController::class, 'removeTaskChecklistItem'])
+        Route::delete('task-checklist-item/{taskChecklistItem}', [TaskChecklistItemController::class, 'removeTaskChecklistItem'])
             ->middleware(HandleExceptions::class)
             ->name('remove-task-checklist-item');
 
