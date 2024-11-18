@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\BoardListController;
+use App\Http\Controllers\TaskChecklistController;
+use App\Http\Controllers\TaskChecklistItemController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\WorkspaceController;
@@ -70,6 +72,27 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
             ->middleware(HandleExceptions::class)
             ->name('update-task-start-date');
 
+        // Task Checklist Routes
+        Route::post('task-checklist/{task}', [TaskChecklistController::class, 'createTaskChecklist'])
+            ->middleware(HandleExceptions::class)
+            ->name('create-task-checklist');
+        Route::patch('task-checklist/{taskChecklist}', [TaskChecklistController::class, 'updateTaskChecklist'])
+            ->middleware(HandleExceptions::class)
+            ->name('update-task-checklist');
+        Route::delete('task-checklist/{taskChecklist}', [TaskChecklistController::class, 'removeTaskChecklist'])
+            ->middleware(HandleExceptions::class)
+            ->name('remove-task-checklist');
+
+        // Task Checklist Items Routes
+        Route::post('task-checklist-item/{taskChecklist}', [TaskChecklistItemController::class, 'createTaskChecklistItem'])
+            ->middleware(HandleExceptions::class)
+            ->name('create-task-checklist-item');
+        Route::patch('task-checklist-item/{taskChecklistItem}', [TaskChecklistItemController::class, 'updateTaskChecklistItem'])
+            ->middleware(HandleExceptions::class)
+            ->name('update-task-checklist-item');
+        Route::delete('task-checklist-item/{taskChecklistItem}', [TaskChecklistItemController::class, 'removeTaskChecklistItem'])
+            ->middleware(HandleExceptions::class)
+            ->name('remove-task-checklist-item');
 
         // User Routes
         Route::get('user/{user}/profile', [UserProfileController::class, 'getUserProfile'])
