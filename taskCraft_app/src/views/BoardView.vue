@@ -1,13 +1,13 @@
 <script setup>
-import BoardComponent from "@/components/Board/BoardComponent.vue";
-import {useBoardStore} from "@/stores/useBoardStore.js";
-import {watch} from "vue";
-import {useRoute} from "vue-router";
-import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
-import SolidStarIcon from "@/components/icon/SolidStarIcon.vue";
-import OutlineStarIcon from "@/components/icon/OutlineStarIcon.vue";
-import useNotification from "@/composables/useNotification.js";
-import {useUserStore} from "@/stores/useUserStore.js";
+import BoardComponent from "@/components/Board/BoardComponent.vue"
+import {useBoardStore} from "@/stores/useBoardStore.js"
+import {watch} from "vue"
+import {useRoute} from "vue-router"
+import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js"
+import SolidStarIcon from "@/components/icon/SolidStarIcon.vue"
+import OutlineStarIcon from "@/components/icon/OutlineStarIcon.vue"
+import useNotification from "@/composables/useNotification.js"
+import {useUserStore} from "@/stores/useUserStore.js"
 
 // Composable and Stores
 const board = useBoardStore()
@@ -28,7 +28,7 @@ watch(
   )
 
 const handleStarred = async(event) => {
-  event.stopPropagation();
+  event.stopPropagation()
 
   try {
     const response = await board.toggleStarred(board.id, !board.starred)
@@ -59,7 +59,10 @@ const handleStarred = async(event) => {
 <template>
   <section class="board-title font-thin text-2xl mb-3">
     <h1>Board <span v-if="board.title">{{ `${board.title ?? ''}` }}</span></h1>
-    <div class="icon-section hand" @click="handleStarred">
+    <div
+      class="icon-section hand"
+      @click="handleStarred"
+    >
       <SolidStarIcon v-if="board.starred" />
       <OutlineStarIcon v-else />
     </div>

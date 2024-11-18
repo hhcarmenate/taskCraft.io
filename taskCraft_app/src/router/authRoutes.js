@@ -1,9 +1,9 @@
-import DashboardView from "@/views/DashboardView.vue";
-import {useUserStore} from "@/stores/useUserStore.js";
-import ProfileView from "@/views/ProfileView.vue";
-import WorkspaceView from "@/views/WorkspaceView.vue";
-import WorkspaceMembersView from "@/views/WorkspaceMembersView.vue";
-import BoardView from "@/views/BoardView.vue";
+import DashboardView from "@/views/DashboardView.vue"
+import {useUserStore} from "@/stores/useUserStore.js"
+import ProfileView from "@/views/ProfileView.vue"
+import WorkspaceView from "@/views/WorkspaceView.vue"
+import WorkspaceMembersView from "@/views/WorkspaceMembersView.vue"
+import BoardView from "@/views/BoardView.vue"
 
 export const authenticatedRoutes = [
   {
@@ -55,4 +55,4 @@ export const authenticatedRoutes = [
       await next({ name: 'login' })
     }
   }
-];
+]

@@ -1,7 +1,7 @@
 import { defineStore, getActivePinia } from 'pinia'
 import UserService from '@/services/UserService.js'
-import {useUserProfileStore} from "@/stores/useUserProfileStore.js";
-import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
+import {useUserProfileStore} from "@/stores/useUserProfileStore.js"
+import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js"
 
 export const useUserStore = defineStore('user', {
   state: () => ({
