@@ -23,7 +23,6 @@ class StoreTaskChecklistRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'task_id' => 'required|exists:tasks,id',
             'title' => 'required|string'
         ];
     }
