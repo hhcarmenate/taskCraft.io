@@ -20,11 +20,9 @@
 import BoardList from "@/components/Board/BoardTask/BoardList.vue"
 import AddBoardList from "@/components/Board/BoardTask/AddBoardList.vue"
 import {useBoardStore} from "@/stores/useBoardStore.js"
-import useNotification from "@/composables/useNotification.js"
 
 // Data
 const board = useBoardStore()
-const {notify} = useNotification()
 
 // Methods
 const handleAddTask = (data) => {

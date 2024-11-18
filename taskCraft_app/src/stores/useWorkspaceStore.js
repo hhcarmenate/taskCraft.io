@@ -1,6 +1,7 @@
 import {defineStore} from "pinia"
 import WorkspaceService from "@/services/WorkspaceService.js"
 import BoardService from "@/services/BoardService.js"
+import { useUserStore } from '@/stores/useUserStore.js'
 
 export const useWorkspaceStore = defineStore('workspace', {
   state: () => ({
@@ -10,7 +11,9 @@ export const useWorkspaceStore = defineStore('workspace', {
   }),
   actions: {
     setCurrentWorkSpace(work) {
+      const user = useUserStore()
       this.currentWorkspace = work
+      user.workspaceSelected = this.currentWorkspace/id
     },
 
     async createWorkspace({ name, type, description }) {

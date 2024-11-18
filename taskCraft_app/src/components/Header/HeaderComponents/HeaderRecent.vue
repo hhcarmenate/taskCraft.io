@@ -1,8 +1,8 @@
 <script setup>
-import {computed, onMounted, ref} from "vue";
-import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
-import {useBoardStore} from "@/stores/useBoardStore.js";
-import {useRouter} from "vue-router";
+import {computed, ref} from "vue"
+import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js"
+import {useBoardStore} from "@/stores/useBoardStore.js"
+import {useRouter} from "vue-router"
 
 const workspace = useWorkspaceStore()
 const board = useBoardStore()
@@ -64,15 +64,22 @@ const toggleDropdownRecent = () => {
       class="z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
       :class="dropdownClasses"
     >
-      <div class="py-1" role="none" v-if="!hasRecentBoards" >
+      <div
+        class="py-1"
+        role="none"
+        v-if="!hasRecentBoards"
+      >
         <p
           class="px-4 py-2 flex flex-col text-sm text-gray-700 dark:text-white"
           role="none"
         >
-          <span >No Recent Boards</span>
+          <span>No Recent Boards</span>
         </p>
       </div>
-      <ul class="py-1" role="none" v-else>
+      <ul
+        class="py-1"
+        v-else
+      >
         <li
           v-for="(recent, index) in workspace.recentBoards"
           :key="recent.id + ' ' + index"
