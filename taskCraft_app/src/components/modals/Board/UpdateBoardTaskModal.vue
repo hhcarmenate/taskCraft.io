@@ -9,6 +9,7 @@ import {useBoardStore} from "@/stores/useBoardStore.js"
 import TextareaInput from "@/components/fields/TextareaInput.vue"
 import TextInput from "@/components/fields/TextInput.vue"
 import TaskDetails from "@/components/modals/Board/UpdateBoardTask/TaskDetails.vue"
+import TaskChecklist from '@/components/modals/Board/UpdateBoardTask/TaskChecklist.vue'
 
 
 // Emits and Props
@@ -113,73 +114,81 @@ const cancelEditDescription = () => {
       <div class="task-container p-2 grid grid-cols-[4fr_2fr]">
         <!-- Main Content -->
         <div class="p-4">
-          <div class="description-section">
-            <h3 class="text-xl font-thin">Description</h3>
-            <div
-              v-if="!editingDescription"
-              class="description-content rounded-md p-4 bg-gray-500 mt-3 cursor-pointer"
-              @click="handleEditDescription"
-            >
-              <p
-                class="text-gray-700"
-                v-if="board.selectedTask.description"
+          <div class="description-section flex flex-col gap-8">
+            <div class="description-section">
+              <h3 class="text-xl font-thin">Description</h3>
+              <div
+                v-if="!editingDescription"
+                class="description-content rounded-md p-4 bg-gray-500 mt-3 cursor-pointer"
+                @click="handleEditDescription"
               >
-                {{ board.selectedTask.description }}
-              </p>
-              <p v-else>
-                Added a more detailed description
-              </p>
-            </div>
-            <div
-              v-else
-            >
-              <Form
-                class="flex flex-col"
-                :validation-schema="editDescriptionValidationSchema"
-                @submit="descriptionSubmit"
-                @invalid-submit="invalidDescriptionSubmit"
+                <p
+                  class="text-gray-700"
+                  v-if="board.selectedTask.description"
+                >
+                  {{ board.selectedTask.description }}
+                </p>
+                <p v-else>
+                  Added a more detailed description
+                </p>
+              </div>
+              <div
+                v-else
               >
-                <TextareaInput
-                  name="taskDescription"
-                  placeholder="Add a detailed description"
-                  v-model="board.selectedTask.description"
-                />
-                <div class="description-actions flex flex-row gap-2 justify-start mt-2">
-                  <button
-                    class="py-1 px-2 text-sm font-medium text-gray-900 focus:outline-none
+                <Form
+                  class="flex flex-col"
+                  :validation-schema="editDescriptionValidationSchema"
+                  @submit="descriptionSubmit"
+                  @invalid-submit="invalidDescriptionSubmit"
+                >
+                  <TextareaInput
+                    name="taskDescription"
+                    placeholder="Add a detailed description"
+                    v-model="board.selectedTask.description"
+                  />
+                  <div class="description-actions flex flex-row gap-2 justify-start mt-2">
+                    <button
+                      class="py-1 px-2 text-sm font-medium text-gray-900 focus:outline-none
                        bg-white rounded-lg border border-gray-200 hover:bg-gray-100
                        hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100
                        dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400
                        dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                    type="submit"
-                  >
-                    save
-                  </button>
-                  <button
-                    class="py-1 px-2 text-sm font-medium text-gray-900 focus:outline-none
+                      type="submit"
+                    >
+                      save
+                    </button>
+                    <button
+                      class="py-1 px-2 text-sm font-medium text-gray-900 focus:outline-none
                        bg-white rounded-lg border border-gray-200 hover:bg-gray-100
                        hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100
                        dark:focus:ring-gray-700 dark:bg-danger-800 dark:text-gray-400
                        dark:border-gray-600 dark:hover:text-white dark:hover:bg-danger-700"
-                    type="button"
-                    @click="cancelEditDescription"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </Form>
+                      type="button"
+                      @click="cancelEditDescription"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </Form>
+              </div>
             </div>
 
-            <div class="activity-container flex flex-col mt-24">
-              <h3 class="text-xl font-thin">Activity</h3>
-              <div class="activity-content">
-                <div class="">
-                  <TextInput
-                    placeholder="Comment"
-                  />
-                </div>
-                <div>
-                  activities
+            <div class="checklist-section">
+              <TaskChecklist />
+            </div>
+
+            <div class="activity-section">
+              <div class="activity-container flex flex-col">
+                <h3 class="text-xl font-thin">Activity</h3>
+                <div class="activity-content">
+                  <div class="">
+                    <TextInput
+                      placeholder="Comment"
+                    />
+                  </div>
+                  <div>
+                    activities
+                  </div>
                 </div>
               </div>
             </div>

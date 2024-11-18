@@ -109,6 +109,10 @@ export const useBoardStore = defineStore('board', {
         attribute,
         value
       })
+    },
+
+    async createTaskChecklist(title) {
+      return await ListService.createTaskChecklist({title, taskId: this.selectedTask.id})
     }
 
   },
