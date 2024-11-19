@@ -18,6 +18,7 @@ class TaskChecklistResource extends JsonResource
             'id' => $this->id,
             'task_id' => $this->task_id,
             'title' => $this->title,
+            'checklist_items' => TaskChecklistItemResource::collection($this->checklistItem)
         ];
     }
 }

@@ -113,6 +113,14 @@ export const useBoardStore = defineStore('board', {
 
     async createTaskChecklist(title) {
       return await ListService.createTaskChecklist({title, taskId: this.selectedTask.id})
+    },
+
+    async addChecklistItem(fields) {
+      console.log(fields)
+      return await ListService.addCheckListItem({
+        description: fields.description,
+        checklistId: this.selectedTask.checklist.id
+      })
     }
 
   },

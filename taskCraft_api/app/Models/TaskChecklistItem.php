@@ -27,6 +27,7 @@ class TaskChecklistItem extends Model
      */
     public function taskChecklist(): BelongsTo
     {
-        return $this->belongsTo(Task::class, 'checklist_id', 'id');
+        return $this->belongsTo(TaskChecklist::class, 'checklist_id', 'id');
     }
+
 }
