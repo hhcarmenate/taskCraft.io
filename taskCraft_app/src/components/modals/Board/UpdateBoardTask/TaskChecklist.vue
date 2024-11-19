@@ -11,8 +11,13 @@ const creatingChecklist = ref(false)
 const checklistTitle = ref('')
 const { notify } = useNotification()
 const board = useBoardStore()
+const description = ref('')
 
 const hasChecklist = computed(() => {
+  if (!board.selectedTask?.checklist) {
+    return false
+  }
+
   return !!Object.keys(board.selectedTask.checklist).length
 })
 
@@ -61,7 +66,8 @@ const addChecklistItem = async (fields) => {
     const response = await board.addChecklistItem(fields)
 
     if (response.status === 201) {
-      console.log(response)
+      board.addChecklistItemStore(response.data.data)
+      description.value = ''
 
       notify('success', 'Checklist item added successfully')
       return
@@ -80,7 +86,6 @@ const onSubmit = async () => {
   try {
     const response = await board.createTaskChecklist(checklistTitle.value)
 
-    console.log(response)
     if (response.status === 201) {
       notify('success', 'Checklist created successfully')
 
@@ -88,6 +93,27 @@ const onSubmit = async () => {
     }
     notify('error', 'Oops something went wrong')
   } catch(e) {
+    console.log(e)
+
+    notify('error', 'Oops something went wrong')
+  }
+}
+
+const toggleCompleted = async (item) => {
+  try {
+    const response = await board.updateChecklistItemCompleted({
+      itemId: item.id,
+      attribute: 'completed',
+      value: !item.completed
+    })
+
+    if (response.status === 200) {
+      item.completed = !item.completed
+      return
+    }
+
+    notify('error', 'Oops something went wrong')
+  } catch (e) {
     console.log(e)
 
     notify('error', 'Oops something went wrong')
@@ -125,6 +151,7 @@ const onSubmit = async () => {
               <TextInput
                 name="description"
                 placeholder="Add new Item"
+                v-model="description"
               />
               <button
                 class="py-1 px-2 text-sm font-medium text-gray-900 focus:outline-none
@@ -170,6 +197,7 @@ const onSubmit = async () => {
                             focus:ring-3 focus:ring-blue-300 dark:bg-gray-700
                             dark:border-gray-600 dark:focus:ring-blue-600
                             dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
+                      @click="toggleCompleted(item)"
                     />
                   </div>
                 </div>
