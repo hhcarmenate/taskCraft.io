@@ -1,7 +1,6 @@
 <template>
   <div
     class="board-container flex flex-nowrap gap-4 p-4 dark:bg-gray-700  overflow-x-scroll"
-    @mousedown="mouseDownHandler"
   >
     <div
       v-for="list in board.lists"
