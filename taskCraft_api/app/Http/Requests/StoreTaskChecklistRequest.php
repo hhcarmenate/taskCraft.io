@@ -23,7 +23,7 @@ class StoreTaskChecklistRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => 'required|string'
+            'title' => 'required|string'
         ];
     }
 }

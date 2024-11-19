@@ -97,8 +97,9 @@ const onSubmit = async () => {
     const response = await board.createTaskChecklist(checklistTitle.value)
 
     if (response.status === 201) {
-      notify('success', 'Checklist created successfully')
+      board.selectedTask.checklist = response.data?.data ?? {}
 
+      notify('success', 'Checklist created successfully')
       return
     }
     notify('error', 'Oops something went wrong')
@@ -222,7 +223,10 @@ const toggleCompleted = async (item) => {
           </div>
         </div>
       </div>
-      <div v-else>
+      <div
+        class="flex flex-row justify-center items-center"
+        v-else
+      >
         <div
           class="btn-container"
           v-if="!creatingChecklist"
