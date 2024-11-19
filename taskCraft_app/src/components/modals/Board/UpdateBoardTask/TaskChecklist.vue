@@ -29,6 +29,16 @@ const checklistName = computed(() => {
   return ''
 })
 
+const checklistPercentCompleted = computed(() => {
+  const clCompletedLength = checkListItems.value.filter(item => item.completed).length
+
+  if (!checkListItems.value.length) {
+    return 0
+  }
+
+  return (100 * clCompletedLength/checkListItems.value.length).toFixed(2)
+})
+
 const checkListItems = computed(() => {
   if (!board.selectedTask?.checklist?.checklist_items) {
     return []
@@ -134,12 +144,6 @@ const toggleCompleted = async (item) => {
             <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
               {{ checklistName }}
             </h5>
-            <a
-              href="#"
-              class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500"
-            >
-              View all
-            </a>
           </div>
 
           <div class="flex flex-row">
@@ -164,6 +168,18 @@ const toggleCompleted = async (item) => {
                 Add
               </button>
             </Form>
+          </div>
+
+          <div
+            v-if="hasChecklist"
+            class="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2"
+          >
+            <div
+              class="bg-blue-800 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+              :style="`width: ${checklistPercentCompleted}%`"
+            >
+              {{ checklistPercentCompleted }}%
+            </div>
           </div>
 
           <div class="flow-root">
