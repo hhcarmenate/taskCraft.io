@@ -124,6 +124,10 @@ export const useBoardStore = defineStore('board', {
 
     addChecklistItemStore(checklistItem) {
       this.selectedTask.checklist.checklist_items.push(checklistItem)
+    },
+
+    async updateChecklistItemCompleted({itemId, attribute, value}) {
+      return await ListService.updateTaskChecklistItemCompleted({itemId, attribute, value})
     }
   },
 

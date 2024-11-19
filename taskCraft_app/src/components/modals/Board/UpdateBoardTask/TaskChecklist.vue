@@ -14,6 +14,10 @@ const board = useBoardStore()
 const description = ref('')
 
 const hasChecklist = computed(() => {
+  if (!board.selectedTask?.checklist) {
+    return false
+  }
+
   return !!Object.keys(board.selectedTask.checklist).length
 })
 
@@ -89,6 +93,27 @@ const onSubmit = async () => {
     }
     notify('error', 'Oops something went wrong')
   } catch(e) {
+    console.log(e)
+
+    notify('error', 'Oops something went wrong')
+  }
+}
+
+const toggleCompleted = async (item) => {
+  try {
+    const response = await board.updateChecklistItemCompleted({
+      itemId: item.id,
+      attribute: 'completed',
+      value: !item.completed
+    })
+
+    if (response.status === 200) {
+      item.completed = !item.completed
+      return
+    }
+
+    notify('error', 'Oops something went wrong')
+  } catch (e) {
     console.log(e)
 
     notify('error', 'Oops something went wrong')
@@ -172,6 +197,7 @@ const onSubmit = async () => {
                             focus:ring-3 focus:ring-blue-300 dark:bg-gray-700
                             dark:border-gray-600 dark:focus:ring-blue-600
                             dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
+                      @click="toggleCompleted(item)"
                     />
                   </div>
                 </div>

@@ -23,7 +23,8 @@ class UpdateTaskChecklistRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string'
+            'attribute' => 'required|string',
+            'value' => 'required'
         ];
     }
 }
