@@ -13,7 +13,7 @@ export const useWorkspaceStore = defineStore('workspace', {
     setCurrentWorkSpace(work) {
       const user = useUserStore()
       this.currentWorkspace = work
-      user.workspaceSelected = this.currentWorkspace/id
+      user.workspaceSelected = this.currentWorkspace
     },
 
     async createWorkspace({ name, type, description }) {

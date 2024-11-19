@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Task extends Model
 {
@@ -52,6 +53,11 @@ class Task extends Model
     public function assignedTo(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_to', 'id');
+    }
+
+    public function taskChecklist(): HasOne
+    {
+        return $this->hasOne(TaskChecklist::class, 'task_id', 'id');
     }
 
 }

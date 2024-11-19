@@ -25,7 +25,8 @@ class TaskResource extends JsonResource
             'assigned_to' => $this->assignedTo ? UserResource::make($this->assignedTo) : null,
             'start_date' => $this->start_date ?  Carbon::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('m/d/Y') : null,
             'due_date' => $this->due_date ? Carbon::createFromFormat('Y-m-d H:i:s', $this->due_date)->format('m/d/Y') : null,
-            'position' => $this->position
+            'position' => $this->position,
+            'checklist' => TaskChecklistResource::make($this->taskChecklist)
         ];
     }
 }
