@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTaskChecklistRequest;
+use App\Http\Requests\StoreTaskChecklistItemsRequest;
 use App\Http\Requests\UpdateTaskChecklistRequest;
 use App\Http\Resources\TaskChecklistItemResource;
 use App\Http\Resources\TaskChecklistResource;
@@ -30,12 +30,12 @@ class TaskChecklistItemController extends Controller
 
     /**
      * Create task check list item.
-     * @param StoreTaskChecklistRequest $request
+     * @param StoreTaskChecklistItemsRequest $request
      * @param TaskChecklist $taskChecklist
      * @return TaskChecklistItemResource|JsonResponse
      * @throws Exception
      */
-    public function createTaskChecklistItem(StoreTaskChecklistRequest $request, TaskChecklist $taskChecklist): TaskChecklistItemResource|JsonResponse
+    public function createTaskChecklistItem(StoreTaskChecklistItemsRequest $request, TaskChecklist $taskChecklist): TaskChecklistItemResource|JsonResponse
     {
         return TaskChecklistItemResource::make($this->taskChecklistItemService->createChecklistItem($request, $taskChecklist));
     }

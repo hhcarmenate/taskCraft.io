@@ -2,7 +2,7 @@
 import {Form} from "vee-validate"
 import TCModal from "@/components/modals/TCModal.vue"
 import useNotification from "@/composables/useNotification.js"
-import {computed, reactive, ref, watch} from "vue"
+import {computed, ref} from "vue"
 import {toTypedSchema} from "@vee-validate/zod"
 import * as zod from "zod"
 import {useBoardStore} from "@/stores/useBoardStore.js"
@@ -14,7 +14,7 @@ import TaskChecklist from '@/components/modals/Board/UpdateBoardTask/TaskCheckli
 
 // Emits and Props
 const emit = defineEmits(['update:show'])
-const props = defineProps({
+defineProps({
   show: {
     type: Boolean,
     default: false
@@ -111,7 +111,7 @@ const cancelEditDescription = () => {
     :call-back-editable-title="updateTaskTitle"
   >
     <template #body>
-      <div class="task-container p-2 grid grid-cols-[4fr_2fr]">
+      <div class="task-container p-2 grid grid-cols-[4fr_2fr] max-h-[60vh] overflow-y-auto">
         <!-- Main Content -->
         <div class="p-4">
           <div class="description-section flex flex-col gap-8">
