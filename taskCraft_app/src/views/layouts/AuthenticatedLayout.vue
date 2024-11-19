@@ -1,21 +1,21 @@
 <script setup>
 import Header from '@/components/Header/Header.vue'
-import Sidebar from "@/components/Sidebar/Sidebar.vue";
-import ModalOverlay from "@/components/modals/ModalOverlay.vue";
-import {onMounted} from "vue";
-import {useUserStore} from "@/stores/useUserStore.js";
-import LoadingPage from "@/components/LoadingPage/LoadingPage.vue";
+import Sidebar from "@/components/Sidebar/Sidebar.vue"
+import ModalOverlay from "@/components/modals/ModalOverlay.vue"
+import {onMounted} from "vue"
+import {useUserStore} from "@/stores/useUserStore.js"
+import LoadingPage from "@/components/LoadingPage/LoadingPage.vue"
 
 const user = useUserStore()
 
 onMounted(async () => {
   await user.loadAppData()
-});
+})
 
 </script>
 
 <template>
-  <LoadingPage v-if="user.loadingData"/>
+  <LoadingPage v-if="user.loadingData" />
   <div
     v-else
     class="antialiased bg-gray-50 dark:bg-gray-900"

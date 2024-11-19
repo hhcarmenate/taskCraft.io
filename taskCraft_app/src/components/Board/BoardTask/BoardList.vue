@@ -22,7 +22,6 @@ const currentElement = ref(props.listElement)
 const board = useBoardStore()
 const elementTasks = ref(props.listElement.tasks)
 const {notify} = useNotification()
-const selectedTask = ref(null)
 const showEditModal = ref(false)
 
 const attrs = useAttrs()
