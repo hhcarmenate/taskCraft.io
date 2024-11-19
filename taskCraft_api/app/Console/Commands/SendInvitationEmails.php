@@ -53,7 +53,6 @@ class SendInvitationEmails extends Command
     private function processInvitation(Invitation $invitation)
     {
         $user = User::query()->where('email', $invitation->invitee_email)->first();
-
         if ($user) {
             $this->sendInternalInvitation($user, $invitation);
         } else {

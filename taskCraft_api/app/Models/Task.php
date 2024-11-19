@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Observers\Task\TaskObserver;
+use App\Traits\RegisterObserverTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Task extends Model
 {
+    use RegisterObserverTrait;
+
     /** @use HasFactory<\Database\Factories\TaskFactory> */
     use HasFactory;
 
@@ -25,6 +29,11 @@ class Task extends Model
         'due_date',
         'position'
     ];
+
+    public static function getObserverClass() : TaskObserver
+    {
+        return new TaskObserver();
+    }
 
     /**
      * Board List relationship.
@@ -59,5 +68,4 @@ class Task extends Model
     {
         return $this->hasOne(TaskChecklist::class, 'task_id', 'id');
     }
-
 }
