@@ -17,7 +17,7 @@ class TaskChecklistItemService
      * @return Task
      * @throws Exception
      */
-    public function createChecklistItem(Request $request, TaskChecklist $taskChecklist): Task
+    public function createChecklistItem(Request $request, TaskChecklist $taskChecklist): TaskChecklistItem
     {
         $taskChecklistItem = TaskChecklistItem::query()->create([
             'checklist_id' => $taskChecklist->id,

@@ -24,6 +24,14 @@ const checklistName = computed(() => {
   return ''
 })
 
+const checkListItems = computed(() => {
+  if (!board.selectedTask?.checklist?.checklist_items) {
+    return []
+  }
+
+  return board.selectedTask.checklist.checklist_items
+})
+
 const validationSchema = computed(() => {
   return toTypedSchema(
     zod.object({
@@ -52,10 +60,11 @@ const addChecklistItem = async (fields) => {
   try {
     const response = await board.addChecklistItem(fields)
 
-    if (response.status === 200) {
-      // Add the item to checklist
+    if (response.status === 201) {
+      console.log(response)
 
       notify('success', 'Checklist item added successfully')
+      return
     }
 
     notify('error', 'Oops something went wrong')
@@ -132,22 +141,31 @@ const onSubmit = async () => {
 
           <div class="flow-root">
             <ul
+              v-if="checkListItems.length"
               role="list"
               class="divide-y divide-gray-200 dark:divide-gray-700"
             >
-              <li class="py-3 sm:py-4">
+              <li
+                class="py-3 sm:py-4"
+                v-for="item in checkListItems"
+                :key="item.id"
+              >
                 <div class="flex items-center">
                   <div class="flex-shrink-0" />
                   <div class="flex-1 min-w-0 ms-4">
-                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                      email@windster.com
+                    <p
+                      class="text-sm text-gray-500 truncate dark:text-gray-400"
+                      :class="{'line-through': item.completed}"
+                    >
+                      {{ item.description }}
                     </p>
                   </div>
                   <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                     <input
                       id="terms"
                       type="checkbox"
-                      value=""
+                      :value="'completed'"
+                      :checked="item.completed"
                       class="w-4 h-4 cursor-pointer border border-gray-300 rounded bg-gray-50
                             focus:ring-3 focus:ring-blue-300 dark:bg-gray-700
                             dark:border-gray-600 dark:focus:ring-blue-600
