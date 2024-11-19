@@ -11,6 +11,7 @@ const creatingChecklist = ref(false)
 const checklistTitle = ref('')
 const { notify } = useNotification()
 const board = useBoardStore()
+const description = ref('')
 
 const hasChecklist = computed(() => {
   return !!Object.keys(board.selectedTask.checklist).length
@@ -61,7 +62,8 @@ const addChecklistItem = async (fields) => {
     const response = await board.addChecklistItem(fields)
 
     if (response.status === 201) {
-      console.log(response)
+      board.addChecklistItemStore(response.data.data)
+      description.value = ''
 
       notify('success', 'Checklist item added successfully')
       return
@@ -80,7 +82,6 @@ const onSubmit = async () => {
   try {
     const response = await board.createTaskChecklist(checklistTitle.value)
 
-    console.log(response)
     if (response.status === 201) {
       notify('success', 'Checklist created successfully')
 
@@ -125,6 +126,7 @@ const onSubmit = async () => {
               <TextInput
                 name="description"
                 placeholder="Add new Item"
+                v-model="description"
               />
               <button
                 class="py-1 px-2 text-sm font-medium text-gray-900 focus:outline-none
