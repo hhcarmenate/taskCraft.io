@@ -10,8 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TaskComment extends Model
 {
-    use RegisterObserverTrait;
-
     /** @use HasFactory<TaskFactory> */
     use HasFactory;
 

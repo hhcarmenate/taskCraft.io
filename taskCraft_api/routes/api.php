@@ -5,6 +5,7 @@ use App\Http\Controllers\BoardController;
 use App\Http\Controllers\BoardListController;
 use App\Http\Controllers\TaskChecklistController;
 use App\Http\Controllers\TaskChecklistItemController;
+use App\Http\Controllers\TaskCommentController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\WorkspaceController;
@@ -72,6 +73,17 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
             ->middleware(HandleExceptions::class)
             ->name('update-task-start-date');
 
+        //Task Comments
+        Route::post('task/{task}/comment', [TaskCommentController::class, 'create'])
+            ->middleware(HandleExceptions::class)
+            ->name('create-task-comment');
+        Route::patch('task/{task}/comment/{taskComment}', [TaskCommentController::class, 'update'])
+            ->middleware(HandleExceptions::class)
+            ->name('update-task-comment');
+        Route::delete('task/{task}/comment/{taskComment}', [TaskCommentController::class, 'delete'])
+            ->middleware(HandleExceptions::class)
+            ->name('delete-task-comment');
+
         // Task Checklist Routes
         Route::post('task-checklist/{task}', [TaskChecklistController::class, 'createTaskChecklist'])
             ->middleware(HandleExceptions::class)
@@ -93,6 +105,9 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
         Route::delete('task-checklist-item/{taskChecklistItem}', [TaskChecklistItemController::class, 'removeTaskChecklistItem'])
             ->middleware(HandleExceptions::class)
             ->name('remove-task-checklist-item');
+
+
+
 
         // User Routes
         Route::get('user/{user}/profile', [UserProfileController::class, 'getUserProfile'])
