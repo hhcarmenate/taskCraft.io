@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TaskChecklistItemResource extends JsonResource
+class TaskCommentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,9 @@ class TaskChecklistItemResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'checklist_id' =>$this->checklist_id,
-            'description' => $this->description,
-            'completed' => $this->completed,
+            'task_id' => $this->task_id,
+            'user_id' => $this->user_id,
+            'comment' => $this->comment,
         ];
     }
 }

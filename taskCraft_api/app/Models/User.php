@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -85,4 +86,15 @@ class User extends Authenticatable
             ->useLogName('UserLog')
             ->logOnly(['name', 'email']);
     }
+
+    /**
+     * Get the comments associated with the task.
+     *
+     * @return HasMany Returns a relationship instance representing the comments associated with the task.
+     */
+    public function taskComments(): HasMany
+    {
+        return $this->hasMany(TaskComment::class, 'user_id', 'id');
+    }
+
 }
