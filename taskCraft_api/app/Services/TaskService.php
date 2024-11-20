@@ -69,12 +69,13 @@ class TaskService
 
         if (count($tasks)) {
             foreach ($tasks as $task) {
-                Task::query()
-                    ->where('id', $task['id'])
-                    ->update([
+                $taskModel = Task::query()->find($task['id']);
+                if ($taskModel) {
+                    $taskModel->update([
                         'position' => $task['position'],
                         'list_id' => $boardList->id
                     ]);
+                }
             }
         }
 
