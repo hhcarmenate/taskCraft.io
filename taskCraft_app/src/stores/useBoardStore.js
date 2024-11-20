@@ -128,6 +128,14 @@ export const useBoardStore = defineStore('board', {
 
     async updateChecklistItemCompleted({itemId, attribute, value}) {
       return await ListService.updateTaskChecklistItemCompleted({itemId, attribute, value})
+    },
+
+    async addComment(comment) {
+      console.log('in board', comment, this.selectedTask.id)
+      return await ListService.addTaskComment({
+        comment,
+        taskId: this.selectedTask.id
+      })
     }
   },
 

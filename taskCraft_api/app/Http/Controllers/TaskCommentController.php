@@ -54,7 +54,7 @@ class TaskCommentController extends Controller
      *
      * @param UpdateTaskCommentRequest $request The request data for updating the task comment
      * @*/
-    public function update(UpdateTaskCommentRequest $request, TaskComment $taskComment): TaskCommentResource
+    public function update(UpdateTaskCommentRequest $request, Task $task, TaskComment $taskComment): TaskCommentResource
     {
         return TaskCommentResource::make($this->taskCommentService->updateTasksComment($request, $taskComment));
     }
@@ -66,7 +66,7 @@ class TaskCommentController extends Controller
      *
      * @return TaskCommentResource A TaskCommentResource representing the deleted TaskComment.
      */
-    public function delete(TaskComment $taskComment): TaskCommentResource
+    public function delete(Task $task, TaskComment $taskComment): TaskCommentResource
     {
         return TaskCommentResource::make($this->taskCommentService->removeTaskComment($taskComment));
     }

@@ -134,6 +134,16 @@ class ListService {
     })
   }
 
+  async addTaskComment({taskId, comment}) {
+    return await TASKCRAFT_API.get('sanctum/csrf-cookie', {
+      baseURL: import.meta.env.VITE_APP_TASKCRAFT_API
+    }).then(async () => {
+      return await TASKCRAFT_API.post(`task/${taskId}/comment`, {
+        comment,
+      })
+    })
+  }
+
 }
 
 export default new ListService()
