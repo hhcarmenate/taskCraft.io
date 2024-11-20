@@ -7,6 +7,7 @@ use App\Traits\RegisterObserverTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Task extends Model
@@ -64,8 +65,21 @@ class Task extends Model
         return $this->belongsTo(User::class, 'assigned_to', 'id');
     }
 
+    /**
+     * @return HasOne
+     */
     public function taskChecklist(): HasOne
     {
         return $this->hasOne(TaskChecklist::class, 'task_id', 'id');
+    }
+
+    /**
+     * Get the comments associated with this task.
+     *
+     * @return HasMany
+     */
+    public function taskComments(): HasMany
+    {
+        return $this->hasMany(TaskComment::class, 'task_id', 'id');
     }
 }
