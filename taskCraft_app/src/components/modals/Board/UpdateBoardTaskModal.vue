@@ -7,9 +7,9 @@ import {toTypedSchema} from "@vee-validate/zod"
 import * as zod from "zod"
 import {useBoardStore} from "@/stores/useBoardStore.js"
 import TextareaInput from "@/components/fields/TextareaInput.vue"
-import TextInput from "@/components/fields/TextInput.vue"
 import TaskDetails from "@/components/modals/Board/UpdateBoardTask/TaskDetails.vue"
 import TaskChecklist from '@/components/modals/Board/UpdateBoardTask/TaskChecklist.vue'
+import TaskComments from '@/components/modals/Board/UpdateBoardTask/TaskComments.vue'
 
 
 // Emits and Props
@@ -177,20 +177,8 @@ const cancelEditDescription = () => {
               <TaskChecklist />
             </div>
 
-            <div class="activity-section">
-              <div class="activity-container flex flex-col">
-                <h3 class="text-xl font-thin">Activity</h3>
-                <div class="activity-content">
-                  <div class="">
-                    <TextInput
-                      placeholder="Comment"
-                    />
-                  </div>
-                  <div>
-                    activities
-                  </div>
-                </div>
-              </div>
+            <div class="task-comments">
+              <TaskComments />
             </div>
           </div>
         </div>

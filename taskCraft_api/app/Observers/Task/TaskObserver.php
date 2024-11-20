@@ -3,6 +3,7 @@
 namespace App\Observers\Task;
 
 use App\Observers\Observer;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -36,20 +37,11 @@ class TaskObserver extends Observer
 
     public function updated($model): void
     {
-        if ($model->isDirty()) {
-            $noNeededAttr = ['updated_at'];
-
-            $changes = $model->getChanges();
-            foreach($changes as $key=>$change) {
-                if (!in_array($key, $noNeededAttr)) {
-                    activity()
-                        ->causedBy(Auth::user())
-                        ->performedOn($model)
-                        ->withProperties(['new' => [$key => $change], 'old' => [$key => $model->getOriginal()[$key]] ])
-                        ->log('Task Created');
-                }
-            }
-
+        Log::info('Triggered update', [$model]);
+        try {
+            (new HandleUpdatedEvent($model))->handle();
+        } catch (Exception $e) {
+            Log::info('Observer Error', [$e->getMessage()]);
         }
     }
 
@@ -58,8 +50,12 @@ class TaskObserver extends Observer
         // TODO: Implement deleting() method.
     }
 
-    public function deleted($model)
+    public function deleted($model): void
     {
-        // TODO: Implement deleted() method.
+        activity()
+            ->causedBy(Auth::user())
+            ->performedOn($model)
+            ->withProperties($model->toArray())
+            ->log('Task Deleted');
     }
 }
