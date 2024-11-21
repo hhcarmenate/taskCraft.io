@@ -144,6 +144,10 @@ class ListService {
     })
   }
 
+  async loadTaskLogs(taskId) {
+    return await TASKCRAFT_API.get(`task/${taskId}/logs`)
+  }
+
 }
 
 export default new ListService()

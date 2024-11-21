@@ -7,6 +7,7 @@ use App\Http\Controllers\TaskChecklistController;
 use App\Http\Controllers\TaskChecklistItemController;
 use App\Http\Controllers\TaskCommentController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskLogsController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\WorkspaceController;
 use App\Http\Middleware\HandleExceptions;
@@ -83,6 +84,11 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
         Route::delete('task/{task}/comment/{taskComment}', [TaskCommentController::class, 'delete'])
             ->middleware(HandleExceptions::class)
             ->name('delete-task-comment');
+
+        // Task Logs
+        Route::get('task/{task}/logs', [TaskLogsController::class, 'getLogs'])
+            ->middleware(HandleExceptions::class)
+            ->name('get-task-logs');
 
         // Task Checklist Routes
         Route::post('task-checklist/{task}', [TaskChecklistController::class, 'createTaskChecklist'])
