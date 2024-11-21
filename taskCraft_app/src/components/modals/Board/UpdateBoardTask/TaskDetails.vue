@@ -6,6 +6,7 @@ import DateTask from '@/components/modals/Board/UpdateBoardTask/DateTask.vue'
 
 const board = useBoardStore()
 
+
 </script>
 
 <template>
@@ -42,6 +43,4 @@ const board = useBoardStore()
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
