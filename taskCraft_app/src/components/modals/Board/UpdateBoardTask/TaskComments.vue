@@ -180,6 +180,7 @@ const loadTaskActivities = async () => {
               >
                 {{ log.date }}
               </time>
+              <div class="text-md font-bold text-gray-800">{{ log.user?.name }}</div>
             </div>
             <!-- Content -->
             <div class="text-slate-500">{{ log.details }}</div>
