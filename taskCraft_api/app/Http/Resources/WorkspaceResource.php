@@ -16,8 +16,6 @@ class WorkspaceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        Log::info('checking boards', [$this->boards]);
-
         return [
             'id' => $this->id,
             'name' => $this->name,

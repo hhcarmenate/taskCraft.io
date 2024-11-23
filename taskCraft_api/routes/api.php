@@ -112,9 +112,6 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
             ->middleware(HandleExceptions::class)
             ->name('remove-task-checklist-item');
 
-
-
-
         // User Routes
         Route::get('user/{user}/profile', [UserProfileController::class, 'getUserProfile'])
             ->name('get-user-profile');

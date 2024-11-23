@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Observers\Task\TaskObserver;
+use App\Observers\Workspace\WorkspaceObserver;
+use App\Traits\RegisterObserverTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -10,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Workspace extends Model
 {
-    use HasFactory;
+    use HasFactory, RegisterObserverTrait;
 
     protected $table = 'workspaces';
 
@@ -74,7 +77,6 @@ class Workspace extends Model
             });
     }
 
-
     /**
      * Get the boards associated with this instance.
      *
@@ -83,5 +85,16 @@ class Workspace extends Model
     public function boards(): HasMany
     {
         return $this->hasMany(Board::class, 'workspace_id', 'id');
+    }
+
+    /**
+     * Retrieve the class representing the observer for the Workspace model.
+     * The observer class is utilized to handle various model events and actions for Workspace instances.
+     *
+     * @return WorkspaceObserver The WorkspaceObserver class instance for the Workspace model.
+     */
+    public static function getObserverClass():WorkspaceObserver
+    {
+        return new WorkspaceObserver();
     }
 }
