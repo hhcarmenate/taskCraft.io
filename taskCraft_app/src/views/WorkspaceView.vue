@@ -1,7 +1,21 @@
 <script setup>
-import WorkspaceIntro from "@/components/Workspace/workspace-intro/WorkspaceIntro.vue";
-import SuggestedTemplates from "@/components/Workspace/suggested-templates/SuggestedTemplates.vue";
-import WorkspaceBoard from "@/components/Workspace/workspace-boards/WorkspaceBoard.vue";
+import WorkspaceIntro from "@/components/Workspace/workspace-intro/WorkspaceIntro.vue"
+import SuggestedTemplates from "@/components/Workspace/suggested-templates/SuggestedTemplates.vue"
+import WorkspaceBoard from "@/components/Workspace/workspace-boards/WorkspaceBoard.vue"
+import { useWorkspaceStore } from '@/stores/useWorkspaceStore.js'
+import { watch } from 'vue'
+
+const workspace = useWorkspaceStore()
+
+
+watch(() => workspace.currentWorkspace, () => {
+  if (workspace.currentWorkspace) {
+    window.Echo.private(`workspace.${workspace.currentWorkspace.id}`)
+      .listen('WorkspaceUpdated', (event) => {
+        console.log('workspace updated', event)
+      })
+  }
+}, { immediate: true})
 
 
 </script>
@@ -23,10 +37,8 @@ import WorkspaceBoard from "@/components/Workspace/workspace-boards/WorkspaceBoa
             <SuggestedTemplates v-if="false" />
 
             <WorkspaceBoard />
-
           </div>
         </div>
-
       </div>
     </section>
   </main>

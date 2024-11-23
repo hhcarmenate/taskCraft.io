@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
 use Spatie\Activitylog\Models\Activity;
@@ -21,6 +22,7 @@ class TaskLogsController extends Controller
         $activities = Activity::query()
             ->where('subject_type', 'App\Models\Task')
             ->where('subject_id', $task->id)
+            ->orderBy('created_at', 'DESC')
             ->get();
 
         if ($activities) {
@@ -29,6 +31,7 @@ class TaskLogsController extends Controller
                    'id' => $act->id,
                    'action' => $act->description,
                    'details' => $act->properties['logMessage'] ?? '',
+                   'user' => User::query()->find($act->causer_id),
                    'date' => Carbon::parse($act->created_at)->format('M. j, Y')
                ];
             });

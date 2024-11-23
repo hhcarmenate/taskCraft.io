@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Observers\Task;
+namespace App\Observers\Workspace;
 
 use App\Observers\Observer;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class TaskObserver extends Observer
+class WorkspaceObserver extends Observer
 {
 
     public function creating($model)
@@ -27,7 +27,7 @@ class TaskObserver extends Observer
             ->causedBy(Auth::user())
             ->performedOn($model)
             ->withProperties($model->toArray())
-            ->log('Task Created');
+            ->log('Workspace Created');
     }
 
     public function updating($model)
@@ -38,7 +38,7 @@ class TaskObserver extends Observer
     public function updated($model): void
     {
         try {
-            (new HandleTaskUpdatedEvent($model))->handle();
+            (new HandleWorkspaceUpdatedEvent($model))->handle();
         } catch (Exception $e) {
             Log::info('Observer Error', [$e->getMessage()]);
         }
@@ -55,6 +55,6 @@ class TaskObserver extends Observer
             ->causedBy(Auth::user())
             ->performedOn($model)
             ->withProperties($model->toArray())
-            ->log('Task Deleted');
+            ->log('Workspace Deleted');
     }
 }

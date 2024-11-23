@@ -1,14 +1,14 @@
 <script setup>
-import TCModal from "@/components/modals/TCModal.vue";
+import TCModal from "@/components/modals/TCModal.vue"
 import {Form} from 'vee-validate'
-import {computed, onMounted, reactive, ref, watch} from "vue";
-import {toTypedSchema} from "@vee-validate/zod";
+import {computed, reactive, watch} from "vue"
+import {toTypedSchema} from "@vee-validate/zod"
 import * as zod from 'zod'
-import TextInput from "@/components/fields/TextInput.vue";
-import SelectInput from "@/components/fields/SelectInput.vue";
-import TextareaInput from "@/components/fields/TextareaInput.vue";
-import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js";
-import useNotification from "@/composables/useNotification.js";
+import TextInput from "@/components/fields/TextInput.vue"
+import SelectInput from "@/components/fields/SelectInput.vue"
+import TextareaInput from "@/components/fields/TextareaInput.vue"
+import {useWorkspaceStore} from "@/stores/useWorkspaceStore.js"
+import useNotification from "@/composables/useNotification.js"
 
 const currentItems = [
   { value: 'education', text: 'Education' },
@@ -17,7 +17,7 @@ const currentItems = [
 ]
 
 const emit = defineEmits(['update:show'])
-defineProps({
+const props = defineProps({
   show: {
     type: Boolean,
     default: false
@@ -47,8 +47,10 @@ const validationSchema = computed(() => {
   )
 })
 
-watch(() => workspace.currentWorkspace, () => {
-  initLocalState()
+watch(() => props.show, (newValue) => {
+  if (newValue) {
+    initLocalState()
+  }
 })
 
 const handleUpdateShow = (show) => {
@@ -119,7 +121,10 @@ const onInvalidSubmit = (e) => {
     <template #body>
       <div class="flex flex-row gap-3 justify-center">
         <div class="image-container w-[50%]">
-          <img src="/images/workspace.svg" alt="">
+          <img
+            src="/images/workspace.svg"
+            alt=""
+          />
         </div>
       </div>
 

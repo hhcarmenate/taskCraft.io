@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class HandleUpdatedEvent
+class HandleTaskUpdatedEvent
 {
     private Model $model;
 
