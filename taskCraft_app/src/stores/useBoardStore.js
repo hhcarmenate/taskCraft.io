@@ -7,7 +7,7 @@ export const useBoardStore = defineStore('board', {
   state: () => ({
     id: '',
     title: '',
-    workspace: '',
+    workspace_id: '',
     visibility: '',
     starred: false,
     lists: [],
@@ -18,6 +18,20 @@ export const useBoardStore = defineStore('board', {
       return await BoardService.createBoard({ title, workspaceSelected, visibility })
     },
 
+    async updateBoard({ title, workspaceSelected, visibility}) {
+      return await BoardService.updateBoard({
+        title,
+        workspaceSelected,
+        visibility,
+        boardId: this.id
+      })
+    },
+
+    updateBoardFromBroadcast(event) {
+      const { board } = event
+      this.initCurrentBoard(board)
+    },
+
     async toggleStarred(boardId, starred) {
       return await BoardService.toggleStarred(boardId, starred)
     },
@@ -25,7 +39,7 @@ export const useBoardStore = defineStore('board', {
     initCurrentBoard(board) {
       this.id = board.id
       this.title = board.title
-      this.workspace = board.workspace
+      this.workspace_id = board.workspace_id
       this.visibility = board.visibility
       this.starred = board.starred
       this.lists = board.lists

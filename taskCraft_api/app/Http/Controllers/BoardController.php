@@ -39,33 +39,35 @@ class BoardController extends Controller
      */
     public function store(StoreBoardRequest $request): JsonResponse|BoardResource
     {
-        try {
-            return BoardResource::make($this->boardService->createBoard($request));
-        } catch (Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return BoardResource::make($this->boardService->createBoard($request));
     }
+
+
+    public function update(UpdateBoardRequest $request, Board $board): BoardResource
+    {
+        return BoardResource::make($this->boardService->updateBoard($request, $board));
+    }
+
 
     /**
      * Toggle board starred
+     * @param Request $request
      * @param Board $board
      * @return JsonResponse|BoardResource
+     * @throws Exception
      */
     public function toggleStarred(Request $request, Board $board): JsonResponse|BoardResource
     {
-        try {
-            if ($request->input('starred')) {
-                $starredCount = $this->boardService->getStarredCount();
+        if ($request->input('starred')) {
+            $starredCount = $this->boardService->getStarredCount();
 
-                if ($starredCount >= 5 ) {
-                    return response()->json(['message' => 'Starred Limit reached'], 422);
-                }
+            if ($starredCount >= 5 ) {
+                return response()->json(['message' => 'Starred Limit reached'], 422);
             }
-
-            return BoardResource::make($this->boardService->toggleStarred($board));
-        } catch (Exception $e) {
-            return $this->genericFailResponse($e);
         }
+
+        return BoardResource::make($this->boardService->toggleStarred($board));
+
     }
 
     /**
@@ -77,11 +79,7 @@ class BoardController extends Controller
      */
     public function saveRecentBoard(SaveRecentBoardRequest $request): BoardResource | AnonymousResourceCollection
     {
-        try {
-            return BoardResource::collection($this->boardService->saveRecent($request->input('boardId')));
-        } catch (Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return BoardResource::collection($this->boardService->saveRecent($request->input('boardId')));
     }
 
     /**
@@ -91,11 +89,7 @@ class BoardController extends Controller
      */
     public function getRecentBoards(): JsonResponse|AnonymousResourceCollection
     {
-        try {
-            return BoardResource::collection($this->boardService->getRecent());
-        } catch (Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return BoardResource::collection($this->boardService->getRecent());
     }
 
 }

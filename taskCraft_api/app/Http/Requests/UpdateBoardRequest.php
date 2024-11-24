@@ -11,7 +11,7 @@ class UpdateBoardRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateBoardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string',
+            'workspaceSelected' => 'required|integer|exists:workspaces,id',
+            'visibility' => 'required|string'
         ];
     }
 }

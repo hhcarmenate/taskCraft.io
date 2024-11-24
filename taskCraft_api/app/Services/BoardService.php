@@ -47,6 +47,24 @@ class BoardService
     }
 
     /**
+     * Update board selected.
+     * @param Request $request
+     * @param Board $board
+     * @return mixed
+     */
+    public function updateBoard(Request $request, Board $board): Board
+    {
+        $board->title = $request->input('title');
+        $board->workspace_id = $request->input('workspaceSelected');
+        $board->visibility = $request->input('visibility');
+
+        $board->save();
+
+        return $board;
+    }
+
+
+    /**
      * Toggle the "starred" status of a board.
      *
      * @param mixed $board Board object to toggle the starred status for.

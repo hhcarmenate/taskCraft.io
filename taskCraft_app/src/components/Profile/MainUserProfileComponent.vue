@@ -1,11 +1,11 @@
 <script setup>
 
-import MainUserProfileModal from "@/components/modals/UserProfile/MainUserProfileModal.vue";
-import ProfileImage from "@/components/Profile/profile-images/ProfileImage.vue";
-import {useUserStore} from "@/stores/useUserStore.js";
-import {useUserProfileStore} from "@/stores/useUserProfileStore.js";
-import {computed, ref} from "vue";
-import {JOB_POSITIONS} from "@/constants/index.js";
+import MainUserProfileModal from "@/components/modals/UserProfile/MainUserProfileModal.vue"
+import ProfileImage from "@/components/Profile/profile-images/ProfileImage.vue"
+import {useUserStore} from "@/stores/useUserStore.js"
+import {useUserProfileStore} from "@/stores/useUserProfileStore.js"
+import {computed, ref} from "vue"
+import {JOB_POSITIONS} from "@/constants/index.js"
 
 const user = useUserStore()
 const userProfile = useUserProfileStore()
@@ -34,8 +34,14 @@ const handleUpdateShow = (value) => {
         type="button"
       >
         <span class="sr-only">Open dropdown</span>
-        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-          <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+        <svg
+          class="w-5 h-5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 16 3"
+        >
+          <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
         </svg>
       </button>
     </div>
@@ -47,10 +53,13 @@ const handleUpdateShow = (value) => {
         {{ user.name }}
       </h5>
       <span class="text-sm text-gray-500 dark:text-gray-400">
-                {{ jobPosition ?? '' }}
-              </span>
+        {{ jobPosition ?? '' }}
+      </span>
     </div>
-    <MainUserProfileModal :show="showUserProfileModal" @update:show="handleUpdateShow" />
+    <MainUserProfileModal
+      :show="showUserProfileModal"
+      @update:show="handleUpdateShow"
+    />
   </div>
 </template>
 

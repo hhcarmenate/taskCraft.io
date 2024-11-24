@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Observers\Board\BoardObserver;
-use App\Observers\Workspace\WorkspaceObserver;
 use App\Traits\RegisterObserverTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
