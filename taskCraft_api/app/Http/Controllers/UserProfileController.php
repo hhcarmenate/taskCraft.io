@@ -37,11 +37,7 @@ class UserProfileController extends Controller
      */
     public function getUserProfile(User $user): UserProfileResource|JsonResponse
     {
-        try {
-            return UserProfileResource::make($this->userProfileService->getOrCreateUserProfile($user));
-        } catch (Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return UserProfileResource::make($this->userProfileService->getOrCreateUserProfile($user));
     }
 
     /**
@@ -55,11 +51,7 @@ class UserProfileController extends Controller
      */
     public function updateMainProfile(Request $request, User $user): UserProfileResource|JsonResponse
     {
-        try {
-            return UserProfileResource::make($this->userProfileService->updateMainUserProfile($request, $user));
-        } catch (Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return UserProfileResource::make($this->userProfileService->updateMainUserProfile($request, $user));
     }
 
     /**
@@ -69,11 +61,7 @@ class UserProfileController extends Controller
      */
     public function updateGeneralProfile(Request $request, User $user): UserProfileResource|JsonResponse
     {
-        try {
-            return UserProfileResource::make($this->userProfileService->updateGeneralUserInfoProfile($request, $user));
-        } catch (Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return UserProfileResource::make($this->userProfileService->updateGeneralUserInfoProfile($request, $user));
     }
 
 }

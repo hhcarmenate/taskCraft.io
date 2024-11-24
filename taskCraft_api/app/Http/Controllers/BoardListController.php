@@ -38,11 +38,7 @@ class BoardListController extends Controller
      */
     public function createList(CreateBoardListRequest $request, Board $board): JsonResponse|BoardListResource
     {
-        try {
-            return BoardListResource::make($this->boardListService->createBoardList($request, $board));
-        } catch (Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return BoardListResource::make($this->boardListService->createBoardList($request, $board));
     }
 
     /**
@@ -55,13 +51,9 @@ class BoardListController extends Controller
      */
     public function updatePositions(UpdateListPositionRequest $request, Board $board): JsonResponse
     {
-        try {
-            $this->boardListService->updateBoardListPositions($request, $board);
+        $this->boardListService->updateBoardListPositions($request, $board);
 
-            return response()->json(['message' => 'Positions updated successfully']);
-        } catch (Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return response()->json(['message' => 'Positions updated successfully']);
     }
 
     /**
@@ -74,10 +66,6 @@ class BoardListController extends Controller
      */
     public function updateListTitle(UpdateListTitleRequest $request, BoardList $boardList): JsonResponse | BoardListResource
     {
-        try {
-            return BoardListResource::make($this->boardListService->updateListTitle($request, $boardList));
-        } catch (Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return BoardListResource::make($this->boardListService->updateListTitle($request, $boardList));
     }
 }

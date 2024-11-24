@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Observers\BoardList\BoardListObserver;
+use App\Traits\RegisterObserverTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class BoardList extends Model
 {
     /** @use HasFactory<\Database\Factories\BoardFactory> */
-    use HasFactory;
+    use HasFactory, RegisterObserverTrait;
     protected $table = 'board_lists';
 
     protected $fillable = [
@@ -19,6 +21,14 @@ class BoardList extends Model
         'description',
         'position',
     ];
+
+    /**
+     * @return BoardListObserver
+     */
+    public static function getObserverClass(): BoardListObserver
+    {
+        return new BoardListObserver();
+    }
 
     /**
      * Get the workspace that this entity belongs to.
