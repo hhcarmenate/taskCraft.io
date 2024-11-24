@@ -10,6 +10,7 @@ import {toTypedSchema} from "@vee-validate/zod"
 import * as zod from "zod"
 import {useBoardStore} from "@/stores/useBoardStore.js"
 import {useUserStore} from "@/stores/useUserStore.js"
+import RadioInput from '@/components/fields/RadioInput.vue'
 
 const visibilityOptions = [
   { value: 'private', text: 'Private' },
@@ -150,13 +151,23 @@ const onInvalidSubmit = (e) => {
 
           <div class="form__row mt-8">
             <div class="form__controls">
-              <SelectInput
-                name="visibility"
-                :items="visibilityOptions"
-                label="Visibility"
-                v-model="localState.form.visibility"
-                show-error
-              />
+              <h3 class="text-md mb-3">Visibility</h3>
+              <div class="options-container flex flex-row items-center justify-between">
+                <template
+                  v-for="option in visibilityOptions"
+                  :key="option.id"
+                >
+                  <RadioInput
+                    :id="`option_${option.value}`"
+                    :label="option.text"
+                    :checked="localState.form.visibility === option.value"
+                    name="visibility"
+                    v-model="localState.form.visibility"
+                    :value="option.value"
+                    :disabled="false"
+                  />
+                </template>
+              </div>
             </div>
           </div>
 

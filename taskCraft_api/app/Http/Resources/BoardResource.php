@@ -6,7 +6,6 @@ use App\Models\StarredUserBoard;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class BoardResource extends JsonResource
 {
@@ -23,7 +22,7 @@ class BoardResource extends JsonResource
             'workspace_id' => $this->workspace_id,
             'visibility' => $this->visibility,
             'starred' => $this->getStarredStatus(),
-            'lists' => BoardListResource::collection($this->orderedLists())
+            'lists' => $this->lists ? BoardListResource::collection($this->orderedLists()) : []
         ];
     }
 

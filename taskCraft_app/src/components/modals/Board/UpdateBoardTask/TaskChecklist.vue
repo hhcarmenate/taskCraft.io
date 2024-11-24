@@ -6,6 +6,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as zod from 'zod'
 import useNotification from '@/composables/useNotification.js'
 import { useBoardStore } from '@/stores/useBoardStore.js'
+import CheckboxInput from '@/components/fields/CheckboxInput.vue'
 
 const creatingChecklist = ref(false)
 const checklistTitle = ref('')

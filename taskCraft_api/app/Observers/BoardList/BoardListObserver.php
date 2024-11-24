@@ -41,8 +41,9 @@ class BoardListObserver extends Observer
 
     public function updated($model): void
     {
+        Log::info('Updating list name');
         try {
-            (new HandleBoardUpdatedEvent($model))->handle();
+            (new HandleBoardListUpdatedEvent($model))->handle();
         } catch (Exception $e) {
             Log::info('Observer Error', [$e->getMessage()]);
         }
@@ -59,6 +60,6 @@ class BoardListObserver extends Observer
             ->causedBy(Auth::user())
             ->performedOn($model)
             ->withProperties($model->toArray())
-            ->log('Workspace Deleted');
+            ->log('BoardList Deleted');
     }
 }
