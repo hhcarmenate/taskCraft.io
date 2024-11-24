@@ -1,4 +1,5 @@
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore.js'
+import { useBoardStore } from '@/stores/useBoardStore.js'
 
 export default function listenChannels() {
 
@@ -23,5 +24,19 @@ export default function listenChannels() {
       })
   }
 
-  return { listenPublicChannels, listenCurrentWorkspace }
+  const listenBoard = (boardId) => {
+    const board = useBoardStore()
+
+    window.Echo.private(`updated_board.${boardId}`)
+      .listen('BoardUpdated', (event) => {
+        board.updateBoardFromBroadcast(event)
+      })
+  }
+
+
+  return {
+    listenPublicChannels,
+    listenCurrentWorkspace,
+    listenBoard
+  }
 }

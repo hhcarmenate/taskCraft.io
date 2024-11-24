@@ -22,6 +22,7 @@ class BoardUpdated implements ShouldBroadcastNow
      */
     public function __construct(Model $board)
     {
+        $this->dontBroadcastToCurrentUser();
         $this->board = new BoardResource($board);
     }
 

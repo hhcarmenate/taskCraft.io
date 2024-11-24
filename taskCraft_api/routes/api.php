@@ -35,17 +35,27 @@ Route::namespace('Api\V1')->prefix('v1/')->name('track-craft.')->group(function(
             ->name('register-join');
 
         // Board Routes
-        Route::post('board/create-board', [BoardController::class, 'store'])
+        Route::post('board', [BoardController::class, 'store'])
+            ->middleware(HandleExceptions::class)
             ->name('create-board');
+        Route::put('board/{board}', [BoardController::class, 'update'])
+            ->middleware(HandleExceptions::class)
+            ->name('update-board');
+
         Route::post('board/{board}/toggle-starred', [BoardController::class, 'toggleStarred'])
+            ->middleware(HandleExceptions::class)
             ->name('toggle-starred');
         Route::post('board/{board}/create-list', [BoardListController::class, 'createList'])
+            ->middleware(HandleExceptions::class)
             ->name('create-list');
         Route::put('board/{board}/update-lists-positions', [BoardListController::class, 'updatePositions'])
+            ->middleware(HandleExceptions::class)
             ->name('update-lists-positions');
         Route::post('board/recent-boards', [BoardController::class, 'saveRecentBoard'])
+            ->middleware(HandleExceptions::class)
             ->name('save-recent-board');
         Route::get('board/recent-boards', [BoardController::class, 'getRecentBoards'])
+            ->middleware(HandleExceptions::class)
             ->name('get-recent-boards');
 
 

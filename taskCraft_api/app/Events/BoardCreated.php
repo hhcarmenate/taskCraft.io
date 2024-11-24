@@ -14,7 +14,6 @@ use Illuminate\Queue\SerializesModels;
 class BoardCreated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    use InteractsWithSockets;
 
     public BoardResource $board;
 

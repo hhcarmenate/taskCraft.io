@@ -5,7 +5,6 @@ namespace App\Observers\Board;
 use App\Events\BoardCreated;
 use App\Observers\Observer;
 use Exception;
-use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 

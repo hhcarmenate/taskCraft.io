@@ -1,15 +1,22 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore.js'
 import listenChannels from '@/plugins/listenChannels.js'
+import { useBoardStore } from '@/stores/useBoardStore.js'
 
-const message = ref()
 const workspace = useWorkspaceStore()
-const { listenCurrentWorkspace } = listenChannels()
+const board = useBoardStore()
+const { listenCurrentWorkspace, listenBoard } = listenChannels()
 
 watch(() => workspace.currentWorkspace,  (newValue) => {
   if (newValue) {
     listenCurrentWorkspace(workspace.currentWorkspace.id)
+  }
+})
+
+watch(() => board.id, (newValue) => {
+  if (newValue) {
+    listenBoard(newValue)
   }
 })
 
