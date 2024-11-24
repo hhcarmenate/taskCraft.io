@@ -206,10 +206,15 @@ const toggleCompleted = async (item) => {
                     </p>
                   </div>
                   <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                    <CheckboxInput
-                      name="terms"
-                      v-model="item.complete"
-                      :disabled="false"
+                    <input
+                      id="terms"
+                      type="checkbox"
+                      :value="'completed'"
+                      :checked="item.completed"
+                      class="w-4 h-4 cursor-pointer border border-gray-300 rounded bg-gray-50
+                            focus:ring-3 focus:ring-blue-300 dark:bg-gray-700
+                            dark:border-gray-600 dark:focus:ring-blue-600
+                            dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
                       @click="toggleCompleted(item)"
                     />
                   </div>

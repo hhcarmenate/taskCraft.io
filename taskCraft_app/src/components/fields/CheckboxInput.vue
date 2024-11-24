@@ -6,37 +6,38 @@ const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
   label: { type: String },
   name: { type: String },
-  modelValue: { type: Boolean, default: false },
+  modelValue: { type: [Boolean, Number], default: false }, // Accept boolean or number types
   disabled: { type: Boolean, default: false },
 })
 
-const name = toRef(props, 'name')
+// Transforms modelValue to boolean for usage and retains v-model reactivity
+const initialValue = computed(() => !!props.modelValue)
 
 const {
   value: checkboxValue,
   errorMessage,
   setValue,
   meta,
-} = useField(name, {
-  initialValue: props.modelValue,
+} = useField(toRef(props, 'name'), {
+  initialValue: initialValue.value,
 })
 
-watch(() => props.modelValue, setValue)
-
-watch(checkboxValue, (val) => {
-  emit('update:modelValue', val)
+watch(() => props.modelValue, (newValue) => {
+  setValue(!!newValue)
 })
 
-const showErrorMessage = computed(() => {
-  return errorMessage.value && meta.touched
+watch(checkboxValue, (newValue) => {
+  emit('update:modelValue', newValue)
 })
+
+const showErrorMessage = computed(() => errorMessage.value && meta.touched)
 </script>
 
 <template>
   <div :class="`formGroup relative ${showErrorMessage ? 'has-error' : ''}`">
     <label
       :for="name"
-      class="input-label"
+      class="input-label flex items-center"
     >
       <input
         :id="name"
