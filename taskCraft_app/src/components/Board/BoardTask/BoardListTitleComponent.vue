@@ -105,7 +105,7 @@ const onInvalidSubmit = () => {
                 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400
                 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
           >
-            Add
+            Update
           </button>
           <button
             type="button"
