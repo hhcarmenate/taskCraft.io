@@ -12,7 +12,10 @@ const TASKCRAFT_API = axios.create({
 })
 
 TASKCRAFT_API.interceptors.request.use(
-  (request) => request,
+  (request) => {
+    request.headers['X-socket-ID'] = window.Echo.socketId()
+    return request
+  },
   (error) => error
 )
 

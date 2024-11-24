@@ -11,8 +11,6 @@ export const useWorkspaceStore = defineStore('workspace', {
   }),
   actions: {
     updateWorkspaceFromBroadcast(event) {
-      console.log('Updating from broadcast', event)
-
       this.currentWorkspace = event.workspace
       const workspaceIndex = this.workspaces.findIndex(
         workspace => workspace.id === event.workspace.id
@@ -24,6 +22,16 @@ export const useWorkspaceStore = defineStore('workspace', {
         this.workspaces.push(event.workspace)
       }
     },
+
+    addNewBoardFromBroadcast(event) {
+      this.workspaces.forEach((workspace) => {
+        if (workspace.id === event.board.workspace_id) {
+          workspace.boards.push(event.board)
+        }
+      })
+
+    },
+
     setCurrentWorkSpace(work) {
       const user = useUserStore()
       this.currentWorkspace = work
