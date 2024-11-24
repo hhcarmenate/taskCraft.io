@@ -10,6 +10,20 @@ export const useWorkspaceStore = defineStore('workspace', {
     recentBoards: []
   }),
   actions: {
+    updateWorkspaceFromBroadcast(event) {
+      console.log('Updating from broadcast', event)
+
+      this.currentWorkspace = event.workspace
+      const workspaceIndex = this.workspaces.findIndex(
+        workspace => workspace.id === event.workspace.id
+      )
+
+      if (workspaceIndex !== -1) {
+        this.workspaces[workspaceIndex] = event.workspace
+      } else {
+        this.workspaces.push(event.workspace)
+      }
+    },
     setCurrentWorkSpace(work) {
       const user = useUserStore()
       this.currentWorkspace = work

@@ -3,9 +3,7 @@
 namespace App\Broadcasting;
 
 use App\Models\User;
-use App\Models\Workspace;
 use App\Models\WorkspaceUser;
-use Illuminate\Support\Facades\Log;
 
 class WorkspaceChannel
 {

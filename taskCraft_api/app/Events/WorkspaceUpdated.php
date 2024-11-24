@@ -39,7 +39,7 @@ class WorkspaceUpdated implements ShouldBroadcastNow
     public function broadcastWith(): array
     {
         return [
-            'message' => $this->workspace->toArray(request())
+            'workspace' => $this->workspace->toArray(request())
         ];
     }
 }

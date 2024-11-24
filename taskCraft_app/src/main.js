@@ -10,11 +10,17 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
-import './plugins/echo.js'
-
+import { registerEcho } from '@/plugins/echo.js'
+import listenChannels from '@/plugins/listenChannels.js'
+const { listenPublicChannels } = listenChannels()
+registerEcho()
+listenPublicChannels()
 
 const app = createApp(App)
 const pinia = createPinia()
+
+
+
 
 app.use(pinia.use(piniaPluginPersistedstate))
 app.use(router)
