@@ -1,11 +1,11 @@
 <script setup>
-import {computed, ref} from "vue";
-import {Form} from "vee-validate";
-import TextInput from "@/components/fields/TextInput.vue";
-import {toTypedSchema} from "@vee-validate/zod";
+import {computed, ref} from "vue"
+import {Form} from "vee-validate"
+import TextInput from "@/components/fields/TextInput.vue"
+import {toTypedSchema} from "@vee-validate/zod"
 import * as zod from 'zod'
-import useNotification from "@/composables/useNotification.js";
-import {useBoardStore} from "@/stores/useBoardStore.js";
+import useNotification from "@/composables/useNotification.js"
+import {useBoardStore} from "@/stores/useBoardStore.js"
 
 // Emits
 const emit = defineEmits(['update:newList'])
@@ -65,56 +65,58 @@ const onInvalidSubmit = () => {
 </script>
 
 <template>
-    <div
-      class="bg-transparent rounded p-2 min-w-64 flex flex-col dark:bg-transparent"
-    >
-      <button
-        @click="showAddList"
-        v-if="!addingList"
-        class="py-1 px-2 text-sm font-medium text-gray-900 focus:outline-none
+  <div
+    class="bg-transparent rounded p-2 min-w-64 flex flex-col dark:bg-transparent"
+  >
+    <button
+      @click="showAddList"
+      v-if="!addingList"
+      class="py-1 px-2 text-sm font-medium text-gray-900 focus:outline-none
                 bg-white rounded-lg border border-gray-200 hover:bg-gray-100
                 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100
                 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400
                 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+    >
+      + Add List
+    </button>
+    <div v-else>
+      <Form
+        :validation-schema="validationSchema"
+        @submit="onSubmit"
+        @invalid-submit="onInvalidSubmit"
       >
-       + Add List
-      </button>
-      <div v-else>
-        <Form
-          :validation-schema="validationSchema"
-          @submit="onSubmit"
-          @invalid-submit="onInvalidSubmit"
-        >
-          <TextInput
-            name="listName"
-            show-error
-            v-model="listName"
-            placeholder="List Name"
-          />
-          <div class="flex flex-row gap-2">
-            <button
-              type="submit"
-              class="py-1 px-2 mt-2 text-sm font-medium text-gray-900 focus:outline-none
+        <TextInput
+          name="listName"
+          show-error
+          v-model="listName"
+          placeholder="List Name"
+        />
+        <div class="flex flex-row gap-2">
+          <button
+            type="submit"
+            class="py-1 px-2 mt-2 text-sm font-medium text-gray-900 focus:outline-none
                 bg-white rounded-lg border border-gray-200 hover:bg-gray-100
                 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100
                 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400
-                dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-              Add
-            </button>
-            <button
-              type="button"
-              @click="cancelAddList"
-              class="py-1 px-2 mt-2 text-sm font-medium text-gray-900 focus:outline-none
+                dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+          >
+            Add
+          </button>
+          <button
+            type="button"
+            @click="cancelAddList"
+            class="py-1 px-2 mt-2 text-sm font-medium text-gray-900 focus:outline-none
                 bg-white rounded-lg border border-gray-200 hover:bg-gray-100
                 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100
                 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-danger-400
-                dark:border-danger-600 dark:hover:text-danger-400 dark:hover:bg-gray-700">
-              Cancel
-            </button>
-          </div>
-        </Form>
-      </div>
+                dark:border-danger-600 dark:hover:text-danger-400 dark:hover:bg-gray-700"
+          >
+            Cancel
+          </button>
+        </div>
+      </Form>
     </div>
+  </div>
 </template>
 
 <style scoped>

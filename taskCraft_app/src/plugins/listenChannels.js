@@ -29,6 +29,7 @@ export default function listenChannels() {
 
     window.Echo.private(`updated_board.${boardId}`)
       .listen('BoardUpdated', (event) => {
+        console.log(event)
         board.updateBoardFromBroadcast(event)
       })
   }

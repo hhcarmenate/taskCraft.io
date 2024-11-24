@@ -1,7 +1,7 @@
 <script setup>
 import draggable from "vuedraggable"
 import AddBoardTask from "@/components/Board/BoardTask/AddBoardTask.vue"
-import { ref, useAttrs } from 'vue'
+import { ref, useAttrs, watch } from 'vue'
 import BoardListTask from "@/components/Board/BoardTask/BoardListTask.vue"
 import BoardListTitleComponent from "@/components/Board/BoardTask/BoardListTitleComponent.vue"
 import {useBoardStore} from "@/stores/useBoardStore.js"
@@ -71,6 +71,10 @@ const handleCloseModal = () => {
   board.selectedTask = null
   showEditModal.value = false
 }
+
+watch(() => props.listElement, (newValue) => {
+  currentElement.value = newValue
+})
 
 </script>
 
