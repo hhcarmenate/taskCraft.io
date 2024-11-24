@@ -46,11 +46,7 @@ class WorkspaceController extends Controller
      */
     public function index(Request $request): JsonResponse|AnonymousResourceCollection
     {
-        try {
-            return WorkspaceResource::collection($this->workspaceService->getMyWorkSpaces($request->user()));
-        } catch(Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return WorkspaceResource::collection($this->workspaceService->getMyWorkSpaces($request->user()));
     }
 
     /**
@@ -62,11 +58,7 @@ class WorkspaceController extends Controller
      */
     public function store(StoreWorkspaceRequest $request): WorkspaceResource|JsonResponse
     {
-        try {
-            return WorkspaceResource::make($this->workspaceService->createWorkSpace($request));
-        } catch(Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return WorkspaceResource::make($this->workspaceService->createWorkSpace($request));
     }
 
     /**
@@ -79,11 +71,7 @@ class WorkspaceController extends Controller
      */
     public function update(UpdateWorkspaceRequest $request, Workspace $workspace): WorkspaceResource|JsonResponse
     {
-        try {
-            return WorkspaceResource::make($this->workspaceService->updateWorkspace($request, $workspace));
-        } catch(Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return WorkspaceResource::make($this->workspaceService->updateWorkspace($request, $workspace));
     }
 
     /**
@@ -95,11 +83,7 @@ class WorkspaceController extends Controller
      */
     public function show(Workspace $workspace): WorkspaceResource|JsonResponse
     {
-        try {
-            return WorkspaceResource::make($workspace);
-        } catch(Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return WorkspaceResource::make($workspace);
     }
 
     /**
@@ -110,11 +94,7 @@ class WorkspaceController extends Controller
      */
     public function delete(Workspace $workspace): WorkspaceResource|JsonResponse
     {
-        try {
-            return WorkspaceResource::make($this->workspaceService->destroyWorkspace($workspace));
-        } catch(Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return WorkspaceResource::make($this->workspaceService->destroyWorkspace($workspace));
     }
 
     /**
@@ -127,13 +107,9 @@ class WorkspaceController extends Controller
      */
     public function invitationLink(Workspace $workspace): JsonResponse
     {
-        try {
-            return response()->json([
-                'invitation' => $this->workspaceService->useInvitationLink($workspace)
-            ]);
-        } catch (Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return response()->json([
+            'invitation' => $this->workspaceService->useInvitationLink($workspace)
+        ]);
     }
 
     /**
@@ -151,11 +127,7 @@ class WorkspaceController extends Controller
      */
     public function sendInvitation(SendWorkspaceInvitationRequest $request, Workspace $workspace): JsonResponse
     {
-        try {
-            return response()->json($this->workspaceService->sendWorkspaceInvitation($request, $workspace));
-        } catch (Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return response()->json($this->workspaceService->sendWorkspaceInvitation($request, $workspace));
     }
 
     /**
@@ -181,11 +153,7 @@ class WorkspaceController extends Controller
      */
     public function getWorkspaces(User $user): AnonymousResourceCollection | JsonResponse
     {
-        try {
-            return WorkspaceResource::collection($this->workspaceService->getMyWorkSpaces($user));
-        } catch(Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return WorkspaceResource::collection($this->workspaceService->getMyWorkSpaces($user));
     }
 
     /**
@@ -198,11 +166,7 @@ class WorkspaceController extends Controller
      */
     public function updateLogo(Request $request, Workspace $workspace): WorkspaceResource|JsonResponse
     {
-        try {
-            return WorkspaceResource::make($this->workspaceService->updateLogo($request, $workspace));
-        } catch(Exception $e) {
-            return $this->genericFailResponse($e);
-        }
+        return WorkspaceResource::make($this->workspaceService->updateLogo($request, $workspace));
     }
 
     /**
@@ -213,33 +177,29 @@ class WorkspaceController extends Controller
      */
     public function registerAndJoin(WorkspaceRegisterJoinRequest $request): JsonResponse
     {
-        try {
-            $user = User::query()->create([
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'password' => Hash::make($request->input('password'))
+        $user = User::query()->create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password'))
+        ]);
+
+        if (!$user) {
+            throw ValidationException::withMessages([
+                'email' => ['Invalid user credentials']
             ]);
-
-            if (!$user) {
-                throw ValidationException::withMessages([
-                    'email' => ['Invalid user credentials']
-                ]);
-            }
-
-            $workspace = Workspace::query()->find($request->input('workspace_id'));
-            if (!$workspace) {
-                throw new Exception('Invalid Workspace');
-            }
-
-            $member = WorkspaceUserRole::query()
-                ->where('role_name', 'Member')
-                ->firstOrFail();
-
-            $workspace->users()->attach($user->id,['workspace_user_role_id' => $member->id]);
-
-            return response()->json(['message' => 'User registered successfully']);
-        } catch (Exception $e) {
-            return response()->json(['message' => 'Oops! Something went wrong '. $e->getMessage()], 500);
         }
+
+        $workspace = Workspace::query()->find($request->input('workspace_id'));
+        if (!$workspace) {
+            throw new Exception('Invalid Workspace');
+        }
+
+        $member = WorkspaceUserRole::query()
+            ->where('role_name', 'Member')
+            ->firstOrFail();
+
+        $workspace->users()->attach($user->id,['workspace_user_role_id' => $member->id]);
+
+        return response()->json(['message' => 'User registered successfully']);
     }
 }
