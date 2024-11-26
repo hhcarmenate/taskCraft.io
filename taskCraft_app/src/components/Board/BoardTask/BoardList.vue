@@ -73,8 +73,16 @@ const handleCloseModal = () => {
 }
 
 watch(() => props.listElement, (newValue) => {
-  currentElement.value = newValue
-})
+  if (newValue) {
+    currentElement.value = newValue
+    elementTasks.value = newValue.tasks
+  }
+},
+  {
+    deep: true,
+    immediate: true
+  }
+)
 
 </script>
 

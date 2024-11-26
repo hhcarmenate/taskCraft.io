@@ -3,7 +3,7 @@
 namespace App\Observers\BoardList;
 
 use App\Events\BoardUpdated;
-use App\Observers\Board\HandleBoardUpdatedEvent;
+use App\Models\Board;
 use App\Observers\Observer;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +41,6 @@ class BoardListObserver extends Observer
 
     public function updated($model): void
     {
-        Log::info('Updating list name');
         try {
             (new HandleBoardListUpdatedEvent($model))->handle();
         } catch (Exception $e) {
