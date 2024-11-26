@@ -43,6 +43,23 @@ export const useBoardStore = defineStore('board', {
       this.visibility = board.visibility
       this.starred = board.starred
       this.lists = board.lists
+
+      if (this.selectedTask) {
+        let taskFound = null
+
+        board.lists.forEach((list) => {
+          // Find the task in the current list
+          const task = list.tasks.find(task => task.id === this.selectedTask.id)
+
+          if (task) {
+            taskFound = task
+          }
+        })
+
+        if (taskFound) {
+          this.selectedTask = taskFound
+        }
+      }
     },
 
     initCurrentBoardFromWorkspace(boardId) {
