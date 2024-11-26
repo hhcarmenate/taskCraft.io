@@ -2,6 +2,7 @@
 
 namespace App\Observers\Task;
 
+use App\Events\BoardUpdated;
 use App\Models\BoardList;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +20,6 @@ class HandleTaskUpdatedEvent
 
     public function handle(): void
     {
-        Log::info('Checking model dirty', [$this->model->isDirty()]);
         if ($this->model->isDirty()) {
             $noNeededAttr = ['updated_at'];
 
@@ -36,6 +36,14 @@ class HandleTaskUpdatedEvent
                         ])
                         ->log('Task Updated');
                 }
+            }
+
+            $boardList = BoardList::query()
+                ->with('board')
+                ->find($this->model->list_id);
+
+            if ($boardList && $boardList->board) {
+                broadcast(new BoardUpdated($boardList->board))->toOthers();
             }
         }
     }
