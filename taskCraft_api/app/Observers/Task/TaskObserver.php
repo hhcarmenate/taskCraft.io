@@ -2,6 +2,9 @@
 
 namespace App\Observers\Task;
 
+use App\Events\BoardUpdated;
+use App\Models\Board;
+use App\Models\BoardList;
 use App\Observers\Observer;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +31,14 @@ class TaskObserver extends Observer
             ->performedOn($model)
             ->withProperties($model->toArray())
             ->log('Task Created');
+
+        $list = BoardList::query()
+            ->with('board')
+            ->find($model->list_id);
+
+        if ($list && $list->board) {
+            broadcast(new BoardUpdated($list->board));
+        }
     }
 
     public function updating($model)

@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, ref} from "vue"
+import { computed, onMounted, ref, watch } from 'vue'
 import TextInput from "@/components/fields/TextInput.vue"
 import {Form} from "vee-validate"
 import * as zod from 'zod'
@@ -69,9 +69,15 @@ const onSubmit = async () => {
   }
 }
 
-const onInvalidSubmit = () => {
-
+const onInvalidSubmit = (error) => {
+  console.log(error)
 }
+
+watch(() => props.listElement, (newValue) => {
+  if (newValue) {
+    newListTitle.value = newValue.title
+  }
+})
 
 </script>
 
