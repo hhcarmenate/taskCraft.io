@@ -13,6 +13,8 @@ Broadcast::channel('workspace.{workspaceId}', WorkspaceChannel::class, ['guards'
 Broadcast::channel('created_board.{workspaceId}', CreatedBoardChannel::class, ['guards' => ['web', 'admin']]);
 Broadcast::channel('updated_board.{boardId}', UpdatedBoardChannel::class, ['guards' => ['web', 'admin']]);
 
+
+
 Broadcast::channel('test-channel', function($user){
     return true;
 });
