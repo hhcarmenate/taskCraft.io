@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Observers\Task\TaskObserver;
+use App\Observers\Task\TaskChecklistObserver;
 use App\Observers\Workspace\WorkspaceObserver;
 use App\Traits\RegisterObserverTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
