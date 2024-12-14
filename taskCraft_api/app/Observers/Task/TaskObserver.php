@@ -3,7 +3,6 @@
 namespace App\Observers\Task;
 
 use App\Events\BoardUpdated;
-use App\Models\Board;
 use App\Models\BoardList;
 use App\Observers\Observer;
 use Exception;
