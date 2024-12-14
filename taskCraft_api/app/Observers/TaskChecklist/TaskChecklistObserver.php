@@ -3,12 +3,9 @@
 namespace App\Observers\TaskChecklist;
 
 use App\Events\BoardUpdated;
-use App\Models\Board;
 use App\Models\BoardList;
 use App\Observers\Observer;
-use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class TaskChecklistObserver extends Observer
 {
@@ -52,11 +49,7 @@ class TaskChecklistObserver extends Observer
 
     public function updated($model): void
     {
-        try {
-            (new HandleTaskUpdatedEvent($model))->handle();
-        } catch (Exception $e) {
-            Log::info('Observer Error', [$e->getMessage()]);
-        }
+        // TODO: Implement update() method.
     }
 
     public function deleting($model)

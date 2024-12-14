@@ -12,6 +12,7 @@ services:
         networks:
             - taskcraft
         environment:
+            TRUST_DOWNSTREAM_PROXY: "false"
             DEFAULT_HOST: dev.app.taskcraft.com
 
     taskcraft_api:
